@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cristy Printing Shop - Manager</title>
+  <title>Cristy Printing Shop - eGov Style</title>
   
   <!-- Firebase App & Realtime Database CDN -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -11,46 +11,45 @@
 
   <style>
     :root {
-      --bg: #f8fafc;
+      --egov-blue: #0038A8;      /* Official PH Blue */
+      --egov-yellow: #FCD116;    /* PH Gold/Yellow accent */
+      --egov-bg: #F0F4F8;
       --card-bg: #ffffff;
-      --accent-green: #059669;
-      --accent-blue: #2563eb;
-      --text: #0f172a;
-      --text-sub: #64748b;
-      --border: #e2e8f0;
-      --shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.05), 0 2px 6px -2px rgba(0, 0, 0, 0.03);
+      --text-main: #1E293B;
+      --text-sub: #64748B;
+      --border: #E2E8F0;
+      --shadow: 0 4px 12px rgba(0, 56, 168, 0.08);
     }
 
     body {
       font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background-color: var(--bg);
+      background-color: var(--egov-bg);
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
       background-repeat: no-repeat;
-      color: var(--text);
+      color: var(--text-main);
       margin: 0;
-      padding: 12px;
+      padding: 0;
       min-height: 100vh;
-      transition: background 0.3s ease;
     }
 
-    .container {
-      max-width: 480px;
-      margin: auto;
-      padding-bottom: 30px;
+    /* eGovPH Header Style */
+    .egov-header {
+      background: linear-gradient(135deg, var(--egov-blue) 0%, #002266 100%);
+      color: white;
+      padding: 20px 16px 25px 16px;
+      border-radius: 0 0 24px 24px;
+      box-shadow: 0 4px 15px rgba(0, 56, 168, 0.2);
+      margin-bottom: 16px;
     }
 
     .nav-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
-      background: var(--card-bg);
-      padding: 12px 16px;
-      border-radius: 16px;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
+      max-width: 480px;
+      margin: auto;
     }
 
     .shop-title-area {
@@ -60,46 +59,60 @@
     }
 
     .shop-logo {
-      width: 48px;
-      height: 48px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid var(--accent-blue);
+      border: 2px solid var(--egov-yellow);
       display: none;
+      background: white;
     }
 
-    .shop-name {
-      font-size: 17px;
+    .shop-name-container h1 {
+      font-size: 16px;
       font-weight: 800;
       text-transform: uppercase;
       margin: 0;
       letter-spacing: 0.5px;
-      color: var(--text);
+      color: #ffffff;
+    }
+
+    .shop-name-container p {
+      font-size: 11px;
+      margin: 2px 0 0 0;
+      color: #93c5fd;
+      font-weight: 500;
     }
 
     .settings-btn {
-      background: #f1f5f9;
-      border: 1px solid var(--border);
-      color: var(--text);
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
       font-size: 18px;
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border-radius: 12px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s;
+      transition: background 0.2s;
     }
 
     .settings-btn:active {
-      transform: scale(0.95);
-      background: #e2e8f0;
+      background: rgba(255, 255, 255, 0.3);
     }
 
+    .container {
+      max-width: 480px;
+      margin: auto;
+      padding: 0 14px 40px 14px;
+    }
+
+    /* eGov Card Style */
     .card {
       background: var(--card-bg);
-      padding: 20px;
+      padding: 18px;
       border-radius: 16px;
       border: 1px solid var(--border);
       margin-bottom: 14px;
@@ -107,80 +120,84 @@
     }
 
     h2 { 
-      font-size: 15px; 
+      font-size: 14px; 
       margin-top: 0; 
-      margin-bottom: 14px;
-      color: var(--accent-blue); 
+      margin-bottom: 12px;
+      color: var(--egov-blue); 
       font-weight: 700;
       display: flex;
       align-items: center;
       gap: 8px;
-    }
-
-    .form-group { margin-bottom: 14px; }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 12px;
-      color: var(--text-sub);
-      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.3px;
     }
 
+    .form-group { margin-bottom: 12px; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 11px;
+      color: var(--text-sub);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
     input, select {
       width: 100%;
-      padding: 12px 14px;
-      border-radius: 12px;
+      padding: 11px 13px;
+      border-radius: 10px;
       border: 1px solid var(--border);
       background: #f8fafc;
-      color: var(--text);
+      color: var(--text-main);
       box-sizing: border-box;
       font-size: 14px;
       font-weight: 500;
       outline: none;
-      transition: border-color 0.2s;
+      transition: all 0.2s;
     }
 
     input:focus, select:focus {
-      border-color: var(--accent-blue);
+      border-color: var(--egov-blue);
       background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(0, 56, 168, 0.1);
     }
 
     .btn-save {
       width: 100%;
-      padding: 14px;
-      border-radius: 12px;
+      padding: 13px;
+      border-radius: 10px;
       border: none;
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      background: var(--egov-blue);
       color: white;
       font-weight: 700;
-      font-size: 15px;
+      font-size: 14px;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);
+      box-shadow: 0 4px 10px rgba(0, 56, 168, 0.2);
       transition: opacity 0.2s;
     }
 
+    .btn-save:active { opacity: 0.9; }
+
     .btn-add { 
-      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); 
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+      background: #0d9488; 
+      box-shadow: 0 4px 10px rgba(13, 148, 136, 0.2);
     }
 
     .btn-del {
       background: #ef4444;
       color: white;
       border: none;
-      padding: 8px 14px;
+      padding: 6px 12px;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
     }
 
@@ -206,11 +223,12 @@
       font-size: 13px;
     }
 
+    /* eGov Summary Banner */
     .total-card {
-      background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
-      padding: 18px 20px;
+      background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%);
+      padding: 16px 18px;
       border-radius: 16px;
-      border: 1px solid #bbf7d0;
+      border: 1px solid #bfdbfe;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -218,33 +236,34 @@
       box-shadow: var(--shadow);
     }
 
-    .total-title { color: var(--text-sub); font-size: 12px; font-weight: 700; text-transform: uppercase; }
-    .total-amount { font-size: 24px; font-weight: 800; color: var(--accent-green); }
+    .total-title { color: var(--text-sub); font-size: 11px; font-weight: 700; text-transform: uppercase; }
+    .total-amount { font-size: 22px; font-weight: 800; color: var(--egov-blue); }
 
     .table-card { padding: 0; overflow: hidden; }
     table { width: 100%; border-collapse: collapse; text-align: left; }
-    th { background: #f8fafc; padding: 12px 16px; font-size: 11px; text-transform: uppercase; color: var(--text-sub); font-weight: 700; border-bottom: 1px solid var(--border); }
-    td { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
+    th { background: #f8fafc; padding: 10px 14px; font-size: 10px; text-transform: uppercase; color: var(--text-sub); font-weight: 700; border-bottom: 1px solid var(--border); }
+    td { padding: 11px 14px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
 
     .see-more-container {
       text-align: center;
-      padding: 12px;
+      padding: 10px;
     }
 
     .btn-seemore {
       background: none;
       border: none;
-      color: var(--accent-blue);
+      color: var(--egov-blue);
       font-weight: 700;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 12px;
     }
 
+    /* Modal Overlay (Bottom Sheet Style) */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(6px);
+      backdrop-filter: blur(4px);
       display: none;
       justify-content: center;
       align-items: flex-end;
@@ -253,13 +272,13 @@
 
     .modal-content {
       background: #ffffff;
-      color: var(--text);
+      color: var(--text-main);
       width: 100%;
       max-width: 480px;
       max-height: 88vh;
       overflow-y: auto;
       border-radius: 24px 24px 0 0;
-      padding: 24px;
+      padding: 20px;
       box-sizing: border-box;
       box-shadow: 0 -10px 30px rgba(0,0,0,0.15);
       animation: slideUp 0.3s ease-out;
@@ -276,32 +295,38 @@
       align-items: center;
       border-bottom: 1px solid var(--border);
       padding-bottom: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     .modal-header h2 { border: none; margin: 0; padding: 0; }
-    .close-btn { background: #f1f5f9; border: none; color: var(--text-sub); width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .close-btn { background: #f1f5f9; border: none; color: var(--text-sub); width: 30px; height: 30px; border-radius: 50%; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
     .setting-section-box {
       background: #f8fafc;
-      padding: 14px;
+      padding: 12px;
       border-radius: 12px;
       border: 1px solid var(--border);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
   </style>
 </head>
 <body>
 
-<div class="container">
-  
+<!-- eGovPH Header App Bar -->
+<div class="egov-header">
   <div class="nav-header">
     <div class="shop-title-area">
       <img id="shopLogo" class="shop-logo" alt="Shop Logo">
-      <h1 class="shop-name">🖨️ Cristy Printing</h1>
+      <div class="shop-name-container">
+        <h1>Cristy Printing</h1>
+        <p>Official Digital Portal</p>
+      </div>
     </div>
     <button class="settings-btn" onclick="openSettings()">⚙️</button>
   </div>
+</div>
+
+<div class="container">
 
   <div class="card">
     <h2>📊 Mag-encode ng Benta</h2>
@@ -332,7 +357,7 @@
   <div class="total-card">
     <div>
       <span class="total-title">Kabuuang Kita / Benta</span>
-      <div style="font-size: 11px; color: var(--text-sub); margin-top: 2px;">Realtime synchronized</div>
+      <div style="font-size: 10px; color: var(--text-sub); margin-top: 2px;">Realtime Synchronized</div>
     </div>
     <span class="total-amount" id="totalAmount">₱0.00</span>
   </div>
@@ -360,26 +385,26 @@
   <div class="modal-content">
     
     <div class="modal-header">
-      <h2>⚙️ Settings & Security</h2>
+      <h2>⚙️ Portal Settings</h2>
       <button class="close-btn" onclick="closeSettings()">✕</button>
     </div>
 
     <!-- SECURITY PIN SETTINGS (Synced) -->
     <div class="setting-section-box">
-      <label>🔒 Admin Security PIN (Naka-sync):</label>
-      <p style="font-size: 11px; color: var(--text-sub); margin: 4px 0 10px 0;">Gagamitin para sa pagbukas ng settings at pag-void ng benta sa lahat ng device.</p>
+      <label>🔒 Admin Security PIN (Naka-sync)</label>
+      <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Gagamitin para sa pagbukas ng settings at pag-void.</p>
       <div style="display: flex; gap: 8px;">
         <input type="password" id="adminPinInput" placeholder="Bagong PIN" maxlength="6" style="letter-spacing: 2px;">
-        <button class="btn-sec" style="margin: 0; width: auto; background: var(--accent-green); white-space: nowrap;" onclick="saveAdminPin()">I-save ang PIN</button>
+        <button class="btn-sec" style="margin: 0; width: auto; background: var(--egov-blue); white-space: nowrap;" onclick="saveAdminPin()">I-save</button>
       </div>
     </div>
 
     <!-- VOID TRANSACTION MANAGEMENT -->
     <div class="setting-section-box" style="border-color: #fecaca; background: #fff1f2;">
       <label style="color: #b91c1c;">🗑️ Void / Bura ng Transaksyon</label>
-      <p style="font-size: 11px; color: #7f1d1d; margin: 4px 0 8px 0;">Pumili ng maling benta na tatanggalin sa talaan.</p>
+      <p style="font-size: 10px; color: #7f1d1d; margin: 3px 0 8px 0;">Pumili ng maling transaksyon na tatanggalin.</p>
       <select id="voidSelectDropdown" style="margin-bottom: 8px; background: #ffffff;"></select>
-      <button class="btn-del" style="width: 100%; padding: 12px; font-size: 13px;" onclick="promptAndVoidSale()">⚠️ I-void ang Napiling Benta</button>
+      <button class="btn-del" style="width: 100%; padding: 11px; font-size: 12px;" onclick="promptAndVoidSale()">⚠️ I-void ang Napiling Benta</button>
     </div>
 
     <!-- WALLPAPER & THEME -->
@@ -392,7 +417,7 @@
     <div class="setting-section-box">
       <label>🎨 Kulay ng Background (Solid)</label>
       <div style="display: flex; gap: 10px; align-items: center; margin-top: 6px;">
-        <input type="color" id="themeColorPicker" value="#f8fafc" onchange="changeThemeColor(this.value)" style="height: 42px; padding: 2px; cursor: pointer; flex: 1;">
+        <input type="color" id="themeColorPicker" value="#f0f4f8" onchange="changeThemeColor(this.value)" style="height: 40px; padding: 2px; cursor: pointer; flex: 1;">
         <button class="btn-sec" style="margin: 0; width: auto;" onclick="resetThemeColor()">I-default</button>
       </div>
     </div>
@@ -408,7 +433,7 @@
     <div class="setting-section-box">
       <label>🔗 Firebase Database URL</label>
       <input type="text" id="firebaseUrlInput" placeholder="https://..." style="margin-top: 6px; margin-bottom: 8px;">
-      <button class="btn-sec" style="background: var(--accent-blue);" onclick="saveFirebaseUrl()">I-save ang Link</button>
+      <button class="btn-sec" style="background: var(--egov-blue);" onclick="saveFirebaseUrl()">I-save ang Link</button>
     </div>
 
     <!-- PRICE LIST SETTINGS -->
@@ -420,7 +445,7 @@
       <button class="btn-sec" style="background: #d97706; margin-top: 8px;" onclick="resetToDefaultPrices()">↺ Reset sa Standard Prices</button>
     </div>
 
-    <h3 style="font-size: 13px; color: var(--text-sub); margin-top: 15px; margin-bottom: 8px;">Miyembro ng Price List:</h3>
+    <h3 style="font-size: 12px; color: var(--text-sub); margin-top: 14px; margin-bottom: 8px;">Listahan ng Presyo:</h3>
     <div id="priceListContainer"></div>
 
   </div>
@@ -430,7 +455,7 @@
   document.getElementById('entryDate').valueAsDate = new Date();
   let showAllTransactions = false;
   let allSalesData = [];
-  let currentAdminPin = '1234'; // Default PIN
+  let currentAdminPin = '1234';
 
   const defaultPrices = [
     { id: 1, name: '📄 Xerox - Text Only Black (Short/A4)', price: 3.00 },
@@ -472,7 +497,6 @@
     return firebase.database();
   }
 
-  // ADMIN PIN SYNC LOGIC
   function saveAdminPin() {
     const pin = document.getElementById('adminPinInput').value.trim();
     if (!pin) return alert("Maglagay ng bisa o PIN number!");
@@ -483,14 +507,14 @@
         if (error) {
           alert("Error sa pag-save: " + error.message);
         } else {
-          alert("✅ Tagumpay na na-sync at na-save ang Admin PIN sa lahat ng device!");
+          alert("✅ Tagumpay na na-sync at na-save ang Admin PIN!");
           document.getElementById('adminPinInput').value = '';
         }
       });
     } else {
       localStorage.setItem('cristyAdminPin', pin);
       currentAdminPin = pin;
-      alert("✅ Na-save ang Admin PIN sa device na ito (Walang Firebase link).");
+      alert("✅ Na-save ang Admin PIN sa device na ito.");
       document.getElementById('adminPinInput').value = '';
     }
   }
@@ -512,7 +536,6 @@
     document.getElementById('settingsModal').style.display = 'none';
   }
 
-  // IMAGE COMPRESSION & SYNC
   function compressAndUploadImage(file, firebasePath, callback) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -578,8 +601,8 @@
 
   function resetThemeColor() {
     removeBackground();
-    document.body.style.backgroundColor = '#f8fafc';
-    document.getElementById('themeColorPicker').value = '#f8fafc';
+    document.body.style.backgroundColor = '#f0f4f8';
+    document.getElementById('themeColorPicker').value = '#f0f4f8';
     localStorage.removeItem('cristyThemeColor');
   }
 
@@ -613,7 +636,6 @@
     loadSales();
   }
 
-  // PRICELIST
   function getCustomPrices() {
     const saved = localStorage.getItem('cristyCustomPrices');
     if (!saved || JSON.parse(saved).length === 0) {
@@ -660,7 +682,7 @@
     prices.forEach(p => {
       container.innerHTML += `
         <div class="price-item">
-          <div><strong>${p.name}</strong><br><span style="color:var(--accent-green); font-weight:600;">₱${p.price.toFixed(2)}</span></div>
+          <div><strong>${p.name}</strong><br><span style="color:var(--egov-blue); font-weight:600;">₱${p.price.toFixed(2)}</span></div>
           <button class="btn-del" onclick="deletePriceItem(${p.id})">Bura</button>
         </div>
       `;
@@ -695,7 +717,6 @@
     }
   }
 
-  // SALES RECORD LOGIC
   async function addSaleRecord() {
     const date = document.getElementById('entryDate').value;
     const baseType = document.getElementById('serviceDropdown').value;
@@ -722,7 +743,6 @@
     alert("✅ Tagumpay na naitala ang benta!");
   }
 
-  // SECURE VOID FUNCTION VIA SETTINGS
   function promptAndVoidSale() {
     const dropdown = document.getElementById('voidSelectDropdown');
     const selectedKey = dropdown.value;
@@ -825,9 +845,9 @@
     displayList.forEach(item => {
       tbody.innerHTML += `
         <tr>
-          <td style="color: var(--text-sub); font-size: 12px;">${item.date}</td>
+          <td style="color: var(--text-sub); font-size: 11px;">${item.date}</td>
           <td>${item.type}</td>
-          <td style="font-weight: 700; color: var(--accent-green);">₱${item.price.toFixed(2)}</td>
+          <td style="font-weight: 700; color: var(--egov-blue);">₱${item.price.toFixed(2)}</td>
         </tr>
       `;
     });
@@ -843,13 +863,11 @@
     const db = getFirebaseDB();
     if (!db) return;
 
-    // Wallpaper listener
     db.ref('settings/wallpaper').on('value', (snapshot) => {
       const bg = snapshot.val();
       if (bg) document.body.style.backgroundImage = `url('${bg}')`;
     });
 
-    // Logo listener
     db.ref('settings/logo').on('value', (snapshot) => {
       const logo = snapshot.val();
       const logoElem = document.getElementById('shopLogo');
@@ -859,7 +877,6 @@
       }
     });
 
-    // Admin PIN listener
     db.ref('settings/adminPin').on('value', (snapshot) => {
       const pin = snapshot.val();
       if (pin) {
@@ -868,7 +885,6 @@
     });
   }
 
-  // INITIAL LOAD
   window.onload = function() {
     const savedBg = localStorage.getItem('cristyCustomBg');
     if (savedBg) document.body.style.backgroundImage = `url('${savedBg}')`;
