@@ -310,7 +310,7 @@
 
     <!-- SECURITY PIN SETTINGS -->
     <div class="form-group" style="background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
-      <label>🔒 Admin PIN Security (Para sa pag-void):</label>
+      <label>🔒 Admin PIN Security (Para sa Settings at Void):</label>
       <div style="display: flex; gap: 8px;">
         <input type="password" id="adminPinInput" placeholder="Ilagay ang 4-digit PIN" maxlength="6" style="letter-spacing: 2px;">
         <button class="btn-sec" style="margin: 0; width: auto; background: #059669;" onclick="saveAdminPin()">I-save ang PIN</button>
@@ -319,10 +319,10 @@
 
     <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
 
-    <!-- VOID TRANSACTION MANAGEMENT (Nasa loob na ng Settings) -->
+    <!-- VOID TRANSACTION MANAGEMENT -->
     <div class="form-group">
       <label>🗑️ Pamamahala ng Void / Bura ng Benta:</label>
-      <p style="font-size: 11px; color: #64748b; margin-top: -2px; margin-bottom: 8px;">Pumili ng transaksyon na tatanggalin. Hihingi ito ng Admin PIN.</p>
+      <p style="font-size: 11px; color: #64748b; margin-top: -2px; margin-bottom: 8px;">Pumili ng transaksyon na tatanggalin (nangangailangan ng Admin PIN).</p>
       <select id="voidSelectDropdown" style="margin-bottom: 8px;"></select>
       <button class="btn-del" style="width: 100%; padding: 10px; font-size: 14px;" onclick="promptAndVoidSale()">⚠️ I-void / Burahin ang Napiling Benta</button>
     </div>
@@ -437,6 +437,26 @@
     return localStorage.getItem('cristyAdminPin') || '1234'; // Default PIN: 1234
   }
 
+  // SECURE SETTINGS OPENER WITH PIN PROMPT
+  function openSettings() {
+    const savedPin = getAdminPin();
+    const enteredPin = prompt("🔒 Admin Security:\nIlagay ang PIN para mabuksan ang Settings:");
+
+    if (enteredPin === null) return; // Kapag pinindot ang Cancel
+
+    if (enteredPin === savedPin) {
+      document.getElementById('firebaseUrlInput').value = localStorage.getItem('cristyFirebaseUrl') || '';
+      document.getElementById('settingsModal').style.display = 'flex';
+      populateVoidDropdown();
+    } else {
+      alert("❌ Maling PIN! Hindi mabubuksan ang Settings.");
+    }
+  }
+
+  function closeSettings() {
+    document.getElementById('settingsModal').style.display = 'none';
+  }
+
   // IMAGE COMPRESSION & SYNC
   function compressAndUploadImage(file, firebasePath, callback) {
     const reader = new FileReader();
@@ -536,16 +556,6 @@
     alert('Na-save na ang Firebase URL!');
     listenToFirebaseAll();
     loadSales();
-  }
-
-  function openSettings() {
-    document.getElementById('firebaseUrlInput').value = localStorage.getItem('cristyFirebaseUrl') || '';
-    document.getElementById('settingsModal').style.display = 'flex';
-    populateVoidDropdown();
-  }
-
-  function closeSettings() {
-    document.getElementById('settingsModal').style.display = 'none';
   }
 
   // PRICELIST
@@ -665,7 +675,7 @@
     if (!selectedKey) return alert("Walang napiling transaksyon na ili-void!");
 
     const enteredPin = prompt("🔒 Ilagay ang Admin PIN para mai-void ang transaksyong ito:");
-    if (enteredPin === null) return; // I-cancel
+    if (enteredPin === null) return;
 
     if (enteredPin === getAdminPin()) {
       if (confirm("Sigurado ka bang gusto mong i-void/burahin ang transaksyong ito?")) {
