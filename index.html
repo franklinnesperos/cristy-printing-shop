@@ -390,22 +390,51 @@
     { id: 28, name: '✨ Laminate - A4 Size', price: 40.00 }
   ];
 
+  // HELPER FUNCTION: COMPRESS IMAGE FOR LOCALSTORAGE
+  function compressImage(file, maxWidth, quality, callback) {
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        callback(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.src = evt.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
   // BACKGROUND IMAGE & COLOR LOGIC
   function changeBackground(e) {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        document.body.style.backgroundImage = `url('${evt.target.result}')`;
-        localStorage.setItem('cristyCustomBg', evt.target.result);
-      };
-      reader.readAsDataURL(file);
+      compressImage(file, 1024, 0.7, function(compressedDataUrl) {
+        try {
+          document.body.style.backgroundImage = `url('${compressedDataUrl}')`;
+          localStorage.setItem('cristyCustomBg', compressedDataUrl);
+        } catch (err) {
+          alert("Masyadong malaki ang litrato. Subukan ang mas maliit na imahe.");
+        }
+      });
     }
   }
 
   function removeBackground() {
     document.body.style.backgroundImage = 'none';
     localStorage.removeItem('cristyCustomBg');
+    document.getElementById('bgUploader').value = '';
   }
 
   function changeThemeColor(color) {
@@ -437,20 +466,22 @@
   function changeLogo(e) {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        const logoData = evt.target.result;
-        document.getElementById('displayLogo').src = logoData;
-        document.getElementById('displayLogo').style.display = 'block';
-        localStorage.setItem('cristyShopLogo', logoData);
-      };
-      reader.readAsDataURL(file);
+      compressImage(file, 300, 0.8, function(compressedDataUrl) {
+        try {
+          document.getElementById('displayLogo').src = compressedDataUrl;
+          document.getElementById('displayLogo').style.display = 'block';
+          localStorage.setItem('cristyShopLogo', compressedDataUrl);
+        } catch (err) {
+          alert("Hindi mai-save ang logo.");
+        }
+      });
     }
   }
 
   function removeLogo() {
     document.getElementById('displayLogo').style.display = 'none';
     localStorage.removeItem('cristyShopLogo');
+    document.getElementById('logoUploader').value = '';
   }
 
   function loadSavedLogo() {
