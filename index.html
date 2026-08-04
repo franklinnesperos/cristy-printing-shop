@@ -3,24 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cristy Printing Shop - Daily Sales</title>
+  <title>Cristy Printing Shop - Manager</title>
   <style>
     :root {
       --bg: #0f172a;
-      --card-bg: #1e293b;
+      --card-bg: rgba(30, 41, 59, 0.90); /* Transparent kaunti para litaw ang background picture */
       --accent-green: #10b981;
       --accent-blue: #3b82f6;
       --text: #f8fafc;
-      --text-sub: #94a3b8;
-      --border: #334155;
+      --text-sub: #cbd5e1;
+      --border: rgba(255, 255, 255, 0.15);
     }
 
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
-      background: var(--bg);
+      background-color: var(--bg);
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
       color: var(--text);
       margin: 0;
       padding: 15px;
+      min-height: 100vh;
+      transition: background 0.3s ease-in-out;
     }
 
     .container {
@@ -28,40 +34,32 @@
       margin: auto;
     }
 
-    /* Header Design */
     .header-card {
-      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+      background: linear-gradient(135deg, rgba(30, 58, 138, 0.9) 0%, rgba(59, 130, 246, 0.9) 100%);
       padding: 20px;
       border-radius: 12px;
       text-align: center;
       margin-bottom: 15px;
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+      backdrop-filter: blur(5px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
     }
 
-    .header-card h1 {
-      margin: 0;
-      font-size: 22px;
-      text-transform: uppercase;
-    }
+    .header-card h1 { margin: 0; font-size: 22px; text-transform: uppercase; }
+    .header-card p { margin: 4px 0 0; color: #bfdbfe; font-size: 13px; }
 
-    .header-card p {
-      margin: 4px 0 0;
-      color: #bfdbfe;
-      font-size: 13px;
-    }
-
-    /* Sales Input Form */
-    .form-card {
+    .card {
       background: var(--card-bg);
       padding: 18px;
       border-radius: 12px;
       border: 1px solid var(--border);
       margin-bottom: 15px;
+      backdrop-filter: blur(8px); /* Blur effect sa likod ng card para madaling basahin ang text */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
     }
 
-    .form-group {
-      margin-bottom: 12px;
-    }
+    h2 { font-size: 16px; margin-top: 0; color: #60a5fa; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+
+    .form-group { margin-bottom: 12px; }
 
     label {
       display: block;
@@ -76,15 +74,11 @@
       padding: 12px;
       border-radius: 8px;
       border: 1px solid var(--border);
-      background: #0f172a;
+      background: rgba(15, 23, 42, 0.8);
       color: var(--text);
       box-sizing: border-box;
       font-size: 15px;
       outline: none;
-    }
-
-    input:focus, select:focus {
-      border-color: var(--accent-blue);
     }
 
     .btn-save {
@@ -97,11 +91,42 @@
       font-weight: bold;
       font-size: 16px;
       cursor: pointer;
-      margin-top: 5px;
-      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
     }
 
-    /* Total Display */
+    .btn-add {
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    }
+
+    .btn-del {
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .btn-reset-bg {
+      background: #64748b;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      margin-top: 8px;
+      width: 100%;
+    }
+
+    .price-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
     .total-card {
       background: var(--card-bg);
       padding: 15px 20px;
@@ -112,63 +137,15 @@
       align-items: center;
       margin-bottom: 15px;
       border-left: 5px solid var(--accent-green);
+      backdrop-filter: blur(8px);
     }
 
-    .total-title {
-      color: var(--text-sub);
-      font-size: 13px;
-      font-weight: 600;
-    }
+    .total-title { color: var(--text-sub); font-size: 13px; font-weight: 600; }
+    .total-amount { font-size: 22px; font-weight: bold; color: var(--accent-green); }
 
-    .total-amount {
-      font-size: 22px;
-      font-weight: bold;
-      color: var(--accent-green);
-    }
-
-    /* Transaction History Table */
-    .table-card {
-      background: var(--card-bg);
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      overflow: hidden;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-    }
-
-    th {
-      background: #334155;
-      padding: 10px 12px;
-      font-size: 12px;
-      color: var(--text-sub);
-      text-transform: uppercase;
-    }
-
-    td {
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--border);
-      font-size: 14px;
-    }
-
-    tr:last-child td {
-      border-bottom: none;
-    }
-
-    .badge {
-      padding: 3px 6px;
-      border-radius: 4px;
-      font-size: 11px;
-      font-weight: 600;
-      display: inline-block;
-    }
-
-    .badge-xerox { background: rgba(59, 130, 246, 0.2); color: #93c5fd; }
-    .badge-print { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; }
-    .badge-laminate { background: rgba(245, 158, 11, 0.2); color: #fde047; }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    th { background: rgba(51, 65, 85, 0.9); padding: 10px; font-size: 12px; color: var(--text-sub); }
+    td { padding: 10px; border-bottom: 1px solid var(--border); font-size: 14px; }
   </style>
 </head>
 <body>
@@ -177,46 +154,72 @@
   
   <div class="header-card">
     <h1>🖨️ Cristy Printing Shop</h1>
-    <p>Daily Sales Tracker</p>
+    <p>Sales Tracker & Price Manager</p>
   </div>
 
-  <!-- Form para sa Benta -->
-  <div class="form-card">
+  <!-- SEKSYON 0: Background Picture Customizer -->
+  <div class="card">
+    <h2>🖼️ Palitan ang Background Picture</h2>
+    <div class="form-group">
+      <label for="bgUploader">Pumili ng Larawan sa Phone/Computer:</label>
+      <input type="file" id="bgUploader" accept="image/*" onchange="changeBackground(event)">
+    </div>
+    <button class="btn-reset-bg" onclick="removeBackground()">Tanggalin ang Background Picture</button>
+  </div>
+
+  <!-- SEKSYON 1: Pag-add & Edit ng Presyo -->
+  <div class="card">
+    <h2>⚙️ Pamamahala ng Presyo (Price List)</h2>
+    <div class="form-group">
+      <label for="newServiceName">Pangalan ng Service / Product:</label>
+      <input type="text" id="newServiceName" placeholder="ex: Xerox Short, Print Colored A4">
+    </div>
+
+    <div class="form-group">
+      <label for="newServicePrice">Default na Presyo (₱):</label>
+      <input type="number" id="newServicePrice" placeholder="0.00" step="0.01">
+    </div>
+
+    <button class="btn-save btn-add" onclick="savePriceItem()">+ Dagdag / I-save sa Listahan</button>
+
+    <h3 style="font-size: 14px; margin-top: 15px; color: var(--text-sub);">Kasalukuyang Presyo:</h3>
+    <div id="priceListContainer"></div>
+  </div>
+
+  <!-- SEKSYON 2: Encoding ng Araw-araw na Benta -->
+  <div class="card">
+    <h2>📊 Mag-encode ng Benta</h2>
     <div class="form-group">
       <label for="entryDate">Petsa:</label>
       <input type="date" id="entryDate">
     </div>
 
     <div class="form-group">
-      <label for="serviceType">Type ng Service:</label>
-      <select id="serviceType">
-        <option value="Xerox">📄 Xerox</option>
-        <option value="Print">🖨️ Print</option>
-        <option value="Laminate">✨ Laminate</option>
-      </select>
+      <label for="serviceDropdown">Pumili ng Service:</label>
+      <select id="serviceDropdown" onchange="autoFillPrice()"></select>
     </div>
 
     <div class="form-group">
-      <label for="itemPrice">Presyo / Benta (₱):</label>
+      <label for="itemPrice">Halaga ng Benta (₱):</label>
       <input type="number" id="itemPrice" placeholder="0.00" step="0.01">
     </div>
 
-    <button class="btn-save" onclick="addRecord()">+ Record Benta</button>
+    <button class="btn-save" onclick="addSaleRecord()">+ Record Benta</button>
   </div>
 
-  <!-- Total Benta -->
+  <!-- Total Benta Display -->
   <div class="total-card">
     <span class="total-title">KABUUMANG BENTA</span>
     <span class="total-amount" id="totalAmount">₱0.00</span>
   </div>
 
-  <!-- Listahan ng Benta -->
-  <div class="table-card">
+  <!-- Sales Log Table -->
+  <div class="card" style="padding: 0; overflow: hidden;">
     <table>
       <thead>
         <tr>
           <th>Petsa</th>
-          <th>Type</th>
+          <th>Service</th>
           <th>Presyo</th>
         </tr>
       </thead>
@@ -227,60 +230,148 @@
 </div>
 
 <script>
-  // Automatic ngayong petsa
   document.getElementById('entryDate').valueAsDate = new Date();
 
-  function getRecords() {
-    return JSON.parse(localStorage.getItem('cristyPrintingSales')) || [];
+  // ----- LOGIC PARA SA BACKGROUND IMAGE -----
+  function changeBackground(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const imageData = e.target.result;
+        document.body.style.backgroundImage = `url('${imageData}')`;
+        localStorage.setItem('cristyCustomBg', imageData);
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
-  function addRecord() {
-    const date = document.getElementById('entryDate').value;
-    const type = document.getElementById('serviceType').value;
-    const price = parseFloat(document.getElementById('itemPrice').value);
+  function removeBackground() {
+    document.body.style.backgroundImage = 'none';
+    localStorage.removeItem('cristyCustomBg');
+    document.getElementById('bgUploader').value = '';
+  }
 
-    if (!date || isNaN(price) || price <= 0) {
-      alert("Paki-lagay ang tamang halaga ng benta!");
+  function loadSavedBackground() {
+    const savedBg = localStorage.getItem('cristyCustomBg');
+    if (savedBg) {
+      document.body.style.backgroundImage = `url('${savedBg}')`;
+    }
+  }
+
+  // ----- LOGIC PARA SA PRESYO (PRICE LIST) -----
+  function getCustomPrices() {
+    return JSON.parse(localStorage.getItem('cristyCustomPrices')) || [
+      { id: 1, name: '📄 Xerox (Standard)', price: 2.00 },
+      { id: 2, name: '🖨️ Print (Document)', price: 5.00 },
+      { id: 3, name: '✨ Laminate (A4/Short)', price: 40.00 }
+    ];
+  }
+
+  function savePriceItem() {
+    const name = document.getElementById('newServiceName').value.trim();
+    const price = parseFloat(document.getElementById('newServicePrice').value);
+
+    if (!name || isNaN(price) || price < 0) {
+      alert("Paki-lagay ang tamang Pangalan at Presyo!");
       return;
     }
 
-    const records = getRecords();
-    records.push({ date, type, price });
-    localStorage.setItem('cristyPrintingSales', JSON.stringify(records));
+    let prices = getCustomPrices();
+    prices.push({ id: Date.now(), name, price });
+    localStorage.setItem('cristyCustomPrices', JSON.stringify(prices));
 
-    // Reset ng input box
-    document.getElementById('itemPrice').value = '';
-    loadRecords();
+    document.getElementById('newServiceName').value = '';
+    document.getElementById('newServicePrice').value = '';
+    
+    loadPriceManager();
+    populateDropdown();
   }
 
-  function getBadgeClass(type) {
-    if (type === 'Xerox') return 'badge-xerox';
-    if (type === 'Print') return 'badge-print';
-    if (type === 'Laminate') return 'badge-laminate';
-    return '';
+  function deletePriceItem(id) {
+    let prices = getCustomPrices();
+    prices = prices.filter(p => p.id !== id);
+    localStorage.setItem('cristyCustomPrices', JSON.stringify(prices));
+    loadPriceManager();
+    populateDropdown();
   }
 
-  function loadRecords() {
-    const records = getRecords();
+  function loadPriceManager() {
+    const container = document.getElementById('priceListContainer');
+    const prices = getCustomPrices();
+    container.innerHTML = '';
+
+    prices.forEach(p => {
+      container.innerHTML += `
+        <div class="price-item">
+          <div><strong>${p.name}</strong> - <span style="color:var(--accent-green)">₱${p.price.toFixed(2)}</span></div>
+          <button class="btn-del" onclick="deletePriceItem(${p.id})">Bura</button>
+        </div>
+      `;
+    });
+  }
+
+  function populateDropdown() {
+    const dropdown = document.getElementById('serviceDropdown');
+    const prices = getCustomPrices();
+    dropdown.innerHTML = '';
+
+    prices.forEach((p) => {
+      dropdown.innerHTML += `<option value="${p.name}" data-price="${p.price}">${p.name}</option>`;
+    });
+
+    autoFillPrice();
+  }
+
+  function autoFillPrice() {
+    const dropdown = document.getElementById('serviceDropdown');
+    const selectedOption = dropdown.options[dropdown.selectedIndex];
+    if (selectedOption) {
+      document.getElementById('itemPrice').value = selectedOption.getAttribute('data-price');
+    }
+  }
+
+  // ----- LOGIC PARA SA SALES LOG -----
+  function getSales() {
+    return JSON.parse(localStorage.getItem('cristyPrintingSales')) || [];
+  }
+
+  function addSaleRecord() {
+    const date = document.getElementById('entryDate').value;
+    const type = document.getElementById('serviceDropdown').value;
+    const price = parseFloat(document.getElementById('itemPrice').value);
+
+    if (!date || isNaN(price) || price <= 0) {
+      alert("Paki-lagay ang tamang halaga!");
+      return;
+    }
+
+    const sales = getSales();
+    sales.push({ date, type, price });
+    localStorage.setItem('cristyPrintingSales', JSON.stringify(sales));
+
+    loadSales();
+  }
+
+  function loadSales() {
+    const sales = getSales();
     const tbody = document.getElementById('salesTableBody');
     tbody.innerHTML = '';
     let total = 0;
 
-    if (records.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #64748b; padding: 15px;">Wala pang naitatalang benta.</td></tr>`;
+    if (sales.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #cbd5e1; padding: 15px;">Wala pang naitatalang benta.</td></tr>`;
       document.getElementById('totalAmount').innerText = '₱0.00';
       return;
     }
 
-    records.forEach(item => {
+    sales.forEach(item => {
       total += item.price;
-      const badgeClass = getBadgeClass(item.type);
-      
       tbody.innerHTML += `
         <tr>
           <td>${item.date}</td>
-          <td><span class="badge ${badgeClass}">${item.type}</span></td>
-          <td style="font-weight: bold; color: #f8fafc;">₱${item.price.toFixed(2)}</td>
+          <td>${item.type}</td>
+          <td style="font-weight: bold; color: var(--accent-green);">₱${item.price.toFixed(2)}</td>
         </tr>
       `;
     });
@@ -288,7 +379,13 @@
     document.getElementById('totalAmount').innerText = `₱${total.toFixed(2)}`;
   }
 
-  document.addEventListener('DOMContentLoaded', loadRecords);
+  // Initial Load
+  document.addEventListener('DOMContentLoaded', () => {
+    loadSavedBackground();
+    loadPriceManager();
+    populateDropdown();
+    loadSales();
+  });
 </script>
 
 </body>
