@@ -34,7 +34,6 @@
       margin: auto;
     }
 
-    /* Top Navbar na may Gear Icon */
     .nav-header {
       display: flex;
       justify-content: space-between;
@@ -75,7 +74,6 @@
       backdrop-filter: blur(5px);
     }
 
-    /* Card Styling */
     .card {
       background: var(--card-bg);
       padding: 18px;
@@ -175,7 +173,6 @@
     th { background: rgba(51, 65, 85, 0.9); padding: 10px; font-size: 12px; color: var(--text-sub); }
     td { padding: 10px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
 
-    /* Modal / Slide Panel para sa Settings */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -217,16 +214,14 @@
 
 <div class="container">
   
-  <!-- Top Navigation Header -->
   <div class="nav-header">
     <div class="shop-title-area">
       <img id="displayLogo" class="shop-logo" alt="Profile Logo">
-      <h1 class="shop-name">🖨️ Cristy Shop</h1>
+      <h1 class="shop-name">🖨️ Cristy Printing</h1>
     </div>
     <button class="settings-btn" onclick="openSettings()">⚙️</button>
   </div>
 
-  <!-- SEKSYON 1: Encoding ng Benta -->
   <div class="card">
     <h2>📊 Mag-encode ng Benta</h2>
     <div class="form-group">
@@ -247,13 +242,11 @@
     <button class="btn-save" onclick="addSaleRecord()">+ Record Benta</button>
   </div>
 
-  <!-- Total Benta Display -->
   <div class="total-card">
     <span class="total-title">KABUUMANG BENTA</span>
     <span class="total-amount" id="totalAmount">₱0.00</span>
   </div>
 
-  <!-- Sales Log Table -->
   <div class="card" style="padding: 0; overflow: hidden;">
     <table>
       <thead>
@@ -275,12 +268,21 @@
   <div class="modal-content">
     
     <div class="modal-header">
-      <h2>⚙️ Settings & Configuration</h2>
+      <h2>⚙️ Settings & Centralized Sync</h2>
       <button class="close-btn" onclick="closeSettings()">✕</button>
     </div>
 
-    <!-- PROFILE / LOGO SECTION -->
-    <div class="form-group" style="margin-bottom: 20px;">
+    <!-- FIREBASE DB LINK -->
+    <div class="form-group">
+      <label>🔗 Firebase Centralized Database URL:</label>
+      <input type="text" id="firebaseUrlInput" placeholder="https://your-app.firebaseio.com/">
+      <button class="btn-sec" onclick="saveFirebaseUrl()">I-save ang Sync Link</button>
+      <small style="color: #94a3b8; font-size: 11px;">I-paste ang Firebase Realtime Database URL mo para mag-sync sa lahat ng device.</small>
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid var(--border); margin: 15px 0;">
+
+    <div class="form-group">
       <label>👤 Profile / Shop Logo:</label>
       <input type="file" id="logoUploader" accept="image/*" onchange="changeLogo(event)">
       <button class="btn-sec" onclick="removeLogo()">Tanggalin ang Logo</button>
@@ -288,11 +290,9 @@
 
     <hr style="border: 0; border-top: 1px solid var(--border); margin: 15px 0;">
 
-    <!-- BACKGROUND SECTION -->
-    <div class="form-group" style="margin-bottom: 20px;">
+    <div class="form-group">
       <label>🖼️ Custom Background Picture:</label>
       <input type="file" id="bgUploader" accept="image/*" onchange="changeBackground(event)">
-      
       <div style="display: flex; gap: 8px; margin-top: 8px;">
         <button class="btn-sec" style="background: #000000; border: 1px solid #333;" onclick="setBlackBg()">⬛ Solid Black</button>
         <button class="btn-sec" onclick="removeBackground()">Default Dark Blue</button>
@@ -301,10 +301,9 @@
 
     <hr style="border: 0; border-top: 1px solid var(--border); margin: 15px 0;">
 
-    <!-- PRICE MANAGER SECTION -->
     <div class="form-group">
       <label>⚙️ Pamamahala ng Presyo (Price List):</label>
-      <input type="text" id="newServiceName" placeholder="Pangalan ng Service / Item" style="margin-bottom: 8px;">
+      <input type="text" id="newServiceName" placeholder="Pangalan ng Service" style="margin-bottom: 8px;">
       <input type="number" id="newServicePrice" placeholder="Presyo (₱)" step="0.01" style="margin-bottom: 8px;">
       <button class="btn-save btn-add" onclick="savePriceItem()">+ Dagdag sa Price List</button>
     </div>
@@ -318,8 +317,50 @@
 <script>
   document.getElementById('entryDate').valueAsDate = new Date();
 
-  // ----- SETTINGS MODAL CONTROL -----
+  // DEFAULT PRICELIST MULA SA LARAWAN NG PRICELIST
+  const defaultPrices = [
+    { id: 1, name: '📄 Xerox - Text Only Black (Short/A4)', price: 3.00 },
+    { id: 2, name: '📄 Xerox - Text Only Black (Long)', price: 4.00 },
+    { id: 3, name: '📄 Xerox - Text Only Colored (Short/A4)', price: 5.00 },
+    { id: 4, name: '📄 Xerox - Text Only Colored (Long)', price: 6.00 },
+    { id: 5, name: '🖼️ Xerox - Image B&W Half Page (Short/A4)', price: 5.00 },
+    { id: 6, name: '🖼️ Xerox - Image B&W Half Page (Long)', price: 6.00 },
+    { id: 7, name: '🖼️ Xerox - Image B&W Full Page (Short/A4)', price: 7.00 },
+    { id: 8, name: '🖼️ Xerox - Image B&W Full Page (Long)', price: 8.00 },
+    { id: 9, name: '🖼️ Xerox - Image Colored Half Page (Short/A4)', price: 8.00 },
+    { id: 10, name: '🖼️ Xerox - Image Colored Full Page (Short/A4)', price: 10.00 },
+    { id: 11, name: '🖨️ Print - Text Only Black (Short/A4)', price: 4.00 },
+    { id: 12, name: '🖨️ Print - Text Only Black (Long)', price: 6.00 },
+    { id: 13, name: '🖨️ Print - Text Only Colored (Short/A4)', price: 6.00 },
+    { id: 14, name: '🖨️ Print - Text Only Colored (Long)', price: 8.00 },
+    { id: 15, name: '🖨️ Print - Image B&W Half Page (Short/A4)', price: 6.00 },
+    { id: 16, name: '🖨️ Print - Image B&W Half Page (Long)', price: 8.00 },
+    { id: 17, name: '🖨️ Print - Image B&W Full Page (Short/A4)', price: 8.00 },
+    { id: 18, name: '🖨️ Print - Image B&W Full Page (Long)', price: 10.00 },
+    { id: 19, name: '🖨️ Print - Image Colored Half Page (Short/A4)', price: 10.00 },
+    { id: 20, name: '🖨️ Print - Image Colored Half Page (Long)', price: 12.00 },
+    { id: 21, name: '🖨️ Print - Image Colored Full Page (Short/A4)', price: 15.00 },
+    { id: 22, name: '🖨️ Print - Image Colored Full Page (Long)', price: 16.00 },
+    { id: 23, name: '🏷️ Sticker (Per Page)', price: 60.00 },
+    { id: 24, name: '✨ Laminate - ID Size', price: 15.00 },
+    { id: 25, name: '✨ Laminate - A5 Size', price: 25.00 },
+    { id: 26, name: '✨ Laminate - A4 Size', price: 40.00 }
+  ];
+
+  function getDbUrl() {
+    return localStorage.getItem('cristyFirebaseUrl') || '';
+  }
+
+  function saveFirebaseUrl() {
+    let url = document.getElementById('firebaseUrlInput').value.trim();
+    if (url && !url.endsWith('/')) url += '/';
+    localStorage.setItem('cristyFirebaseUrl', url);
+    alert('Na-save na ang Firebase URL! Mag-i-sync na ito sa lahat ng device.');
+    loadSales();
+  }
+
   function openSettings() {
+    document.getElementById('firebaseUrlInput').value = getDbUrl();
     document.getElementById('settingsModal').style.display = 'flex';
   }
 
@@ -327,57 +368,42 @@
     document.getElementById('settingsModal').style.display = 'none';
   }
 
-  // ----- PROFILE / LOGO LOGIC -----
-  function changeLogo(event) {
-    const file = event.target.files[0];
+  // LOGO & BG LOGIC
+  function changeLogo(e) {
+    const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = function(e) {
-        const logoData = e.target.result;
-        const img = document.getElementById('displayLogo');
-        img.src = logoData;
-        img.style.display = 'block';
-        try {
-          localStorage.setItem('cristyShopLogo', logoData);
-        } catch(err) {
-          alert("Masyadong malaki ang picture ng Logo. Pumatag ng mas maliit na larawan.");
-        }
+      reader.onload = function(evt) {
+        const logoData = evt.target.result;
+        document.getElementById('displayLogo').src = logoData;
+        document.getElementById('displayLogo').style.display = 'block';
+        localStorage.setItem('cristyShopLogo', logoData);
       };
       reader.readAsDataURL(file);
     }
   }
 
   function removeLogo() {
-    const img = document.getElementById('displayLogo');
-    img.src = '';
-    img.style.display = 'none';
+    document.getElementById('displayLogo').style.display = 'none';
     localStorage.removeItem('cristyShopLogo');
   }
 
   function loadSavedLogo() {
     const savedLogo = localStorage.getItem('cristyShopLogo');
     if (savedLogo) {
-      const img = document.getElementById('displayLogo');
-      img.src = savedLogo;
-      img.style.display = 'block';
+      document.getElementById('displayLogo').src = savedLogo;
+      document.getElementById('displayLogo').style.display = 'block';
     }
   }
 
-  // ----- BACKGROUND LOGIC -----
-  function changeBackground(event) {
-    const file = event.target.files[0];
+  function changeBackground(e) {
+    const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = function(e) {
-        const imageData = e.target.result;
-        document.body.style.backgroundImage = `url('${imageData}')`;
-        document.body.style.backgroundColor = 'transparent';
-        try {
-          localStorage.setItem('cristyCustomBg', imageData);
-          localStorage.setItem('cristyBgType', 'image');
-        } catch(err) {
-          alert("Masyadong malaki ang larawan. Pumili ng mas maliit na photo.");
-        }
+      reader.onload = function(evt) {
+        document.body.style.backgroundImage = `url('${evt.target.result}')`;
+        localStorage.setItem('cristyCustomBg', evt.target.result);
+        localStorage.setItem('cristyBgType', 'image');
       };
       reader.readAsDataURL(file);
     }
@@ -387,61 +413,46 @@
     document.body.style.backgroundImage = 'none';
     document.body.style.backgroundColor = '#000000';
     localStorage.setItem('cristyBgType', 'black');
-    localStorage.removeItem('cristyCustomBg');
   }
 
   function removeBackground() {
     document.body.style.backgroundImage = 'none';
     document.body.style.backgroundColor = '#0f172a';
     localStorage.removeItem('cristyBgType');
-    localStorage.removeItem('cristyCustomBg');
   }
 
   function loadSavedBackground() {
     const bgType = localStorage.getItem('cristyBgType');
     if (bgType === 'black') {
-      document.body.style.backgroundImage = 'none';
       document.body.style.backgroundColor = '#000000';
     } else if (bgType === 'image') {
       const savedBg = localStorage.getItem('cristyCustomBg');
-      if (savedBg) {
-        document.body.style.backgroundImage = `url('${savedBg}')`;
-      }
+      if (savedBg) document.body.style.backgroundImage = `url('${savedBg}')`;
     }
   }
 
-  // ----- PRICE LIST LOGIC -----
+  // PRICE MANAGEMENT
   function getCustomPrices() {
-    return JSON.parse(localStorage.getItem('cristyCustomPrices')) || [
-      { id: 1, name: '📄 Xerox (Standard)', price: 2.00 },
-      { id: 2, name: '🖨️ Print (Document)', price: 5.00 },
-      { id: 3, name: '✨ Laminate (A4/Short)', price: 40.00 }
-    ];
+    return JSON.parse(localStorage.getItem('cristyCustomPrices')) || defaultPrices;
   }
 
   function savePriceItem() {
     const name = document.getElementById('newServiceName').value.trim();
     const price = parseFloat(document.getElementById('newServicePrice').value);
-
-    if (!name || isNaN(price) || price < 0) {
-      alert("Paki-lagay ang tamang Pangalan at Presyo!");
-      return;
-    }
+    if (!name || isNaN(price)) return alert("Kumpletuhin ang pangalan at presyo!");
 
     let prices = getCustomPrices();
     prices.push({ id: Date.now(), name, price });
     localStorage.setItem('cristyCustomPrices', JSON.stringify(prices));
-
+    
     document.getElementById('newServiceName').value = '';
     document.getElementById('newServicePrice').value = '';
-    
     loadPriceManager();
     populateDropdown();
   }
 
   function deletePriceItem(id) {
-    let prices = getCustomPrices();
-    prices = prices.filter(p => p.id !== id);
+    let prices = getCustomPrices().filter(p => p.id !== id);
     localStorage.setItem('cristyCustomPrices', JSON.stringify(prices));
     loadPriceManager();
     populateDropdown();
@@ -451,7 +462,6 @@
     const container = document.getElementById('priceListContainer');
     const prices = getCustomPrices();
     container.innerHTML = '';
-
     prices.forEach(p => {
       container.innerHTML += `
         <div class="price-item">
@@ -466,78 +476,108 @@
     const dropdown = document.getElementById('serviceDropdown');
     const prices = getCustomPrices();
     dropdown.innerHTML = '';
-
-    prices.forEach((p) => {
+    prices.forEach(p => {
       dropdown.innerHTML += `<option value="${p.name}" data-price="${p.price}">${p.name}</option>`;
     });
-
     autoFillPrice();
   }
 
   function autoFillPrice() {
     const dropdown = document.getElementById('serviceDropdown');
-    const selectedOption = dropdown.options[dropdown.selectedIndex];
-    if (selectedOption) {
-      document.getElementById('itemPrice').value = selectedOption.getAttribute('data-price');
-    }
+    const selected = dropdown.options[dropdown.selectedIndex];
+    if (selected) document.getElementById('itemPrice').value = selected.getAttribute('data-price');
   }
 
-  // ----- SALES LOG LOGIC -----
-  function getSales() {
-    return JSON.parse(localStorage.getItem('cristyPrintingSales')) || [];
-  }
-
-  function addSaleRecord() {
+  // CENTRALIZED SALES LOGIC (FIREBASE REST API)
+  async function addSaleRecord() {
     const date = document.getElementById('entryDate').value;
     const type = document.getElementById('serviceDropdown').value;
     const price = parseFloat(document.getElementById('itemPrice').value);
 
-    if (!date || isNaN(price) || price <= 0) {
-      alert("Paki-lagay ang tamang halaga!");
-      return;
-    }
+    if (!date || isNaN(price) || price <= 0) return alert("Lagyan ng tamang halaga!");
 
-    const sales = getSales();
-    sales.push({ id: Date.now(), date, type, price });
-    localStorage.setItem('cristyPrintingSales', JSON.stringify(sales));
+    const newSale = { date, type, price, timestamp: Date.now() };
+    const dbUrl = getDbUrl();
+
+    if (dbUrl) {
+      await fetch(`${dbUrl}sales.json`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newSale)
+      });
+    } else {
+      let sales = JSON.parse(localStorage.getItem('cristyPrintingSales')) || [];
+      sales.push({ id: Date.now(), ...newSale });
+      localStorage.setItem('cristyPrintingSales', JSON.stringify(sales));
+    }
 
     loadSales();
   }
 
-  function deleteSaleRecord(id) {
-    if (confirm("Sigurado ka bang gusto mong i-void ang benta na ito?")) {
-      let sales = getSales();
-      sales = sales.filter(item => item.id !== id);
+  async function deleteSaleRecord(keyOrId) {
+    if (!confirm("Sigurado ka bang i-vovoid ang benta na ito?")) return;
+
+    const dbUrl = getDbUrl();
+    if (dbUrl) {
+      await fetch(`${dbUrl}sales/${keyOrId}.json`, { method: 'DELETE' });
+    } else {
+      let sales = JSON.parse(localStorage.getItem('cristyPrintingSales')) || [];
+      sales = sales.filter(item => item.id !== keyOrId);
       localStorage.setItem('cristyPrintingSales', JSON.stringify(sales));
-      loadSales();
     }
+
+    loadSales();
   }
 
-  function loadSales() {
-    const sales = getSales();
+  async function loadSales() {
+    const dbUrl = getDbUrl();
     const tbody = document.getElementById('salesTableBody');
     tbody.innerHTML = '';
     let total = 0;
 
-    if (sales.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #cbd5e1; padding: 15px;">Wala pang naitatalang benta.</td></tr>`;
-      document.getElementById('totalAmount').innerText = '₱0.00';
-      return;
+    if (dbUrl) {
+      try {
+        const res = await fetch(`${dbUrl}sales.json`);
+        const data = await res.json();
+        if (data) {
+          Object.keys(data).forEach(key => {
+            const item = data[key];
+            total += item.price;
+            tbody.innerHTML += `
+              <tr>
+                <td>${item.date}</td>
+                <td>${item.type}</td>
+                <td style="font-weight: bold; color: var(--accent-green);">₱${item.price.toFixed(2)}</td>
+                <td style="text-align: center;">
+                  <button class="btn-del" onclick="deleteSaleRecord('${key}')">Void</button>
+                </td>
+              </tr>
+            `;
+          });
+        }
+      } catch(e) {
+        console.error("Sync error:", e);
+      }
+    } else {
+      const sales = JSON.parse(localStorage.getItem('cristyPrintingSales')) || [];
+      sales.forEach(item => {
+        total += item.price;
+        tbody.innerHTML += `
+          <tr>
+            <td>${item.date}</td>
+            <td>${item.type}</td>
+            <td style="font-weight: bold; color: var(--accent-green);">₱${item.price.toFixed(2)}</td>
+            <td style="text-align: center;">
+              <button class="btn-del" onclick="deleteSaleRecord(${item.id})">Void</button>
+            </td>
+          </tr>
+        `;
+      });
     }
 
-    sales.forEach(item => {
-      total += item.price;
-      tbody.innerHTML += `
-        <tr>
-          <td>${item.date}</td>
-          <td>${item.type}</td>
-          <td style="font-weight: bold; color: var(--accent-green);">₱${item.price.toFixed(2)}</td>
-          <td style="text-align: center;">
-            <button class="btn-del" onclick="deleteSaleRecord(${item.id})">Void</button>
-          </td>
-        </tr>
-      `;
-    });
+    if (tbody.innerHTML === '') {
+      tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #cbd5e1; padding: 15px;">Wala pang naitatalang benta.</td></tr>`;
+    }
 
     document.getElementById('totalAmount').innerText = `₱${total.toFixed(2)}`;
   }
@@ -549,6 +589,9 @@
     loadPriceManager();
     populateDropdown();
     loadSales();
+    
+    // Auto refresh sales every 5 seconds para live update sa ibang phone
+    setInterval(loadSales, 5000);
   });
 </script>
 
