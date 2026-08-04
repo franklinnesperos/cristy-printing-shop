@@ -11,18 +11,18 @@
 
   <style>
     :root {
-      --bg: #ffffff;
-      --card-bg: rgba(241, 245, 249, 0.95);
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
       --accent-green: #059669;
       --accent-blue: #2563eb;
       --text: #0f172a;
-      --text-sub: #475569;
-      --border: rgba(0, 0, 0, 0.12);
-      --input-bg: #ffffff;
+      --text-sub: #64748b;
+      --border: #e2e8f0;
+      --shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.05), 0 2px 6px -2px rgba(0, 0, 0, 0.03);
     }
 
     body {
-      font-family: 'Segoe UI', Arial, sans-serif;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
       background-color: var(--bg);
       background-size: cover;
       background-position: center;
@@ -30,21 +30,27 @@
       background-repeat: no-repeat;
       color: var(--text);
       margin: 0;
-      padding: 15px;
+      padding: 12px;
       min-height: 100vh;
       transition: background 0.3s ease;
     }
 
     .container {
-      max-width: 500px;
+      max-width: 480px;
       margin: auto;
+      padding-bottom: 30px;
     }
 
     .nav-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 15px;
+      margin-bottom: 16px;
+      background: var(--card-bg);
+      padding: 12px 16px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
     }
 
     .shop-title-area {
@@ -54,106 +60,139 @@
     }
 
     .shop-logo {
-      width: 65px;
-      height: 65px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid var(--accent-blue);
       display: none;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
 
     .shop-name {
-      font-size: 20px;
-      font-weight: bold;
+      font-size: 17px;
+      font-weight: 800;
       text-transform: uppercase;
       margin: 0;
       letter-spacing: 0.5px;
+      color: var(--text);
     }
 
     .settings-btn {
-      background: rgba(0, 0, 0, 0.05);
+      background: #f1f5f9;
       border: 1px solid var(--border);
       color: var(--text);
-      font-size: 20px;
-      padding: 8px 12px;
-      border-radius: 8px;
+      font-size: 18px;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .settings-btn:active {
+      transform: scale(0.95);
+      background: #e2e8f0;
     }
 
     .card {
       background: var(--card-bg);
-      padding: 18px;
-      border-radius: 12px;
+      padding: 20px;
+      border-radius: 16px;
       border: 1px solid var(--border);
-      margin-bottom: 15px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-      backdrop-filter: blur(5px);
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
     }
 
-    h2 { font-size: 16px; margin-top: 0; color: var(--accent-blue); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    h2 { 
+      font-size: 15px; 
+      margin-top: 0; 
+      margin-bottom: 14px;
+      color: var(--accent-blue); 
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-    .form-group { margin-bottom: 12px; }
+    .form-group { margin-bottom: 14px; }
 
     .grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 12px;
     }
 
     label {
       display: block;
-      margin-bottom: 4px;
-      font-size: 13px;
+      margin-bottom: 6px;
+      font-size: 12px;
       color: var(--text-sub);
-      font-weight: 600;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
     }
 
     input, select {
       width: 100%;
-      padding: 12px;
-      border-radius: 8px;
+      padding: 12px 14px;
+      border-radius: 12px;
       border: 1px solid var(--border);
-      background: var(--input-bg);
+      background: #f8fafc;
       color: var(--text);
       box-sizing: border-box;
-      font-size: 15px;
+      font-size: 14px;
+      font-weight: 500;
       outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--accent-blue);
+      background: #ffffff;
     }
 
     .btn-save {
       width: 100%;
-      padding: 12px;
-      border-radius: 8px;
+      padding: 14px;
+      border-radius: 12px;
       border: none;
       background: linear-gradient(135deg, #10b981 0%, #059669 100%);
       color: white;
-      font-weight: bold;
-      font-size: 16px;
+      font-weight: 700;
+      font-size: 15px;
       cursor: pointer;
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);
+      transition: opacity 0.2s;
     }
 
-    .btn-add { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); }
+    .btn-add { 
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); 
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    }
 
     .btn-del {
       background: #ef4444;
       color: white;
       border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
+      padding: 8px 14px;
+      border-radius: 8px;
       cursor: pointer;
       font-size: 12px;
-      font-weight: bold;
+      font-weight: 700;
     }
 
     .btn-sec {
       background: #475569;
       color: white;
       border: none;
-      padding: 8px 12px;
-      border-radius: 6px;
+      padding: 10px 14px;
+      border-radius: 10px;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 13px;
+      font-weight: 600;
       margin-top: 6px;
       width: 100%;
     }
@@ -164,28 +203,28 @@
       align-items: center;
       padding: 10px 0;
       border-bottom: 1px solid var(--border);
+      font-size: 13px;
     }
 
     .total-card {
-      background: var(--card-bg);
-      padding: 15px 20px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
+      background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+      padding: 18px 20px;
+      border-radius: 16px;
+      border: 1px solid #bbf7d0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 15px;
-      border-left: 5px solid var(--accent-green);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      backdrop-filter: blur(5px);
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
     }
 
-    .total-title { color: var(--text-sub); font-size: 13px; font-weight: 600; }
-    .total-amount { font-size: 22px; font-weight: bold; color: var(--accent-green); }
+    .total-title { color: var(--text-sub); font-size: 12px; font-weight: 700; text-transform: uppercase; }
+    .total-amount { font-size: 24px; font-weight: 800; color: var(--accent-green); }
 
+    .table-card { padding: 0; overflow: hidden; }
     table { width: 100%; border-collapse: collapse; text-align: left; }
-    th { background: rgba(0, 0, 0, 0.05); padding: 10px; font-size: 12px; color: var(--text-sub); }
-    td { padding: 10px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
+    th { background: #f8fafc; padding: 12px 16px; font-size: 11px; text-transform: uppercase; color: var(--text-sub); font-weight: 700; border-bottom: 1px solid var(--border); }
+    td { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
 
     .see-more-container {
       text-align: center;
@@ -196,16 +235,16 @@
       background: none;
       border: none;
       color: var(--accent-blue);
-      font-weight: bold;
+      font-weight: 700;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 13px;
     }
 
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(4px);
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(6px);
       display: none;
       justify-content: center;
       align-items: flex-end;
@@ -214,28 +253,42 @@
 
     .modal-content {
       background: #ffffff;
-      color: #0f172a;
+      color: var(--text);
       width: 100%;
-      max-width: 500px;
-      max-height: 85vh;
+      max-width: 480px;
+      max-height: 88vh;
       overflow-y: auto;
-      border-radius: 20px 20px 0 0;
-      padding: 20px;
+      border-radius: 24px 24px 0 0;
+      padding: 24px;
       box-sizing: border-box;
-      box-shadow: 0 -5px 25px rgba(0,0,0,0.2);
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.15);
+      animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
     }
 
     .modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #e2e8f0;
-      padding-bottom: 10px;
-      margin-bottom: 15px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+      margin-bottom: 18px;
     }
 
     .modal-header h2 { border: none; margin: 0; padding: 0; }
-    .close-btn { background: none; border: none; color: #64748b; font-size: 22px; cursor: pointer; }
+    .close-btn { background: #f1f5f9; border: none; color: var(--text-sub); width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+    .setting-section-box {
+      background: #f8fafc;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      margin-bottom: 14px;
+    }
   </style>
 </head>
 <body>
@@ -253,22 +306,22 @@
   <div class="card">
     <h2>📊 Mag-encode ng Benta</h2>
     <div class="form-group">
-      <label for="entryDate">Petsa:</label>
+      <label for="entryDate">Petsa</label>
       <input type="date" id="entryDate">
     </div>
 
     <div class="form-group">
-      <label for="serviceDropdown">Pumili ng Service:</label>
+      <label for="serviceDropdown">Pumili ng Service</label>
       <select id="serviceDropdown" onchange="calculateSubtotal()"></select>
     </div>
 
     <div class="grid-2">
       <div class="form-group">
-        <label for="itemQty">Dami (Qty / Times):</label>
+        <label for="itemQty">Dami (Qty)</label>
         <input type="number" id="itemQty" value="1" min="1" oninput="calculateSubtotal()">
       </div>
       <div class="form-group">
-        <label for="itemPrice">Kabuuang Presyo (₱):</label>
+        <label for="itemPrice">Presyo (₱)</label>
         <input type="number" id="itemPrice" placeholder="0.00" step="0.01">
       </div>
     </div>
@@ -277,11 +330,14 @@
   </div>
 
   <div class="total-card">
-    <span class="total-title">KABUUANG BENTA</span>
+    <div>
+      <span class="total-title">Kabuuang Kita / Benta</span>
+      <div style="font-size: 11px; color: var(--text-sub); margin-top: 2px;">Realtime synchronized</div>
+    </div>
     <span class="total-amount" id="totalAmount">₱0.00</span>
   </div>
 
-  <div class="card" style="padding: 0; overflow: hidden;">
+  <div class="card table-card">
     <table>
       <thead>
         <tr>
@@ -293,7 +349,7 @@
       <tbody id="salesTableBody"></tbody>
     </table>
     <div id="seeMoreArea" class="see-more-container" style="display: none;">
-      <button class="btn-seemore" onclick="toggleSeeMore()" id="seeMoreBtn">👇 Tingnan ang Lahat ng Transaksyon</button>
+      <button class="btn-seemore" onclick="toggleSeeMore()" id="seeMoreBtn">👇 Tingnan ang Lahat</button>
     </div>
   </div>
 
@@ -304,76 +360,67 @@
   <div class="modal-content">
     
     <div class="modal-header">
-      <h2>⚙️ Settings & Customization</h2>
+      <h2>⚙️ Settings & Security</h2>
       <button class="close-btn" onclick="closeSettings()">✕</button>
     </div>
 
-    <!-- SECURITY PIN SETTINGS -->
-    <div class="form-group" style="background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
-      <label>🔒 Admin PIN Security (Para sa Settings at Void):</label>
+    <!-- SECURITY PIN SETTINGS (Synced) -->
+    <div class="setting-section-box">
+      <label>🔒 Admin Security PIN (Naka-sync):</label>
+      <p style="font-size: 11px; color: var(--text-sub); margin: 4px 0 10px 0;">Gagamitin para sa pagbukas ng settings at pag-void ng benta sa lahat ng device.</p>
       <div style="display: flex; gap: 8px;">
-        <input type="password" id="adminPinInput" placeholder="Ilagay ang 4-digit PIN" maxlength="6" style="letter-spacing: 2px;">
-        <button class="btn-sec" style="margin: 0; width: auto; background: #059669;" onclick="saveAdminPin()">I-save ang PIN</button>
+        <input type="password" id="adminPinInput" placeholder="Bagong PIN" maxlength="6" style="letter-spacing: 2px;">
+        <button class="btn-sec" style="margin: 0; width: auto; background: var(--accent-green); white-space: nowrap;" onclick="saveAdminPin()">I-save ang PIN</button>
       </div>
     </div>
-
-    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
 
     <!-- VOID TRANSACTION MANAGEMENT -->
-    <div class="form-group">
-      <label>🗑️ Pamamahala ng Void / Bura ng Benta:</label>
-      <p style="font-size: 11px; color: #64748b; margin-top: -2px; margin-bottom: 8px;">Pumili ng transaksyon na tatanggalin (nangangailangan ng Admin PIN).</p>
-      <select id="voidSelectDropdown" style="margin-bottom: 8px;"></select>
-      <button class="btn-del" style="width: 100%; padding: 10px; font-size: 14px;" onclick="promptAndVoidSale()">⚠️ I-void / Burahin ang Napiling Benta</button>
+    <div class="setting-section-box" style="border-color: #fecaca; background: #fff1f2;">
+      <label style="color: #b91c1c;">🗑️ Void / Bura ng Transaksyon</label>
+      <p style="font-size: 11px; color: #7f1d1d; margin: 4px 0 8px 0;">Pumili ng maling benta na tatanggalin sa talaan.</p>
+      <select id="voidSelectDropdown" style="margin-bottom: 8px; background: #ffffff;"></select>
+      <button class="btn-del" style="width: 100%; padding: 12px; font-size: 13px;" onclick="promptAndVoidSale()">⚠️ I-void ang Napiling Benta</button>
     </div>
 
-    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
-
-    <!-- THEME COLOR & WALLPAPER PICKER -->
-    <div class="form-group">
-      <label>🖼️ Custom Wallpaper Image (Synced):</label>
-      <input type="file" id="bgUploader" accept="image/*" onchange="handleWallpaperUpload(this)">
-      <button class="btn-sec" style="background: #ef4444; margin-top: 6px;" onclick="removeBackground()">Tanggalin ang Wallpaper</button>
+    <!-- WALLPAPER & THEME -->
+    <div class="setting-section-box">
+      <label>🖼️ Custom Wallpaper (Synced)</label>
+      <input type="file" id="bgUploader" accept="image/*" onchange="handleWallpaperUpload(this)" style="margin-top: 6px;">
+      <button class="btn-sec" style="background: #ef4444;" onclick="removeBackground()">Tanggalin ang Wallpaper</button>
     </div>
 
-    <div class="form-group" style="margin-top: 15px;">
-      <label>🎨 Kulay ng Layout (Solid Color):</label>
-      <div style="display: flex; gap: 10px; align-items: center;">
-        <input type="color" id="themeColorPicker" value="#ffffff" onchange="changeThemeColor(this.value)" style="height: 42px; padding: 2px; cursor: pointer;">
-        <button class="btn-sec" style="margin: 0; width: auto;" onclick="resetThemeColor()">I-balik sa White</button>
+    <div class="setting-section-box">
+      <label>🎨 Kulay ng Background (Solid)</label>
+      <div style="display: flex; gap: 10px; align-items: center; margin-top: 6px;">
+        <input type="color" id="themeColorPicker" value="#f8fafc" onchange="changeThemeColor(this.value)" style="height: 42px; padding: 2px; cursor: pointer; flex: 1;">
+        <button class="btn-sec" style="margin: 0; width: auto;" onclick="resetThemeColor()">I-default</button>
       </div>
     </div>
 
-    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
-
-    <!-- SHOP LOGO UPLOADER -->
-    <div class="form-group">
-      <label>👤 Palitan ang Logo ng Shop (Synced):</label>
-      <input type="file" id="logoUploader" accept="image/*" onchange="handleLogoUpload(this)">
-      <button class="btn-sec" style="background: #ef4444; margin-top: 6px;" onclick="removeLogo()">Tanggalin ang Logo</button>
+    <!-- LOGO -->
+    <div class="setting-section-box">
+      <label>👤 Logo ng Shop (Synced)</label>
+      <input type="file" id="logoUploader" accept="image/*" onchange="handleLogoUpload(this)" style="margin-top: 6px;">
+      <button class="btn-sec" style="background: #ef4444;" onclick="removeLogo()">Tanggalin ang Logo</button>
     </div>
-
-    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
 
     <!-- FIREBASE DB LINK -->
-    <div class="form-group">
-      <label>🔗 Firebase Centralized Database URL:</label>
-      <input type="text" id="firebaseUrlInput" placeholder="https://your-app.firebaseio.com/">
-      <button class="btn-sec" onclick="saveFirebaseUrl()">I-save ang Sync Link</button>
+    <div class="setting-section-box">
+      <label>🔗 Firebase Database URL</label>
+      <input type="text" id="firebaseUrlInput" placeholder="https://..." style="margin-top: 6px; margin-bottom: 8px;">
+      <button class="btn-sec" style="background: var(--accent-blue);" onclick="saveFirebaseUrl()">I-save ang Link</button>
     </div>
-
-    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
 
     <!-- PRICE LIST SETTINGS -->
-    <div class="form-group">
-      <label>⚙️ Pamamahala ng Presyo (Price List):</label>
-      <input type="text" id="newServiceName" placeholder="Pangalan ng Service" style="margin-bottom: 8px;">
-      <input type="number" id="newServicePrice" placeholder="Presyo bawat isa (₱)" step="0.01" style="margin-bottom: 8px;">
-      <button class="btn-save btn-add" onclick="savePriceItem()">+ Dagdag sa Price List</button>
-      <button class="btn-sec" style="background: #d97706; margin-top: 10px;" onclick="resetToDefaultPrices()">↺ Reset All Prices to Default</button>
+    <div class="setting-section-box">
+      <label>⚙️ Pamamahala ng Presyo</label>
+      <input type="text" id="newServiceName" placeholder="Pangalan ng Service" style="margin-top: 6px; margin-bottom: 8px;">
+      <input type="number" id="newServicePrice" placeholder="Presyo (₱)" step="0.01" style="margin-bottom: 8px;">
+      <button class="btn-save btn-add" onclick="savePriceItem()">+ Dagdag na Serbisyo</button>
+      <button class="btn-sec" style="background: #d97706; margin-top: 8px;" onclick="resetToDefaultPrices()">↺ Reset sa Standard Prices</button>
     </div>
 
-    <h3 style="font-size: 13px; color: #475569; margin-top: 15px;">Listahan ng mga Presyo:</h3>
+    <h3 style="font-size: 13px; color: var(--text-sub); margin-top: 15px; margin-bottom: 8px;">Miyembro ng Price List:</h3>
     <div id="priceListContainer"></div>
 
   </div>
@@ -383,6 +430,7 @@
   document.getElementById('entryDate').valueAsDate = new Date();
   let showAllTransactions = false;
   let allSalesData = [];
+  let currentAdminPin = '1234'; // Default PIN
 
   const defaultPrices = [
     { id: 1, name: '📄 Xerox - Text Only Black (Short/A4)', price: 3.00 },
@@ -424,27 +472,34 @@
     return firebase.database();
   }
 
-  // ADMIN PIN LOGIC
+  // ADMIN PIN SYNC LOGIC
   function saveAdminPin() {
     const pin = document.getElementById('adminPinInput').value.trim();
     if (!pin) return alert("Maglagay ng bisa o PIN number!");
-    localStorage.setItem('cristyAdminPin', pin);
-    alert("✅ Tagumpay na na-save ang Admin PIN!");
-    document.getElementById('adminPinInput').value = '';
+    
+    const db = getFirebaseDB();
+    if (db) {
+      db.ref('settings/adminPin').set(pin, (error) => {
+        if (error) {
+          alert("Error sa pag-save: " + error.message);
+        } else {
+          alert("✅ Tagumpay na na-sync at na-save ang Admin PIN sa lahat ng device!");
+          document.getElementById('adminPinInput').value = '';
+        }
+      });
+    } else {
+      localStorage.setItem('cristyAdminPin', pin);
+      currentAdminPin = pin;
+      alert("✅ Na-save ang Admin PIN sa device na ito (Walang Firebase link).");
+      document.getElementById('adminPinInput').value = '';
+    }
   }
 
-  function getAdminPin() {
-    return localStorage.getItem('cristyAdminPin') || '1234'; // Default PIN: 1234
-  }
-
-  // SECURE SETTINGS OPENER WITH PIN PROMPT
   function openSettings() {
-    const savedPin = getAdminPin();
     const enteredPin = prompt("🔒 Admin Security:\nIlagay ang PIN para mabuksan ang Settings:");
+    if (enteredPin === null) return;
 
-    if (enteredPin === null) return; // Kapag pinindot ang Cancel
-
-    if (enteredPin === savedPin) {
+    if (enteredPin === currentAdminPin) {
       document.getElementById('firebaseUrlInput').value = localStorage.getItem('cristyFirebaseUrl') || '';
       document.getElementById('settingsModal').style.display = 'flex';
       populateVoidDropdown();
@@ -523,8 +578,8 @@
 
   function resetThemeColor() {
     removeBackground();
-    document.body.style.backgroundColor = '#ffffff';
-    document.getElementById('themeColorPicker').value = '#ffffff';
+    document.body.style.backgroundColor = '#f8fafc';
+    document.getElementById('themeColorPicker').value = '#f8fafc';
     localStorage.removeItem('cristyThemeColor');
   }
 
@@ -605,7 +660,7 @@
     prices.forEach(p => {
       container.innerHTML += `
         <div class="price-item">
-          <div><strong>${p.name}</strong> - <span style="color:var(--accent-green)">₱${p.price.toFixed(2)}</span></div>
+          <div><strong>${p.name}</strong><br><span style="color:var(--accent-green); font-weight:600;">₱${p.price.toFixed(2)}</span></div>
           <button class="btn-del" onclick="deletePriceItem(${p.id})">Bura</button>
         </div>
       `;
@@ -677,7 +732,7 @@
     const enteredPin = prompt("🔒 Ilagay ang Admin PIN para mai-void ang transaksyong ito:");
     if (enteredPin === null) return;
 
-    if (enteredPin === getAdminPin()) {
+    if (enteredPin === currentAdminPin) {
       if (confirm("Sigurado ka bang gusto mong i-void/burahin ang transaksyong ito?")) {
         executeVoid(selectedKey);
       }
@@ -720,7 +775,7 @@
   function toggleSeeMore() {
     showAllTransactions = !showAllTransactions;
     const btn = document.getElementById('seeMoreBtn');
-    btn.textContent = showAllTransactions ? "👆 Itago ang Iba Pa" : "👇 Tingnan ang Lahat ng Transaksyon";
+    btn.textContent = showAllTransactions ? "👆 Itago ang Iba Pa" : "👇 Tingnan ang Lahat";
     renderSalesTable();
   }
 
@@ -760,7 +815,7 @@
     tbody.innerHTML = '';
 
     if (allSalesData.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #64748b; padding: 15px;">Wala pang naitatalang benta.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--text-sub); padding: 20px;">Wala pang naitatalang benta.</td></tr>`;
       seeMoreArea.style.display = 'none';
       return;
     }
@@ -770,9 +825,9 @@
     displayList.forEach(item => {
       tbody.innerHTML += `
         <tr>
-          <td>${item.date}</td>
+          <td style="color: var(--text-sub); font-size: 12px;">${item.date}</td>
           <td>${item.type}</td>
-          <td style="font-weight: bold; color: var(--accent-green);">₱${item.price.toFixed(2)}</td>
+          <td style="font-weight: 700; color: var(--accent-green);">₱${item.price.toFixed(2)}</td>
         </tr>
       `;
     });
@@ -788,17 +843,27 @@
     const db = getFirebaseDB();
     if (!db) return;
 
+    // Wallpaper listener
     db.ref('settings/wallpaper').on('value', (snapshot) => {
       const bg = snapshot.val();
       if (bg) document.body.style.backgroundImage = `url('${bg}')`;
     });
 
+    // Logo listener
     db.ref('settings/logo').on('value', (snapshot) => {
       const logo = snapshot.val();
       const logoElem = document.getElementById('shopLogo');
       if (logo && logoElem) {
         logoElem.src = logo;
         logoElem.style.display = 'block';
+      }
+    });
+
+    // Admin PIN listener
+    db.ref('settings/adminPin').on('value', (snapshot) => {
+      const pin = snapshot.val();
+      if (pin) {
+        currentAdminPin = pin;
       }
     });
   }
@@ -813,6 +878,12 @@
       const logoElem = document.getElementById('shopLogo');
       logoElem.src = savedLogo;
       logoElem.style.display = 'block';
+    }
+
+    const savedColor = localStorage.getItem('cristyThemeColor');
+    if (savedColor) {
+      document.body.style.backgroundColor = savedColor;
+      document.getElementById('themeColorPicker').value = savedColor;
     }
 
     loadPriceManager();
