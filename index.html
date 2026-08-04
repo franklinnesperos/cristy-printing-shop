@@ -317,8 +317,9 @@
 <script>
   document.getElementById('entryDate').valueAsDate = new Date();
 
-  // DEFAULT PRICELIST MULA SA LARAWAN NG PRICELIST
+  // KUMPLETONG LISTAHAN NG LAHAT NG MGA PRESLIST MULA SA IN-UPLOAD MONG LARAWAN
   const defaultPrices = [
+    // XEROX SECTION
     { id: 1, name: '📄 Xerox - Text Only Black (Short/A4)', price: 3.00 },
     { id: 2, name: '📄 Xerox - Text Only Black (Long)', price: 4.00 },
     { id: 3, name: '📄 Xerox - Text Only Colored (Short/A4)', price: 5.00 },
@@ -327,24 +328,32 @@
     { id: 6, name: '🖼️ Xerox - Image B&W Half Page (Long)', price: 6.00 },
     { id: 7, name: '🖼️ Xerox - Image B&W Full Page (Short/A4)', price: 7.00 },
     { id: 8, name: '🖼️ Xerox - Image B&W Full Page (Long)', price: 8.00 },
-    { id: 9, name: '🖼️ Xerox - Image Colored Half Page (Short/A4)', price: 8.00 },
-    { id: 10, name: '🖼️ Xerox - Image Colored Full Page (Short/A4)', price: 10.00 },
-    { id: 11, name: '🖨️ Print - Text Only Black (Short/A4)', price: 4.00 },
-    { id: 12, name: '🖨️ Print - Text Only Black (Long)', price: 6.00 },
-    { id: 13, name: '🖨️ Print - Text Only Colored (Short/A4)', price: 6.00 },
-    { id: 14, name: '🖨️ Print - Text Only Colored (Long)', price: 8.00 },
-    { id: 15, name: '🖨️ Print - Image B&W Half Page (Short/A4)', price: 6.00 },
-    { id: 16, name: '🖨️ Print - Image B&W Half Page (Long)', price: 8.00 },
-    { id: 17, name: '🖨️ Print - Image B&W Full Page (Short/A4)', price: 8.00 },
-    { id: 18, name: '🖨️ Print - Image B&W Full Page (Long)', price: 10.00 },
-    { id: 19, name: '🖨️ Print - Image Colored Half Page (Short/A4)', price: 10.00 },
-    { id: 20, name: '🖨️ Print - Image Colored Half Page (Long)', price: 12.00 },
-    { id: 21, name: '🖨️ Print - Image Colored Full Page (Short/A4)', price: 15.00 },
-    { id: 22, name: '🖨️ Print - Image Colored Full Page (Long)', price: 16.00 },
-    { id: 23, name: '🏷️ Sticker (Per Page)', price: 60.00 },
-    { id: 24, name: '✨ Laminate - ID Size', price: 15.00 },
-    { id: 25, name: '✨ Laminate - A5 Size', price: 25.00 },
-    { id: 26, name: '✨ Laminate - A4 Size', price: 40.00 }
+    { id: 9, name: '🎨 Xerox - Image Colored Half Page (Short/A4)', price: 8.00 },
+    { id: 10, name: '🎨 Xerox - Image Colored Half Page (Long)', price: 10.00 },
+    { id: 11, name: '🎨 Xerox - Image Colored Full Page (Short/A4)', price: 10.00 },
+    { id: 12, name: '🎨 Xerox - Image Colored Full Page (Long)', price: 12.00 },
+
+    // PRINT SECTION
+    { id: 13, name: '🖨️ Print - Text Only Black (Short/A4)', price: 4.00 },
+    { id: 14, name: '🖨️ Print - Text Only Black (Long)', price: 6.00 },
+    { id: 15, name: '🖨️ Print - Text Only Colored (Short/A4)', price: 6.00 },
+    { id: 16, name: '🖨️ Print - Text Only Colored (Long)', price: 8.00 },
+    { id: 17, name: '🖨️ Print - Image B&W Half Page (Short/A4)', price: 6.00 },
+    { id: 18, name: '🖨️ Print - Image B&W Half Page (Long)', price: 8.00 },
+    { id: 19, name: '🖨️ Print - Image B&W Full Page (Short/A4)', price: 8.00 },
+    { id: 20, name: '🖨️ Print - Image B&W Full Page (Long)', price: 10.00 },
+    { id: 21, name: '🖨️ Print - Image Colored Half Page (Short/A4)', price: 10.00 },
+    { id: 22, name: '🖨️ Print - Image Colored Half Page (Long)', price: 12.00 },
+    { id: 23, name: '🖨️ Print - Image Colored Full Page (Short/A4)', price: 15.00 },
+    { id: 24, name: '🖨️ Print - Image Colored Full Page (Long)', price: 16.00 },
+
+    // STICKER SECTION
+    { id: 25, name: '🏷️ Sticker (Per Page)', price: 60.00 },
+
+    // LAMINATE SECTION
+    { id: 26, name: '✨ Laminate - ID Size', price: 15.00 },
+    { id: 27, name: '✨ Laminate - A5 Size', price: 25.00 },
+    { id: 28, name: '✨ Laminate - A4 Size', price: 40.00 }
   ];
 
   function getDbUrl() {
@@ -590,7 +599,7 @@
     populateDropdown();
     loadSales();
     
-    // Auto refresh sales every 5 seconds para live update sa ibang phone
+    // Auto refresh sales every 5 seconds para mag-update sa ibang mobile/PC real-time
     setInterval(loadSales, 5000);
   });
 </script>
