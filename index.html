@@ -7,7 +7,7 @@
   <style>
     :root {
       --bg: #0f172a;
-      --card-bg: rgba(30, 41, 59, 0.90); /* Transparent kaunti para litaw ang background picture */
+      --card-bg: rgba(30, 41, 59, 0.90);
       --accent-green: #10b981;
       --accent-blue: #3b82f6;
       --text: #f8fafc;
@@ -34,6 +34,7 @@
       margin: auto;
     }
 
+    /* Header Design na may Logo */
     .header-card {
       background: linear-gradient(135deg, rgba(30, 58, 138, 0.9) 0%, rgba(59, 130, 246, 0.9) 100%);
       padding: 20px;
@@ -42,6 +43,21 @@
       margin-bottom: 15px;
       backdrop-filter: blur(5px);
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .shop-logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #ffffff;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      margin-bottom: 10px;
+      display: none;
     }
 
     .header-card h1 { margin: 0; font-size: 22px; text-transform: uppercase; }
@@ -53,7 +69,7 @@
       border-radius: 12px;
       border: 1px solid var(--border);
       margin-bottom: 15px;
-      backdrop-filter: blur(8px); /* Blur effect sa likod ng card para madaling basahin ang text */
+      backdrop-filter: blur(8px);
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
     }
 
@@ -93,21 +109,20 @@
       cursor: pointer;
     }
 
-    .btn-add {
-      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-    }
+    .btn-add { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); }
 
     .btn-del {
       background: #ef4444;
       color: white;
       border: none;
-      padding: 5px 10px;
+      padding: 5px 8px;
       border-radius: 4px;
       cursor: pointer;
       font-size: 12px;
+      font-weight: bold;
     }
 
-    .btn-reset-bg {
+    .btn-sec {
       background: #64748b;
       color: white;
       border: none;
@@ -115,8 +130,21 @@
       border-radius: 6px;
       cursor: pointer;
       font-size: 12px;
-      margin-top: 8px;
+      margin-top: 6px;
       width: 100%;
+    }
+
+    .btn-clear-all {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid #ef4444;
+      color: #fca5a5;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      width: 100%;
+      margin-top: 10px;
+      font-weight: bold;
     }
 
     .price-item {
@@ -145,26 +173,37 @@
 
     table { width: 100%; border-collapse: collapse; text-align: left; }
     th { background: rgba(51, 65, 85, 0.9); padding: 10px; font-size: 12px; color: var(--text-sub); }
-    td { padding: 10px; border-bottom: 1px solid var(--border); font-size: 14px; }
+    td { padding: 10px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
   </style>
 </head>
 <body>
 
 <div class="container">
   
+  <!-- Header Card na may Logo Image -->
   <div class="header-card">
+    <img id="displayLogo" class="shop-logo" alt="Shop Logo">
     <h1>🖨️ Cristy Printing Shop</h1>
     <p>Sales Tracker & Price Manager</p>
   </div>
 
-  <!-- SEKSYON 0: Background Picture Customizer -->
+  <!-- SEKSYON: Customization (Logo & Background) -->
   <div class="card">
-    <h2>🖼️ Palitan ang Background Picture</h2>
+    <h2>🎨 Design & Customization</h2>
+    
     <div class="form-group">
-      <label for="bgUploader">Pumili ng Larawan sa Phone/Computer:</label>
-      <input type="file" id="bgUploader" accept="image/*" onchange="changeBackground(event)">
+      <label for="logoUploader">Mag-upload ng Shop Logo:</label>
+      <input type="file" id="logoUploader" accept="image/*" onchange="changeLogo(event)">
+      <button class="btn-sec" onclick="removeLogo()">Tanggalin ang Logo</button>
     </div>
-    <button class="btn-reset-bg" onclick="removeBackground()">Tanggalin ang Background Picture</button>
+
+    <hr style="border: 0; border-top: 1px solid var(--border); margin: 15px 0;">
+
+    <div class="form-group">
+      <label for="bgUploader">Palitan ang Background Picture:</label>
+      <input type="file" id="bgUploader" accept="image/*" onchange="changeBackground(event)">
+      <button class="btn-sec" onclick="removeBackground()">Tanggalin ang Background</button>
+    </div>
   </div>
 
   <!-- SEKSYON 1: Pag-add & Edit ng Presyo -->
@@ -186,7 +225,7 @@
     <div id="priceListContainer"></div>
   </div>
 
-  <!-- SEKSYON 2: Encoding ng Araw-araw na Benta -->
+  <!-- SEKSYON 2: Encoding ng Benta -->
   <div class="card">
     <h2>📊 Mag-encode ng Benta</h2>
     <div class="form-group">
@@ -207,7 +246,7 @@
     <button class="btn-save" onclick="addSaleRecord()">+ Record Benta</button>
   </div>
 
-  <!-- Total Benta Display -->
+  <!-- Total Benta -->
   <div class="total-card">
     <span class="total-title">KABUUMANG BENTA</span>
     <span class="total-amount" id="totalAmount">₱0.00</span>
@@ -221,16 +260,53 @@
           <th>Petsa</th>
           <th>Service</th>
           <th>Presyo</th>
+          <th style="text-align: center;">Aksyon</th>
         </tr>
       </thead>
       <tbody id="salesTableBody"></tbody>
     </table>
+    <div style="padding: 10px;">
+      <button class="btn-clear-all" onclick="clearAllSales()">🗑️ Bura Lahat ng Sales Record</button>
+    </div>
   </div>
 
 </div>
 
 <script>
   document.getElementById('entryDate').valueAsDate = new Date();
+
+  // ----- LOGIC PARA SA LOGO -----
+  function changeLogo(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const logoData = e.target.result;
+        const img = document.getElementById('displayLogo');
+        img.src = logoData;
+        img.style.display = 'block';
+        localStorage.setItem('cristyShopLogo', logoData);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function removeLogo() {
+    const img = document.getElementById('displayLogo');
+    img.src = '';
+    img.style.display = 'none';
+    localStorage.removeItem('cristyShopLogo');
+    document.getElementById('logoUploader').value = '';
+  }
+
+  function loadSavedLogo() {
+    const savedLogo = localStorage.getItem('cristyShopLogo');
+    if (savedLogo) {
+      const img = document.getElementById('displayLogo');
+      img.src = savedLogo;
+      img.style.display = 'block';
+    }
+  }
 
   // ----- LOGIC PARA SA BACKGROUND IMAGE -----
   function changeBackground(event) {
@@ -331,7 +407,7 @@
     }
   }
 
-  // ----- LOGIC PARA SA SALES LOG -----
+  // ----- LOGIC PARA SA SALES LOG & VOID/DELETE -----
   function getSales() {
     return JSON.parse(localStorage.getItem('cristyPrintingSales')) || [];
   }
@@ -347,10 +423,27 @@
     }
 
     const sales = getSales();
-    sales.push({ date, type, price });
+    // Lalagyan natin ng natatanging ID ang bawat benta para sa madaling pagbura
+    sales.push({ id: Date.now(), date, type, price });
     localStorage.setItem('cristyPrintingSales', JSON.stringify(sales));
 
     loadSales();
+  }
+
+  function deleteSaleRecord(id) {
+    if (confirm("Sigurado ka bang gusto mong i-void / burahin ang benta na ito?")) {
+      let sales = getSales();
+      sales = sales.filter(item => item.id !== id);
+      localStorage.setItem('cristyPrintingSales', JSON.stringify(sales));
+      loadSales();
+    }
+  }
+
+  function clearAllSales() {
+    if (confirm("⚠️ BABALA: Sigurado ka bang gusto mong burahin ang LAHAT ng naitalang benta? Hindi na ito mababawi.")) {
+      localStorage.removeItem('cristyPrintingSales');
+      loadSales();
+    }
   }
 
   function loadSales() {
@@ -360,7 +453,7 @@
     let total = 0;
 
     if (sales.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #cbd5e1; padding: 15px;">Wala pang naitatalang benta.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #cbd5e1; padding: 15px;">Wala pang naitatalang benta.</td></tr>`;
       document.getElementById('totalAmount').innerText = '₱0.00';
       return;
     }
@@ -372,6 +465,9 @@
           <td>${item.date}</td>
           <td>${item.type}</td>
           <td style="font-weight: bold; color: var(--accent-green);">₱${item.price.toFixed(2)}</td>
+          <td style="text-align: center;">
+            <button class="btn-del" onclick="deleteSaleRecord(${item.id})">Void</button>
+          </td>
         </tr>
       `;
     });
@@ -381,6 +477,7 @@
 
   // Initial Load
   document.addEventListener('DOMContentLoaded', () => {
+    loadSavedLogo();
     loadSavedBackground();
     loadPriceManager();
     populateDropdown();
