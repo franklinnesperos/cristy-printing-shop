@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cristy Printing Shop - Manager</title>
+  
+  <!-- Firebase App & Realtime Database CDN -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
   <style>
     :root {
       --bg: #ffffff;
@@ -134,8 +139,8 @@
       background: #ef4444;
       color: white;
       border: none;
-      padding: 5px 8px;
-      border-radius: 4px;
+      padding: 6px 12px;
+      border-radius: 6px;
       cursor: pointer;
       font-size: 12px;
       font-weight: bold;
@@ -239,7 +244,7 @@
   
   <div class="nav-header">
     <div class="shop-title-area">
-      <img id="displayLogo" class="shop-logo" alt="Shop Logo">
+      <img id="shopLogo" class="shop-logo" alt="Shop Logo">
       <h1 class="shop-name">🖨️ Cristy Printing</h1>
     </div>
     <button class="settings-btn" onclick="openSettings()">⚙️</button>
@@ -283,7 +288,6 @@
           <th>Petsa</th>
           <th>Service</th>
           <th>Presyo</th>
-          <th style="text-align: center;">Aksyon</th>
         </tr>
       </thead>
       <tbody id="salesTableBody"></tbody>
@@ -304,10 +308,31 @@
       <button class="close-btn" onclick="closeSettings()">✕</button>
     </div>
 
+    <!-- SECURITY PIN SETTINGS -->
+    <div class="form-group" style="background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+      <label>🔒 Admin PIN Security (Para sa pag-void):</label>
+      <div style="display: flex; gap: 8px;">
+        <input type="password" id="adminPinInput" placeholder="Ilagay ang 4-digit PIN" maxlength="6" style="letter-spacing: 2px;">
+        <button class="btn-sec" style="margin: 0; width: auto; background: #059669;" onclick="saveAdminPin()">I-save ang PIN</button>
+      </div>
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
+
+    <!-- VOID TRANSACTION MANAGEMENT (Nasa loob na ng Settings) -->
+    <div class="form-group">
+      <label>🗑️ Pamamahala ng Void / Bura ng Benta:</label>
+      <p style="font-size: 11px; color: #64748b; margin-top: -2px; margin-bottom: 8px;">Pumili ng transaksyon na tatanggalin. Hihingi ito ng Admin PIN.</p>
+      <select id="voidSelectDropdown" style="margin-bottom: 8px;"></select>
+      <button class="btn-del" style="width: 100%; padding: 10px; font-size: 14px;" onclick="promptAndVoidSale()">⚠️ I-void / Burahin ang Napiling Benta</button>
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
+
     <!-- THEME COLOR & WALLPAPER PICKER -->
     <div class="form-group">
       <label>🖼️ Custom Wallpaper Image (Synced):</label>
-      <input type="file" id="bgUploader" accept="image/*" onchange="changeBackground(event)">
+      <input type="file" id="bgUploader" accept="image/*" onchange="handleWallpaperUpload(this)">
       <button class="btn-sec" style="background: #ef4444; margin-top: 6px;" onclick="removeBackground()">Tanggalin ang Wallpaper</button>
     </div>
 
@@ -324,7 +349,7 @@
     <!-- SHOP LOGO UPLOADER -->
     <div class="form-group">
       <label>👤 Palitan ang Logo ng Shop (Synced):</label>
-      <input type="file" id="logoUploader" accept="image/*" onchange="changeLogo(event)">
+      <input type="file" id="logoUploader" accept="image/*" onchange="handleLogoUpload(this)">
       <button class="btn-sec" style="background: #ef4444; margin-top: 6px;" onclick="removeLogo()">Tanggalin ang Logo</button>
     </div>
 
@@ -390,65 +415,84 @@
     { id: 28, name: '✨ Laminate - A4 Size', price: 40.00 }
   ];
 
-  function getDbUrl() {
-    return localStorage.getItem('cristyFirebaseUrl') || '';
+  function getFirebaseDB() {
+    const dbUrl = localStorage.getItem('cristyFirebaseUrl');
+    if (!dbUrl) return null;
+    if (!firebase.apps.length) {
+      firebase.initializeApp({ databaseURL: dbUrl });
+    }
+    return firebase.database();
   }
 
-  // COMPRESS IMAGE TO PREVENT DB OVERLOAD
-  function compressImage(file, maxWidth, quality, callback) {
-    const reader = new FileReader();
-    reader.onload = function(evt) {
-      const img = new Image();
-      img.onload = function() {
-        const canvas = document.createElement('canvas');
-        let width = img.width;
-        let height = img.height;
+  // ADMIN PIN LOGIC
+  function saveAdminPin() {
+    const pin = document.getElementById('adminPinInput').value.trim();
+    if (!pin) return alert("Maglagay ng bisa o PIN number!");
+    localStorage.setItem('cristyAdminPin', pin);
+    alert("✅ Tagumpay na na-save ang Admin PIN!");
+    document.getElementById('adminPinInput').value = '';
+  }
 
-        if (width > maxWidth) {
-          height = Math.round((height * maxWidth) / width);
-          width = maxWidth;
+  function getAdminPin() {
+    return localStorage.getItem('cristyAdminPin') || '1234'; // Default PIN: 1234
+  }
+
+  // IMAGE COMPRESSION & SYNC
+  function compressAndUploadImage(file, firebasePath, callback) {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target.result;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 800;
+        const scaleFactor = MAX_WIDTH / img.width;
+        
+        if (img.width > MAX_WIDTH) {
+          canvas.width = MAX_WIDTH;
+          canvas.height = img.height * scaleFactor;
+        } else {
+          canvas.width = img.width;
+          canvas.height = img.height;
         }
 
-        canvas.width = width;
-        canvas.height = height;
         const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, width, height);
-        callback(canvas.toDataURL('image/jpeg', quality));
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+
+        const db = getFirebaseDB();
+        if (db) {
+          db.ref(firebasePath).set(compressedBase64, (error) => {
+            if (error) {
+              alert('Upload failed: ' + error.message);
+            } else if (callback) {
+              callback(compressedBase64);
+            }
+          });
+        } else {
+          localStorage.setItem(firebasePath === 'settings/wallpaper' ? 'cristyCustomBg' : 'cristyShopLogo', compressedBase64);
+          if (callback) callback(compressedBase64);
+        }
       };
-      img.src = evt.target.result;
     };
-    reader.readAsDataURL(file);
   }
 
-  // SYNC WALLPAPER TO FIREBASE
-  async function changeBackground(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    compressImage(file, 800, 0.6, async function(compressedUrl) {
-      document.body.style.backgroundImage = `url('${compressedUrl}')`;
-      localStorage.setItem('cristyCustomBg', compressedUrl);
-
-      const dbUrl = getDbUrl();
-      if (dbUrl) {
-        await fetch(`${dbUrl}settings/wallpaper.json`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(compressedUrl)
-        });
-      }
-    });
+  function handleWallpaperUpload(input) {
+    const file = input.files[0];
+    if (file) {
+      compressAndUploadImage(file, 'settings/wallpaper', (url) => {
+        document.body.style.backgroundImage = `url('${url}')`;
+      });
+    }
   }
 
   async function removeBackground() {
     document.body.style.backgroundImage = 'none';
     localStorage.removeItem('cristyCustomBg');
     document.getElementById('bgUploader').value = '';
-
-    const dbUrl = getDbUrl();
-    if (dbUrl) {
-      await fetch(`${dbUrl}settings/wallpaper.json`, { method: 'DELETE' });
-    }
+    const db = getFirebaseDB();
+    if (db) db.ref('settings/wallpaper').remove();
   }
 
   function changeThemeColor(color) {
@@ -459,95 +503,30 @@
 
   function resetThemeColor() {
     removeBackground();
-    const defaultColor = '#ffffff';
-    document.body.style.backgroundColor = defaultColor;
-    document.getElementById('themeColorPicker').value = defaultColor;
+    document.body.style.backgroundColor = '#ffffff';
+    document.getElementById('themeColorPicker').value = '#ffffff';
     localStorage.removeItem('cristyThemeColor');
   }
 
-  async function syncSettingsFromFirebase() {
-    const dbUrl = getDbUrl();
-    if (!dbUrl) {
-      loadSavedBackgroundAndTheme();
-      loadSavedLogo();
-      return;
+  function handleLogoUpload(input) {
+    const file = input.files[0];
+    if (file) {
+      compressAndUploadImage(file, 'settings/logo', (url) => {
+        const logoElem = document.getElementById('shopLogo');
+        logoElem.src = url;
+        logoElem.style.display = 'block';
+      });
     }
-
-    try {
-      // Sync Wallpaper
-      const bgRes = await fetch(`${dbUrl}settings/wallpaper.json`);
-      const bgData = await bgRes.json();
-      if (bgData) {
-        document.body.style.backgroundImage = `url('${bgData}')`;
-        localStorage.setItem('cristyCustomBg', bgData);
-      } else {
-        loadSavedBackgroundAndTheme();
-      }
-
-      // Sync Logo
-      const logoRes = await fetch(`${dbUrl}settings/logo.json`);
-      const logoData = await logoRes.json();
-      if (logoData) {
-        document.getElementById('displayLogo').src = logoData;
-        document.getElementById('displayLogo').style.display = 'block';
-        localStorage.setItem('cristyShopLogo', logoData);
-      } else {
-        loadSavedLogo();
-      }
-    } catch(e) {
-      console.error("Settings Sync Error:", e);
-    }
-  }
-
-  function loadSavedBackgroundAndTheme() {
-    const savedBg = localStorage.getItem('cristyCustomBg');
-    if (savedBg) {
-      document.body.style.backgroundImage = `url('${savedBg}')`;
-    } else {
-      const savedColor = localStorage.getItem('cristyThemeColor') || '#ffffff';
-      document.body.style.backgroundColor = savedColor;
-      document.getElementById('themeColorPicker').value = savedColor;
-    }
-  }
-
-  // SYNC LOGO TO FIREBASE
-  async function changeLogo(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    compressImage(file, 250, 0.7, async function(compressedUrl) {
-      document.getElementById('displayLogo').src = compressedUrl;
-      document.getElementById('displayLogo').style.display = 'block';
-      localStorage.setItem('cristyShopLogo', compressedUrl);
-
-      const dbUrl = getDbUrl();
-      if (dbUrl) {
-        await fetch(`${dbUrl}settings/logo.json`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(compressedUrl)
-        });
-      }
-    });
   }
 
   async function removeLogo() {
-    document.getElementById('displayLogo').style.display = 'none';
+    const logoElem = document.getElementById('shopLogo');
+    logoElem.style.display = 'none';
+    logoElem.src = '';
     localStorage.removeItem('cristyShopLogo');
     document.getElementById('logoUploader').value = '';
-
-    const dbUrl = getDbUrl();
-    if (dbUrl) {
-      await fetch(`${dbUrl}settings/logo.json`, { method: 'DELETE' });
-    }
-  }
-
-  function loadSavedLogo() {
-    const savedLogo = localStorage.getItem('cristyShopLogo');
-    if (savedLogo) {
-      document.getElementById('displayLogo').src = savedLogo;
-      document.getElementById('displayLogo').style.display = 'block';
-    }
+    const db = getFirebaseDB();
+    if (db) db.ref('settings/logo').remove();
   }
 
   function saveFirebaseUrl() {
@@ -555,20 +534,21 @@
     if (url && !url.endsWith('/')) url += '/';
     localStorage.setItem('cristyFirebaseUrl', url);
     alert('Na-save na ang Firebase URL!');
-    syncSettingsFromFirebase();
+    listenToFirebaseAll();
     loadSales();
   }
 
   function openSettings() {
-    document.getElementById('firebaseUrlInput').value = getDbUrl();
+    document.getElementById('firebaseUrlInput').value = localStorage.getItem('cristyFirebaseUrl') || '';
     document.getElementById('settingsModal').style.display = 'flex';
+    populateVoidDropdown();
   }
 
   function closeSettings() {
     document.getElementById('settingsModal').style.display = 'none';
   }
 
-  // PRICELIST MANAGEMENT
+  // PRICELIST
   function getCustomPrices() {
     const saved = localStorage.getItem('cristyCustomPrices');
     if (!saved || JSON.parse(saved).length === 0) {
@@ -642,9 +622,7 @@
     const qtyInput = document.getElementById('itemQty');
     let qty = parseInt(qtyInput.value);
 
-    if (isNaN(qty) || qty < 1) {
-      qty = 1;
-    }
+    if (isNaN(qty) || qty < 1) qty = 1;
 
     if (selected) {
       const unitPrice = parseFloat(selected.getAttribute('data-price')) || 0;
@@ -652,7 +630,7 @@
     }
   }
 
-  // BENTA LOGIC WITH QUANTITY & LIMIT 7
+  // SALES RECORD LOGIC
   async function addSaleRecord() {
     const date = document.getElementById('entryDate').value;
     const baseType = document.getElementById('serviceDropdown').value;
@@ -662,40 +640,71 @@
     if (!date || isNaN(price) || price <= 0) return alert("Lagyan ng tamang halaga!");
 
     const type = qty > 1 ? `${baseType} (x${qty})` : baseType;
-
     const newSale = { date, type, price, timestamp: Date.now() };
-    const dbUrl = getDbUrl();
+    const db = getFirebaseDB();
 
-    if (dbUrl) {
-      await fetch(`${dbUrl}sales.json`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newSale)
-      });
+    if (db) {
+      db.ref('sales').push(newSale);
     } else {
       let sales = JSON.parse(localStorage.getItem('cristyPrintingSales')) || [];
-      sales.push({ id: Date.now(), ...newSale });
+      sales.push({ keyId: 'local_' + Date.now(), ...newSale });
       localStorage.setItem('cristyPrintingSales', JSON.stringify(sales));
     }
 
     document.getElementById('itemQty').value = 1;
     calculateSubtotal();
     loadSales();
+    alert("✅ Tagumpay na naitala ang benta!");
   }
 
-  async function deleteSaleRecord(keyOrId) {
-    if (!confirm("Sigurado ka bang i-vovoid ang benta na ito?")) return;
+  // SECURE VOID FUNCTION VIA SETTINGS
+  function promptAndVoidSale() {
+    const dropdown = document.getElementById('voidSelectDropdown');
+    const selectedKey = dropdown.value;
 
-    const dbUrl = getDbUrl();
-    if (dbUrl) {
-      await fetch(`${dbUrl}sales/${keyOrId}.json`, { method: 'DELETE' });
+    if (!selectedKey) return alert("Walang napiling transaksyon na ili-void!");
+
+    const enteredPin = prompt("🔒 Ilagay ang Admin PIN para mai-void ang transaksyong ito:");
+    if (enteredPin === null) return; // I-cancel
+
+    if (enteredPin === getAdminPin()) {
+      if (confirm("Sigurado ka bang gusto mong i-void/burahin ang transaksyong ito?")) {
+        executeVoid(selectedKey);
+      }
+    } else {
+      alert("❌ Maling PIN! Hindi pwedeng i-void ang transaksyon.");
+    }
+  }
+
+  async function executeVoid(keyId) {
+    const db = getFirebaseDB();
+    if (db && !keyId.startsWith('local_')) {
+      await db.ref('sales/' + keyId).remove();
     } else {
       let sales = JSON.parse(localStorage.getItem('cristyPrintingSales')) || [];
-      sales = sales.filter(item => item.id !== keyOrId);
+      sales = sales.filter(item => item.keyId !== keyId);
       localStorage.setItem('cristyPrintingSales', JSON.stringify(sales));
     }
-
+    alert("🗑️ Tagumpay na na-void ang transaksyon.");
     loadSales();
+    populateVoidDropdown();
+  }
+
+  function populateVoidDropdown() {
+    const dropdown = document.getElementById('voidSelectDropdown');
+    dropdown.innerHTML = '';
+
+    if (allSalesData.length === 0) {
+      dropdown.innerHTML = `<option value="">Walang transaksyon na magagamit</option>`;
+      return;
+    }
+
+    allSalesData.forEach(item => {
+      const opt = document.createElement('option');
+      opt.value = item.keyId;
+      opt.textContent = `[${item.date}] ${item.type} - ₱${item.price.toFixed(2)}`;
+      dropdown.appendChild(opt);
+    });
   }
 
   function toggleSeeMore() {
@@ -705,33 +714,34 @@
     renderSalesTable();
   }
 
-  async function loadSales() {
-    const dbUrl = getDbUrl();
-    allSalesData = [];
-    let total = 0;
-
-    if (dbUrl) {
-      try {
-        const res = await fetch(`${dbUrl}sales.json`);
-        const data = await res.json();
+  function loadSales() {
+    const db = getFirebaseDB();
+    if (db) {
+      db.ref('sales').on('value', (snapshot) => {
+        const data = snapshot.val();
+        allSalesData = [];
         if (data) {
           Object.keys(data).forEach(key => {
             allSalesData.push({ keyId: key, ...data[key] });
           });
         }
-      } catch(e) {
-        console.error("Sync error:", e);
-      }
+        processSalesData();
+      });
     } else {
       allSalesData = JSON.parse(localStorage.getItem('cristyPrintingSales')) || [];
+      processSalesData();
     }
+  }
 
+  function processSalesData() {
     allSalesData.sort((a, b) => b.timestamp - a.timestamp);
-    
+    let total = 0;
     allSalesData.forEach(item => total += item.price);
     document.getElementById('totalAmount').innerText = `₱${total.toFixed(2)}`;
-
     renderSalesTable();
+    if (document.getElementById('settingsModal').style.display === 'flex') {
+      populateVoidDropdown();
+    }
   }
 
   function renderSalesTable() {
@@ -740,7 +750,7 @@
     tbody.innerHTML = '';
 
     if (allSalesData.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #64748b; padding: 15px;">Wala pang naitatalang benta.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #64748b; padding: 15px;">Wala pang naitatalang benta.</td></tr>`;
       seeMoreArea.style.display = 'none';
       return;
     }
@@ -748,15 +758,11 @@
     const displayList = showAllTransactions ? allSalesData : allSalesData.slice(0, 7);
 
     displayList.forEach(item => {
-      const identifier = item.keyId !== undefined ? `'${item.keyId}'` : item.id;
       tbody.innerHTML += `
         <tr>
           <td>${item.date}</td>
           <td>${item.type}</td>
           <td style="font-weight: bold; color: var(--accent-green);">₱${item.price.toFixed(2)}</td>
-          <td style="text-align: center;">
-            <button class="btn-del" onclick="deleteSaleRecord(${identifier})">Void</button>
-          </td>
         </tr>
       `;
     });
@@ -768,18 +774,41 @@
     }
   }
 
+  function listenToFirebaseAll() {
+    const db = getFirebaseDB();
+    if (!db) return;
+
+    db.ref('settings/wallpaper').on('value', (snapshot) => {
+      const bg = snapshot.val();
+      if (bg) document.body.style.backgroundImage = `url('${bg}')`;
+    });
+
+    db.ref('settings/logo').on('value', (snapshot) => {
+      const logo = snapshot.val();
+      const logoElem = document.getElementById('shopLogo');
+      if (logo && logoElem) {
+        logoElem.src = logo;
+        logoElem.style.display = 'block';
+      }
+    });
+  }
+
   // INITIAL LOAD
   window.onload = function() {
-    syncSettingsFromFirebase();
+    const savedBg = localStorage.getItem('cristyCustomBg');
+    if (savedBg) document.body.style.backgroundImage = `url('${savedBg}')`;
+
+    const savedLogo = localStorage.getItem('cristyShopLogo');
+    if (savedLogo) {
+      const logoElem = document.getElementById('shopLogo');
+      logoElem.src = savedLogo;
+      logoElem.style.display = 'block';
+    }
+
     loadPriceManager();
     populateDropdown();
     loadSales();
-    
-    // Auto sync background/logo and sales every 5 seconds
-    setInterval(() => {
-      loadSales();
-      syncSettingsFromFirebase();
-    }, 5000);
+    listenToFirebaseAll();
   };
 </script>
 
