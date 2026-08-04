@@ -13,12 +13,12 @@
     :root {
       --egov-blue: #0038A8;      /* Official PH Blue */
       --egov-yellow: #FCD116;    /* PH Gold/Yellow accent */
-      --egov-bg: #F0F4F8;
+      --egov-bg: #F8FAFC;
       --card-bg: #ffffff;
       --text-main: #1E293B;
       --text-sub: #64748B;
       --border: #E2E8F0;
-      --shadow: 0 4px 12px rgba(0, 56, 168, 0.08);
+      --shadow: 0 4px 12px rgba(0, 56, 168, 0.06);
     }
 
     body {
@@ -32,16 +32,18 @@
       margin: 0;
       padding: 0;
       min-height: 100vh;
+      padding-bottom: 70px; /* Space para sa bottom nav */
     }
 
     /* eGovPH Header Style */
     .egov-header {
-      background: linear-gradient(135deg, var(--egov-blue) 0%, #002266 100%);
-      color: white;
-      padding: 20px 16px 25px 16px;
-      border-radius: 0 0 24px 24px;
-      box-shadow: 0 4px 15px rgba(0, 56, 168, 0.2);
-      margin-bottom: 16px;
+      background: #ffffff;
+      color: var(--text-main);
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 99;
     }
 
     .nav-header {
@@ -55,58 +57,222 @@
     .shop-title-area {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .shop-logo {
-      width: 50px;
-      height: 50px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid var(--egov-yellow);
+      border: 2px solid var(--egov-blue);
       display: none;
       background: white;
     }
 
-    .shop-name-container h1 {
-      font-size: 16px;
+    .logo-text-img {
+      height: 28px;
+      object-fit: contain;
+    }
+
+    .header-profile {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .profile-info {
+      text-align: right;
+    }
+
+    .profile-info .welcome {
+      font-size: 10px;
+      color: var(--text-sub);
+      font-weight: 600;
+    }
+
+    .profile-info .username {
+      font-size: 13px;
       font-weight: 800;
-      text-transform: uppercase;
-      margin: 0;
-      letter-spacing: 0.5px;
-      color: #ffffff;
+      color: var(--egov-blue);
     }
 
-    .shop-name-container p {
-      font-size: 11px;
-      margin: 2px 0 0 0;
-      color: #93c5fd;
-      font-weight: 500;
-    }
-
-    .settings-btn {
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: white;
-      font-size: 18px;
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      cursor: pointer;
+    .user-avatar-placeholder {
+      width: 36px;
+      height: 36px;
+      background: #cbd5e1;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.2s;
+      font-size: 16px;
+      overflow: hidden;
     }
 
-    .settings-btn:active {
-      background: rgba(255, 255, 255, 0.3);
+    .user-avatar-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Location & Date Sub-bar */
+    .sub-bar {
+      max-width: 480px;
+      margin: auto;
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-sub);
+      font-weight: 600;
     }
 
     .container {
       max-width: 480px;
       margin: auto;
-      padding: 0 14px 40px 14px;
+      padding: 0 14px 20px 14px;
+    }
+
+    /* Swipeable Banner Carousel */
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      margin-bottom: 14px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      background: #ffffff;
+      border: 1px solid var(--border);
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.3s ease-in-out;
+      width: 100%;
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      box-sizing: border-box;
+      background: linear-gradient(135deg, #0038A8 0%, #1e40af 100%);
+      color: white;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 130px;
+    }
+
+    .carousel-slide.alt-slide {
+      background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+    }
+
+    .carousel-slide h3 {
+      margin: 0 0 5px 0;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .carousel-slide p {
+      margin: 0;
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      position: absolute;
+      bottom: 8px;
+      width: 100%;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .dot.active {
+      width: 18px;
+      border-radius: 4px;
+      background: white;
+    }
+
+    /* Grid Layout for Weather and Quick Links */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    /* Weather Card Style */
+    .weather-card {
+      background: linear-gradient(135deg, #f0f9ff 100%, #e0f2fe 0%);
+      border: 1px solid #bae6fd;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+    }
+
+    .weather-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #0369a1;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .weather-body {
+      margin-top: 10px;
+    }
+
+    .weather-temp {
+      font-size: 26px;
+      font-weight: 800;
+      color: #0c4a6e;
+      line-height: 1;
+    }
+
+    .weather-loc {
+      font-size: 12px;
+      font-weight: 700;
+      color: #0369a1;
+      margin-top: 2px;
+    }
+
+    .weather-desc {
+      font-size: 10px;
+      color: #0284c7;
+      margin-top: 2px;
+    }
+
+    /* Action Widget Card (Right side of Weather) */
+    .action-mini-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .action-mini-card:active {
+      transform: scale(0.98);
     }
 
     /* eGov Card Style */
@@ -120,7 +286,7 @@
     }
 
     h2 { 
-      font-size: 14px; 
+      font-size: 13px; 
       margin-top: 0; 
       margin-bottom: 12px;
       color: var(--egov-blue); 
@@ -143,7 +309,7 @@
     label {
       display: block;
       margin-bottom: 5px;
-      font-size: 11px;
+      font-size: 10px;
       color: var(--text-sub);
       font-weight: 700;
       text-transform: uppercase;
@@ -157,7 +323,7 @@
       background: #f8fafc;
       color: var(--text-main);
       box-sizing: border-box;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
       outline: none;
       transition: all 0.2s;
@@ -171,30 +337,26 @@
 
     .btn-save {
       width: 100%;
-      padding: 13px;
+      padding: 12px;
       border-radius: 10px;
       border: none;
       background: var(--egov-blue);
       color: white;
       font-weight: 700;
-      font-size: 14px;
+      font-size: 13px;
       cursor: pointer;
       box-shadow: 0 4px 10px rgba(0, 56, 168, 0.2);
-      transition: opacity 0.2s;
     }
-
-    .btn-save:active { opacity: 0.9; }
 
     .btn-add { 
       background: #0d9488; 
-      box-shadow: 0 4px 10px rgba(13, 148, 136, 0.2);
     }
 
     .btn-del {
       background: #ef4444;
       color: white;
       border: none;
-      padding: 6px 12px;
+      padding: 6px 10px;
       border-radius: 8px;
       cursor: pointer;
       font-size: 11px;
@@ -208,7 +370,7 @@
       padding: 10px 14px;
       border-radius: 10px;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
       margin-top: 6px;
       width: 100%;
@@ -220,10 +382,10 @@
       align-items: center;
       padding: 10px 0;
       border-bottom: 1px solid var(--border);
-      font-size: 13px;
+      font-size: 12px;
     }
 
-    /* eGov Summary Banner */
+    /* Summary Banner */
     .total-card {
       background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%);
       padding: 16px 18px;
@@ -236,26 +398,69 @@
       box-shadow: var(--shadow);
     }
 
-    .total-title { color: var(--text-sub); font-size: 11px; font-weight: 700; text-transform: uppercase; }
-    .total-amount { font-size: 22px; font-weight: 800; color: var(--egov-blue); }
+    .total-title { color: var(--text-sub); font-size: 10px; font-weight: 700; text-transform: uppercase; }
+    .total-amount { font-size: 20px; font-weight: 800; color: var(--egov-blue); }
 
     .table-card { padding: 0; overflow: hidden; }
     table { width: 100%; border-collapse: collapse; text-align: left; }
     th { background: #f8fafc; padding: 10px 14px; font-size: 10px; text-transform: uppercase; color: var(--text-sub); font-weight: 700; border-bottom: 1px solid var(--border); }
-    td { padding: 11px 14px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
+    td { padding: 11px 14px; border-bottom: 1px solid var(--border); font-size: 12px; vertical-align: middle; }
 
-    .see-more-container {
-      text-align: center;
-      padding: 10px;
+    .see-more-container { text-align: center; padding: 10px; }
+    .btn-seemore { background: none; border: none; color: var(--egov-blue); font-weight: 700; cursor: pointer; font-size: 11px; }
+
+    /* Bottom Navigation Bar ala eGovPH */
+    .egov-bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0;
+      z-index: 100;
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.03);
     }
 
-    .btn-seemore {
-      background: none;
-      border: none;
-      color: var(--egov-blue);
-      font-weight: 700;
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: var(--text-sub);
+      font-size: 10px;
+      font-weight: 600;
+      gap: 3px;
       cursor: pointer;
-      font-size: 12px;
+    }
+
+    .nav-item.active {
+      color: var(--egov-blue);
+    }
+
+    .nav-item span.icon {
+      font-size: 18px;
+    }
+
+    .nav-item.center-badge {
+      position: relative;
+    }
+
+    .nav-item.center-badge .badge-circle {
+      width: 42px;
+      height: 42px;
+      background: var(--egov-blue);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      margin-top: -16px;
+      box-shadow: 0 4px 10px rgba(0, 56, 168, 0.3);
+      border: 3px solid white;
+      font-size: 18px;
     }
 
     /* Modal Overlay (Bottom Sheet Style) */
@@ -299,7 +504,7 @@
     }
 
     .modal-header h2 { border: none; margin: 0; padding: 0; }
-    .close-btn { background: #f1f5f9; border: none; color: var(--text-sub); width: 30px; height: 30px; border-radius: 50%; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .close-btn { background: #f1f5f9; border: none; color: var(--text-sub); width: 30px; height: 30px; border-radius: 50%; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
     .setting-section-box {
       background: #f8fafc;
@@ -316,18 +521,82 @@
 <div class="egov-header">
   <div class="nav-header">
     <div class="shop-title-area">
-      <img id="shopLogo" class="shop-logo" alt="Shop Logo">
-      <div class="shop-name-container">
-        <h1>Cristy Printing</h1>
-        <p>Official Digital Portal</p>
+      <img id="shopLogo" class="shop-logo" alt="Logo">
+      <svg class="logo-text-img" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <text x="0" y="24" fill="#0038A8" font-weight="900" font-size="22" font-family="Arial">e<tspan fill="#FCD116">GOV</tspan><tspan fill="#0038A8">PH</tspan></text>
+      </svg>
+    </div>
+    <div class="header-profile">
+      <div class="profile-info">
+        <div class="welcome">Mabuhay,</div>
+        <div class="username">FRANCO</div>
+      </div>
+      <div class="user-avatar-placeholder" id="headerAvatarContainer">
+        👤
       </div>
     </div>
-    <button class="settings-btn" onclick="openSettings()">⚙️</button>
   </div>
+</div>
+
+<!-- Location & Live Date Sub-bar -->
+<div class="sub-bar">
+  <div>🌙 <span id="locationText">CITY OF CALOOCAN, METRO MANILA</span></div>
+  <div id="currentDateText">Wed - Aug 05, 2026</div>
 </div>
 
 <div class="container">
 
+  <!-- SWIPEABLE CAROUSEL BANNER (Blank / Customizable) -->
+  <div class="carousel-container" id="swipeCarousel">
+    <div class="carousel-track" id="carouselTrack">
+      <!-- Slide 1 -->
+      <div class="carousel-slide">
+        <h3>Cristy Printing Portal</h3>
+        <p>Official automated daily time record and sales tracker system.</p>
+      </div>
+      <!-- Slide 2 (Blank ready for future updates) -->
+      <div class="carousel-slide alt-slide">
+        <h3>Pang-susunod na Update</h3>
+        <p>I-swipe patagilid para sa mga bagong anunsyo o promosyon dito.</p>
+      </div>
+      <!-- Slide 3 (Blank ready for future updates) -->
+      <div class="carousel-slide" style="background: linear-gradient(135deg, #475569 0%, #1e293b 100%);">
+        <h3>Espesyal na Paunawa</h3>
+        <p>Malaya kang magdagdag ng impormasyon o banner dito sa hinaharap.</p>
+      </div>
+    </div>
+    <div class="carousel-dots" id="carouselDots">
+      <span class="dot active" onclick="currentSlide(0)"></span>
+      <span class="dot" onclick="currentSlide(1)"></span>
+      <span class="dot" onclick="currentSlide(2)"></span>
+    </div>
+  </div>
+
+  <!-- WEATHER & QUICK ACTION GRID -->
+  <div class="dashboard-grid">
+    <!-- Weather Widget Style eGovPH -->
+    <div class="weather-card">
+      <div class="weather-header">
+        <span>🌧️</span> <span>Weather</span>
+      </div>
+      <div class="weather-body">
+        <div class="weather-temp">27°C</div>
+        <div class="weather-loc">Caloocan</div>
+        <div class="weather-desc">Light rain</div>
+      </div>
+    </div>
+
+    <!-- Quick Action / Menu Widget -->
+    <div class="action-mini-card" onclick="openSettings()">
+      <div style="font-size: 20px;">⚙️</div>
+      <div>
+        <div style="font-size: 13px; font-weight: 800; color: var(--egov-blue);">Portal Settings</div>
+        <div style="font-size: 10px; color: var(--text-sub); margin-top: 2px;">I-configure ang PIN, Presyo at Logo</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SALES ENCODER CARD -->
   <div class="card">
     <h2>📊 Mag-encode ng Benta</h2>
     <div class="form-group">
@@ -354,14 +623,16 @@
     <button class="btn-save" onclick="addSaleRecord()">+ Record Benta</button>
   </div>
 
+  <!-- TOTAL SUMMARY -->
   <div class="total-card">
     <div>
       <span class="total-title">Kabuuang Kita / Benta</span>
-      <div style="font-size: 10px; color: var(--text-sub); margin-top: 2px;">Realtime Synchronized</div>
+      <div style="font-size: 9px; color: var(--text-sub); margin-top: 2px;">Realtime Synchronized</div>
     </div>
     <span class="total-amount" id="totalAmount">₱0.00</span>
   </div>
 
+  <!-- TRANSACTIONS TABLE -->
   <div class="card table-card">
     <table>
       <thead>
@@ -380,6 +651,30 @@
 
 </div>
 
+<!-- BOTTOM NAVIGATION BAR (eGovPH Style) -->
+<div class="egov-bottom-nav">
+  <div class="nav-item active" onclick="location.reload()">
+    <span class="icon">🏠</span>
+    <span>Home</span>
+  </div>
+  <div class="nav-item" onclick="alert('Feature coming soon!')">
+    <span class="icon">📷</span>
+    <span>Scan QR</span>
+  </div>
+  <div class="nav-item center-badge" onclick="openSettings()">
+    <div class="badge-circle">🪪</div>
+    <span>Settings</span>
+  </div>
+  <div class="nav-item" onclick="toggleSeeMore()">
+    <span class="icon">📋</span>
+    <span>History</span>
+  </div>
+  <div class="nav-item" onclick="openSettings()">
+    <span class="icon">⚙️</span>
+    <span>Account</span>
+  </div>
+</div>
+
 <!-- SETTINGS MODAL -->
 <div class="modal-overlay" id="settingsModal">
   <div class="modal-content">
@@ -389,7 +684,7 @@
       <button class="close-btn" onclick="closeSettings()">✕</button>
     </div>
 
-    <!-- SECURITY PIN SETTINGS (Synced) -->
+    <!-- SECURITY PIN SETTINGS -->
     <div class="setting-section-box">
       <label>🔒 Admin Security PIN (Naka-sync)</label>
       <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Gagamitin para sa pagbukas ng settings at pag-void.</p>
@@ -417,7 +712,7 @@
     <div class="setting-section-box">
       <label>🎨 Kulay ng Background (Solid)</label>
       <div style="display: flex; gap: 10px; align-items: center; margin-top: 6px;">
-        <input type="color" id="themeColorPicker" value="#f0f4f8" onchange="changeThemeColor(this.value)" style="height: 40px; padding: 2px; cursor: pointer; flex: 1;">
+        <input type="color" id="themeColorPicker" value="#f8fafc" onchange="changeThemeColor(this.value)" style="height: 40px; padding: 2px; cursor: pointer; flex: 1;">
         <button class="btn-sec" style="margin: 0; width: auto;" onclick="resetThemeColor()">I-default</button>
       </div>
     </div>
@@ -445,7 +740,7 @@
       <button class="btn-sec" style="background: #d97706; margin-top: 8px;" onclick="resetToDefaultPrices()">↺ Reset sa Standard Prices</button>
     </div>
 
-    <h3 style="font-size: 12px; color: var(--text-sub); margin-top: 14px; margin-bottom: 8px;">Listahan ng Presyo:</h3>
+    <h3 style="font-size: 11px; color: var(--text-sub); margin-top: 14px; margin-bottom: 8px;">Listahan ng Presyo:</h3>
     <div id="priceListContainer"></div>
 
   </div>
@@ -453,9 +748,57 @@
 
 <script>
   document.getElementById('entryDate').valueAsDate = new Date();
+  
+  // Set live date format ala eGovPH
+  const optionsDate = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
+  document.getElementById('currentDateText').innerText = new Date().toLocaleDateString('en-US', optionsDate).replace(',', ' -');
+
   let showAllTransactions = false;
   let allSalesData = [];
   let currentAdminPin = '1234';
+
+  // Carousel Logic (Swipe / Auto Slide & Dots)
+  let currentSlideIndex = 0;
+  const track = document.getElementById('carouselTrack');
+  const dots = document.querySelectorAll('.dot');
+  const totalSlides = 3;
+
+  function updateCarousel() {
+    track.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+    dots.forEach((dot, index) => {
+      dot.classList.toggle('active', index === currentSlideIndex);
+    });
+  }
+
+  function currentSlide(index) {
+    currentSlideIndex = index;
+    updateCarousel();
+  }
+
+  // Auto slide every 4 seconds
+  setInterval(() => {
+    currentSlideIndex = (currentSlideIndex + 1) % totalSlides;
+    updateCarousel();
+  }, 4000);
+
+  // Touch swipe support for mobile
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  track.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+
+  track.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    if (touchStartX - touchEndX > 50) {
+      currentSlideIndex = (currentSlideIndex + 1) % totalSlides;
+      updateCarousel();
+    } else if (touchEndX - touchStartX > 50) {
+      currentSlideIndex = (currentSlideIndex - 1 + totalSlides) % totalSlides;
+      updateCarousel();
+    }
+  });
 
   const defaultPrices = [
     { id: 1, name: '📄 Xerox - Text Only Black (Short/A4)', price: 3.00 },
@@ -601,8 +944,8 @@
 
   function resetThemeColor() {
     removeBackground();
-    document.body.style.backgroundColor = '#f0f4f8';
-    document.getElementById('themeColorPicker').value = '#f0f4f8';
+    document.body.style.backgroundColor = '#f8fafc';
+    document.getElementById('themeColorPicker').value = '#f8fafc';
     localStorage.removeItem('cristyThemeColor');
   }
 
@@ -613,6 +956,9 @@
         const logoElem = document.getElementById('shopLogo');
         logoElem.src = url;
         logoElem.style.display = 'block';
+
+        const avatarContainer = document.getElementById('headerAvatarContainer');
+        avatarContainer.innerHTML = `<img src="${url}" alt="Avatar">`;
       });
     }
   }
@@ -621,6 +967,7 @@
     const logoElem = document.getElementById('shopLogo');
     logoElem.style.display = 'none';
     logoElem.src = '';
+    document.getElementById('headerAvatarContainer').innerHTML = '👤';
     localStorage.removeItem('cristyShopLogo');
     document.getElementById('logoUploader').value = '';
     const db = getFirebaseDB();
@@ -874,6 +1221,9 @@
       if (logo && logoElem) {
         logoElem.src = logo;
         logoElem.style.display = 'block';
+
+        const avatarContainer = document.getElementById('headerAvatarContainer');
+        avatarContainer.innerHTML = `<img src="${logo}" alt="Avatar">`;
       }
     });
 
@@ -894,6 +1244,9 @@
       const logoElem = document.getElementById('shopLogo');
       logoElem.src = savedLogo;
       logoElem.style.display = 'block';
+
+      const avatarContainer = document.getElementById('headerAvatarContainer');
+      avatarContainer.innerHTML = `<img src="${savedLogo}" alt="Avatar">`;
     }
 
     const savedColor = localStorage.getItem('cristyThemeColor');
