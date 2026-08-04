@@ -32,10 +32,10 @@
       margin: 0;
       padding: 0;
       min-height: 100vh;
-      padding-bottom: 70px; /* Space para sa bottom nav */
+      padding-bottom: 70px;
     }
 
-    /* Cristy Printing Shop Header Style */
+    /* eGovPH Header Style */
     .egov-header {
       background: #ffffff;
       color: var(--text-main);
@@ -68,11 +68,6 @@
       border: 2px solid var(--egov-blue);
       display: none;
       background: white;
-    }
-
-    .logo-text-img {
-      height: 28px;
-      object-fit: contain;
     }
 
     .header-profile {
@@ -157,7 +152,7 @@
       box-sizing: border-box;
       background: linear-gradient(135deg, #0038A8 0%, #1e40af 100%);
       color: white;
-      padding: 20px;
+      padding: 22px 20px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -168,10 +163,15 @@
       background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
     }
 
+    .carousel-slide.third-slide {
+      background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+    }
+
     .carousel-slide h3 {
       margin: 0 0 5px 0;
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 800;
+      letter-spacing: 0.5px;
     }
 
     .carousel-slide p {
@@ -257,7 +257,7 @@
       margin-top: 2px;
     }
 
-    /* Action Widget Card (Right side of Weather) */
+    /* Action Widget Card */
     .action-mini-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -275,7 +275,7 @@
       transform: scale(0.98);
     }
 
-    /* eGov Card Style */
+    /* Card Style */
     .card {
       background: var(--card-bg);
       padding: 18px;
@@ -348,9 +348,7 @@
       box-shadow: 0 4px 10px rgba(0, 56, 168, 0.2);
     }
 
-    .btn-add { 
-      background: #0d9488; 
-    }
+    .btn-add { background: #0d9488; }
 
     .btn-del {
       background: #ef4444;
@@ -409,7 +407,7 @@
     .see-more-container { text-align: center; padding: 10px; }
     .btn-seemore { background: none; border: none; color: var(--egov-blue); font-weight: 700; cursor: pointer; font-size: 11px; }
 
-    /* Bottom Navigation Bar ala eGovPH */
+    /* Bottom Navigation Bar */
     .egov-bottom-nav {
       position: fixed;
       bottom: 0;
@@ -436,17 +434,8 @@
       cursor: pointer;
     }
 
-    .nav-item.active {
-      color: var(--egov-blue);
-    }
-
-    .nav-item span.icon {
-      font-size: 18px;
-    }
-
-    .nav-item.center-badge {
-      position: relative;
-    }
+    .nav-item.active { color: var(--egov-blue); }
+    .nav-item span.icon { font-size: 18px; }
 
     .nav-item.center-badge .badge-circle {
       width: 42px;
@@ -463,7 +452,7 @@
       font-size: 18px;
     }
 
-    /* Modal Overlay (Bottom Sheet Style) */
+    /* Modal Overlay */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -517,28 +506,27 @@
 </head>
 <body>
 
-<!-- eGovPH Header App Bar -->
+<!-- Header (Cristy Printing) -->
 <div class="egov-header">
   <div class="nav-header">
     <div class="shop-title-area">
       <img id="shopLogo" class="shop-logo" alt="Logo">
-      <svg class="logo-text-img" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text x="0" y="24" fill="#0038A8" font-weight="900" font-size="22" font-family="Arial">e<tspan fill="#FCD116">GOV</tspan><tspan fill="#0038A8">PH</tspan></text>
-      </svg>
+      <div>
+        <div style="font-size: 16px; font-weight: 900; color: #0038A8; text-transform: uppercase; letter-spacing: 0.5px;">Cristy Printing</div>
+        <div style="font-size: 10px; color: #64748B; font-weight: 600;">Official Portal</div>
+      </div>
     </div>
     <div class="header-profile">
       <div class="profile-info">
         <div class="welcome">Mabuhay,</div>
         <div class="username">FRANCO</div>
       </div>
-      <div class="user-avatar-placeholder" id="headerAvatarContainer">
-        👤
-      </div>
+      <div class="user-avatar-placeholder" id="headerAvatarContainer">👤</div>
     </div>
   </div>
 </div>
 
-<!-- Location & Live Date Sub-bar -->
+<!-- Sub-bar -->
 <div class="sub-bar">
   <div>🌙 <span id="locationText">CITY OF CALOOCAN, METRO MANILA</span></div>
   <div id="currentDateText">Wed - Aug 05, 2026</div>
@@ -546,23 +534,23 @@
 
 <div class="container">
 
-  <!-- SWIPEABLE CAROUSEL BANNER (Blank / Customizable) -->
+  <!-- SWIPEABLE CAROUSEL BANNER (PRINT, XEROX, LAMINATE) -->
   <div class="carousel-container" id="swipeCarousel">
     <div class="carousel-track" id="carouselTrack">
-      <!-- Slide 1 -->
+      <!-- Slide 1: PRINT -->
       <div class="carousel-slide">
-        <h3>Cristy Printing Portal</h3>
-        <p>Official automated daily time record and sales tracker system.</p>
+        <h3>PRINT</h3>
+        <p>Mataas na kalidad ng pag-print ng dokumento, larawan, at iba pa.</p>
       </div>
-      <!-- Slide 2 (Blank ready for future updates) -->
+      <!-- Slide 2: XEROX -->
       <div class="carousel-slide alt-slide">
-        <h3>Pang-susunod na Update</h3>
-        <p>I-swipe patagilid para sa mga bagong anunsyo o promosyon dito.</p>
+        <h3>XEROX</h3>
+        <p>Mabilis at malinaw na kopya para sa text at colored pages.</p>
       </div>
-      <!-- Slide 3 (Blank ready for future updates) -->
-      <div class="carousel-slide" style="background: linear-gradient(135deg, #475569 0%, #1e293b 100%);">
-        <h3>Espesyal na Paunawa</h3>
-        <p>Malaya kang magdagdag ng impormasyon o banner dito sa hinaharap.</p>
+      <!-- Slide 3: LAMINATE -->
+      <div class="carousel-slide third-slide">
+        <h3>LAMINATE</h3>
+        <p>Protektahan ang iyong mga mahalagang ID, A4, o A5 documents.</p>
       </div>
     </div>
     <div class="carousel-dots" id="carouselDots">
@@ -572,9 +560,8 @@
     </div>
   </div>
 
-  <!-- WEATHER & QUICK ACTION GRID -->
+  <!-- WEATHER & SETTINGS QUICK WIDGET -->
   <div class="dashboard-grid">
-    <!-- Weather Widget Style eGovPH -->
     <div class="weather-card">
       <div class="weather-header">
         <span>🌧️</span> <span>Weather</span>
@@ -586,7 +573,6 @@
       </div>
     </div>
 
-    <!-- Quick Action / Menu Widget -->
     <div class="action-mini-card" onclick="openSettings()">
       <div style="font-size: 20px;">⚙️</div>
       <div>
@@ -651,7 +637,7 @@
 
 </div>
 
-<!-- BOTTOM NAVIGATION BAR (eGovPH Style) -->
+<!-- BOTTOM NAVIGATION BAR -->
 <div class="egov-bottom-nav">
   <div class="nav-item active" onclick="location.reload()">
     <span class="icon">🏠</span>
@@ -684,7 +670,6 @@
       <button class="close-btn" onclick="closeSettings()">✕</button>
     </div>
 
-    <!-- SECURITY PIN SETTINGS -->
     <div class="setting-section-box">
       <label>🔒 Admin Security PIN (Naka-sync)</label>
       <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Gagamitin para sa pagbukas ng settings at pag-void.</p>
@@ -694,7 +679,6 @@
       </div>
     </div>
 
-    <!-- VOID TRANSACTION MANAGEMENT -->
     <div class="setting-section-box" style="border-color: #fecaca; background: #fff1f2;">
       <label style="color: #b91c1c;">🗑️ Void / Bura ng Transaksyon</label>
       <p style="font-size: 10px; color: #7f1d1d; margin: 3px 0 8px 0;">Pumili ng maling transaksyon na tatanggalin.</p>
@@ -702,7 +686,6 @@
       <button class="btn-del" style="width: 100%; padding: 11px; font-size: 12px;" onclick="promptAndVoidSale()">⚠️ I-void ang Napiling Benta</button>
     </div>
 
-    <!-- WALLPAPER & THEME -->
     <div class="setting-section-box">
       <label>🖼️ Custom Wallpaper (Synced)</label>
       <input type="file" id="bgUploader" accept="image/*" onchange="handleWallpaperUpload(this)" style="margin-top: 6px;">
@@ -717,21 +700,18 @@
       </div>
     </div>
 
-    <!-- LOGO -->
     <div class="setting-section-box">
       <label>👤 Logo ng Shop (Synced)</label>
       <input type="file" id="logoUploader" accept="image/*" onchange="handleLogoUpload(this)" style="margin-top: 6px;">
       <button class="btn-sec" style="background: #ef4444;" onclick="removeLogo()">Tanggalin ang Logo</button>
     </div>
 
-    <!-- FIREBASE DB LINK -->
     <div class="setting-section-box">
       <label>🔗 Firebase Database URL</label>
       <input type="text" id="firebaseUrlInput" placeholder="https://..." style="margin-top: 6px; margin-bottom: 8px;">
       <button class="btn-sec" style="background: var(--egov-blue);" onclick="saveFirebaseUrl()">I-save ang Link</button>
     </div>
 
-    <!-- PRICE LIST SETTINGS -->
     <div class="setting-section-box">
       <label>⚙️ Pamamahala ng Presyo</label>
       <input type="text" id="newServiceName" placeholder="Pangalan ng Service" style="margin-top: 6px; margin-bottom: 8px;">
@@ -749,7 +729,6 @@
 <script>
   document.getElementById('entryDate').valueAsDate = new Date();
   
-  // Set live date format ala eGovPH
   const optionsDate = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
   document.getElementById('currentDateText').innerText = new Date().toLocaleDateString('en-US', optionsDate).replace(',', ' -');
 
@@ -757,7 +736,6 @@
   let allSalesData = [];
   let currentAdminPin = '1234';
 
-  // Carousel Logic (Swipe / Auto Slide & Dots)
   let currentSlideIndex = 0;
   const track = document.getElementById('carouselTrack');
   const dots = document.querySelectorAll('.dot');
@@ -775,13 +753,11 @@
     updateCarousel();
   }
 
-  // Auto slide every 4 seconds
   setInterval(() => {
     currentSlideIndex = (currentSlideIndex + 1) % totalSlides;
     updateCarousel();
   }, 4000);
 
-  // Touch swipe support for mobile
   let touchStartX = 0;
   let touchEndX = 0;
 
