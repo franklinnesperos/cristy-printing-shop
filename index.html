@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cristy Printing Shop - Daily Sales</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --accent-green: #10b981;
+      --accent-blue: #3b82f6;
+      --text: #f8fafc;
+      --text-sub: #94a3b8;
+      --border: #334155;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 15px;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+    }
+
+    /* Header Design */
+    .header-card {
+      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .header-card h1 {
+      margin: 0;
+      font-size: 22px;
+      text-transform: uppercase;
+    }
+
+    .header-card p {
+      margin: 4px 0 0;
+      color: #bfdbfe;
+      font-size: 13px;
+    }
+
+    /* Sales Input Form */
+    .form-card {
+      background: var(--card-bg);
+      padding: 18px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      margin-bottom: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 13px;
+      color: var(--text-sub);
+      font-weight: 600;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #0f172a;
+      color: var(--text);
+      box-sizing: border-box;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--accent-blue);
+    }
+
+    .btn-save {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 5px;
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Total Display */
+    .total-card {
+      background: var(--card-bg);
+      padding: 15px 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      border-left: 5px solid var(--accent-green);
+    }
+
+    .total-title {
+      color: var(--text-sub);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .total-amount {
+      font-size: 22px;
+      font-weight: bold;
+      color: var(--accent-green);
+    }
+
+    /* Transaction History Table */
+    .table-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th {
+      background: #334155;
+      padding: 10px 12px;
+      font-size: 12px;
+      color: var(--text-sub);
+      text-transform: uppercase;
+    }
+
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .badge {
+      padding: 3px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .badge-xerox { background: rgba(59, 130, 246, 0.2); color: #93c5fd; }
+    .badge-print { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; }
+    .badge-laminate { background: rgba(245, 158, 11, 0.2); color: #fde047; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  
+  <div class="header-card">
+    <h1>🖨️ Cristy Printing Shop</h1>
+    <p>Daily Sales Tracker</p>
+  </div>
+
+  <!-- Form para sa Benta -->
+  <div class="form-card">
+    <div class="form-group">
+      <label for="entryDate">Petsa:</label>
+      <input type="date" id="entryDate">
+    </div>
+
+    <div class="form-group">
+      <label for="serviceType">Type ng Service:</label>
+      <select id="serviceType">
+        <option value="Xerox">📄 Xerox</option>
+        <option value="Print">🖨️ Print</option>
+        <option value="Laminate">✨ Laminate</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="itemPrice">Presyo / Benta (₱):</label>
+      <input type="number" id="itemPrice" placeholder="0.00" step="0.01">
+    </div>
+
+    <button class="btn-save" onclick="addRecord()">+ Record Benta</button>
+  </div>
+
+  <!-- Total Benta -->
+  <div class="total-card">
+    <span class="total-title">KABUUMANG BENTA</span>
+    <span class="total-amount" id="totalAmount">₱0.00</span>
+  </div>
+
+  <!-- Listahan ng Benta -->
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>Petsa</th>
+          <th>Type</th>
+          <th>Presyo</th>
+        </tr>
+      </thead>
+      <tbody id="salesTableBody"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  // Automatic ngayong petsa
+  document.getElementById('entryDate').valueAsDate = new Date();
+
+  function getRecords() {
+    return JSON.parse(localStorage.getItem('cristyPrintingSales')) || [];
+  }
+
+  function addRecord() {
+    const date = document.getElementById('entryDate').value;
+    const type = document.getElementById('serviceType').value;
+    const price = parseFloat(document.getElementById('itemPrice').value);
+
+    if (!date || isNaN(price) || price <= 0) {
+      alert("Paki-lagay ang tamang halaga ng benta!");
+      return;
+    }
+
+    const records = getRecords();
+    records.push({ date, type, price });
+    localStorage.setItem('cristyPrintingSales', JSON.stringify(records));
+
+    // Reset ng input box
+    document.getElementById('itemPrice').value = '';
+    loadRecords();
+  }
+
+  function getBadgeClass(type) {
+    if (type === 'Xerox') return 'badge-xerox';
+    if (type === 'Print') return 'badge-print';
+    if (type === 'Laminate') return 'badge-laminate';
+    return '';
+  }
+
+  function loadRecords() {
+    const records = getRecords();
+    const tbody = document.getElementById('salesTableBody');
+    tbody.innerHTML = '';
+    let total = 0;
+
+    if (records.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #64748b; padding: 15px;">Wala pang naitatalang benta.</td></tr>`;
+      document.getElementById('totalAmount').innerText = '₱0.00';
+      return;
+    }
+
+    records.forEach(item => {
+      total += item.price;
+      const badgeClass = getBadgeClass(item.type);
+      
+      tbody.innerHTML += `
+        <tr>
+          <td>${item.date}</td>
+          <td><span class="badge ${badgeClass}">${item.type}</span></td>
+          <td style="font-weight: bold; color: #f8fafc;">₱${item.price.toFixed(2)}</td>
+        </tr>
+      `;
+    });
+
+    document.getElementById('totalAmount').innerText = `₱${total.toFixed(2)}`;
+  }
+
+  document.addEventListener('DOMContentLoaded', loadRecords);
+</script>
+
+</body>
+</html>
