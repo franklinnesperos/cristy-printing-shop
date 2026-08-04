@@ -34,35 +34,48 @@
       margin: auto;
     }
 
-    /* Header Design na may Logo */
-    .header-card {
-      background: linear-gradient(135deg, rgba(30, 58, 138, 0.9) 0%, rgba(59, 130, 246, 0.9) 100%);
-      padding: 20px;
-      border-radius: 12px;
-      text-align: center;
-      margin-bottom: 15px;
-      backdrop-filter: blur(5px);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    /* Top Navbar na may Gear Icon */
+    .nav-header {
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
+      margin-bottom: 15px;
+    }
+
+    .shop-title-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .shop-logo {
-      width: 80px;
-      height: 80px;
+      width: 45px;
+      height: 45px;
       border-radius: 50%;
       object-fit: cover;
-      border: 3px solid #ffffff;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-      margin-bottom: 10px;
+      border: 2px solid #ffffff;
       display: none;
     }
 
-    .header-card h1 { margin: 0; font-size: 22px; text-transform: uppercase; }
-    .header-card p { margin: 4px 0 0; color: #bfdbfe; font-size: 13px; }
+    .shop-name {
+      font-size: 18px;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin: 0;
+    }
 
+    .settings-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 20px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      backdrop-filter: blur(5px);
+    }
+
+    /* Card Styling */
     .card {
       background: var(--card-bg);
       padding: 18px;
@@ -123,7 +136,7 @@
     }
 
     .btn-sec {
-      background: #64748b;
+      background: #475569;
       color: white;
       border: none;
       padding: 8px 12px;
@@ -132,19 +145,6 @@
       font-size: 12px;
       margin-top: 6px;
       width: 100%;
-    }
-
-    .btn-clear-all {
-      background: rgba(239, 68, 68, 0.2);
-      border: 1px solid #ef4444;
-      color: #fca5a5;
-      padding: 8px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 12px;
-      width: 100%;
-      margin-top: 10px;
-      font-weight: bold;
     }
 
     .price-item {
@@ -174,58 +174,59 @@
     table { width: 100%; border-collapse: collapse; text-align: left; }
     th { background: rgba(51, 65, 85, 0.9); padding: 10px; font-size: 12px; color: var(--text-sub); }
     td { padding: 10px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
+
+    /* Modal / Slide Panel para sa Settings */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+      display: none;
+      justify-content: center;
+      align-items: flex-end;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: #1e293b;
+      width: 100%;
+      max-width: 500px;
+      max-height: 85vh;
+      overflow-y: auto;
+      border-radius: 20px 20px 0 0;
+      padding: 20px;
+      box-sizing: border-box;
+      border-top: 1px solid var(--border);
+      box-shadow: 0 -5px 25px rgba(0,0,0,0.5);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+
+    .modal-header h2 { border: none; margin: 0; padding: 0; }
+    .close-btn { background: none; border: none; color: var(--text-sub); font-size: 22px; cursor: pointer; }
   </style>
 </head>
 <body>
 
 <div class="container">
   
-  <!-- Header Card na may Logo Image -->
-  <div class="header-card">
-    <img id="displayLogo" class="shop-logo" alt="Shop Logo">
-    <h1>🖨️ Cristy Printing Shop</h1>
-    <p>Sales Tracker & Price Manager</p>
+  <!-- Top Navigation Header -->
+  <div class="nav-header">
+    <div class="shop-title-area">
+      <img id="displayLogo" class="shop-logo" alt="Profile Logo">
+      <h1 class="shop-name">🖨️ Cristy Shop</h1>
+    </div>
+    <button class="settings-btn" onclick="openSettings()">⚙️</button>
   </div>
 
-  <!-- SEKSYON: Customization (Logo & Background) -->
-  <div class="card">
-    <h2>🎨 Design & Customization</h2>
-    
-    <div class="form-group">
-      <label for="logoUploader">Mag-upload ng Shop Logo:</label>
-      <input type="file" id="logoUploader" accept="image/*" onchange="changeLogo(event)">
-      <button class="btn-sec" onclick="removeLogo()">Tanggalin ang Logo</button>
-    </div>
-
-    <hr style="border: 0; border-top: 1px solid var(--border); margin: 15px 0;">
-
-    <div class="form-group">
-      <label for="bgUploader">Palitan ang Background Picture:</label>
-      <input type="file" id="bgUploader" accept="image/*" onchange="changeBackground(event)">
-      <button class="btn-sec" onclick="removeBackground()">Tanggalin ang Background</button>
-    </div>
-  </div>
-
-  <!-- SEKSYON 1: Pag-add & Edit ng Presyo -->
-  <div class="card">
-    <h2>⚙️ Pamamahala ng Presyo (Price List)</h2>
-    <div class="form-group">
-      <label for="newServiceName">Pangalan ng Service / Product:</label>
-      <input type="text" id="newServiceName" placeholder="ex: Xerox Short, Print Colored A4">
-    </div>
-
-    <div class="form-group">
-      <label for="newServicePrice">Default na Presyo (₱):</label>
-      <input type="number" id="newServicePrice" placeholder="0.00" step="0.01">
-    </div>
-
-    <button class="btn-save btn-add" onclick="savePriceItem()">+ Dagdag / I-save sa Listahan</button>
-
-    <h3 style="font-size: 14px; margin-top: 15px; color: var(--text-sub);">Kasalukuyang Presyo:</h3>
-    <div id="priceListContainer"></div>
-  </div>
-
-  <!-- SEKSYON 2: Encoding ng Benta -->
+  <!-- SEKSYON 1: Encoding ng Benta -->
   <div class="card">
     <h2>📊 Mag-encode ng Benta</h2>
     <div class="form-group">
@@ -246,7 +247,7 @@
     <button class="btn-save" onclick="addSaleRecord()">+ Record Benta</button>
   </div>
 
-  <!-- Total Benta -->
+  <!-- Total Benta Display -->
   <div class="total-card">
     <span class="total-title">KABUUMANG BENTA</span>
     <span class="total-amount" id="totalAmount">₱0.00</span>
@@ -265,17 +266,68 @@
       </thead>
       <tbody id="salesTableBody"></tbody>
     </table>
-    <div style="padding: 10px;">
-      <button class="btn-clear-all" onclick="clearAllSales()">🗑️ Bura Lahat ng Sales Record</button>
-    </div>
   </div>
 
+</div>
+
+<!-- SETTINGS MODAL PANEL -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal-content">
+    
+    <div class="modal-header">
+      <h2>⚙️ Settings & Configuration</h2>
+      <button class="close-btn" onclick="closeSettings()">✕</button>
+    </div>
+
+    <!-- PROFILE / LOGO SECTION -->
+    <div class="form-group" style="margin-bottom: 20px;">
+      <label>👤 Profile / Shop Logo:</label>
+      <input type="file" id="logoUploader" accept="image/*" onchange="changeLogo(event)">
+      <button class="btn-sec" onclick="removeLogo()">Tanggalin ang Logo</button>
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid var(--border); margin: 15px 0;">
+
+    <!-- BACKGROUND SECTION -->
+    <div class="form-group" style="margin-bottom: 20px;">
+      <label>🖼️ Custom Background Picture:</label>
+      <input type="file" id="bgUploader" accept="image/*" onchange="changeBackground(event)">
+      
+      <div style="display: flex; gap: 8px; margin-top: 8px;">
+        <button class="btn-sec" style="background: #000000; border: 1px solid #333;" onclick="setBlackBg()">⬛ Solid Black</button>
+        <button class="btn-sec" onclick="removeBackground()">Default Dark Blue</button>
+      </div>
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid var(--border); margin: 15px 0;">
+
+    <!-- PRICE MANAGER SECTION -->
+    <div class="form-group">
+      <label>⚙️ Pamamahala ng Presyo (Price List):</label>
+      <input type="text" id="newServiceName" placeholder="Pangalan ng Service / Item" style="margin-bottom: 8px;">
+      <input type="number" id="newServicePrice" placeholder="Presyo (₱)" step="0.01" style="margin-bottom: 8px;">
+      <button class="btn-save btn-add" onclick="savePriceItem()">+ Dagdag sa Price List</button>
+    </div>
+
+    <h3 style="font-size: 13px; color: var(--text-sub); margin-top: 15px;">Listahan ng mga Presyo:</h3>
+    <div id="priceListContainer"></div>
+
+  </div>
 </div>
 
 <script>
   document.getElementById('entryDate').valueAsDate = new Date();
 
-  // ----- LOGIC PARA SA LOGO -----
+  // ----- SETTINGS MODAL CONTROL -----
+  function openSettings() {
+    document.getElementById('settingsModal').style.display = 'flex';
+  }
+
+  function closeSettings() {
+    document.getElementById('settingsModal').style.display = 'none';
+  }
+
+  // ----- PROFILE / LOGO LOGIC -----
   function changeLogo(event) {
     const file = event.target.files[0];
     if (file) {
@@ -285,7 +337,11 @@
         const img = document.getElementById('displayLogo');
         img.src = logoData;
         img.style.display = 'block';
-        localStorage.setItem('cristyShopLogo', logoData);
+        try {
+          localStorage.setItem('cristyShopLogo', logoData);
+        } catch(err) {
+          alert("Masyadong malaki ang picture ng Logo. Pumatag ng mas maliit na larawan.");
+        }
       };
       reader.readAsDataURL(file);
     }
@@ -296,7 +352,6 @@
     img.src = '';
     img.style.display = 'none';
     localStorage.removeItem('cristyShopLogo');
-    document.getElementById('logoUploader').value = '';
   }
 
   function loadSavedLogo() {
@@ -308,7 +363,7 @@
     }
   }
 
-  // ----- LOGIC PARA SA BACKGROUND IMAGE -----
+  // ----- BACKGROUND LOGIC -----
   function changeBackground(event) {
     const file = event.target.files[0];
     if (file) {
@@ -316,26 +371,46 @@
       reader.onload = function(e) {
         const imageData = e.target.result;
         document.body.style.backgroundImage = `url('${imageData}')`;
-        localStorage.setItem('cristyCustomBg', imageData);
+        document.body.style.backgroundColor = 'transparent';
+        try {
+          localStorage.setItem('cristyCustomBg', imageData);
+          localStorage.setItem('cristyBgType', 'image');
+        } catch(err) {
+          alert("Masyadong malaki ang larawan. Pumili ng mas maliit na photo.");
+        }
       };
       reader.readAsDataURL(file);
     }
   }
 
+  function setBlackBg() {
+    document.body.style.backgroundImage = 'none';
+    document.body.style.backgroundColor = '#000000';
+    localStorage.setItem('cristyBgType', 'black');
+    localStorage.removeItem('cristyCustomBg');
+  }
+
   function removeBackground() {
     document.body.style.backgroundImage = 'none';
+    document.body.style.backgroundColor = '#0f172a';
+    localStorage.removeItem('cristyBgType');
     localStorage.removeItem('cristyCustomBg');
-    document.getElementById('bgUploader').value = '';
   }
 
   function loadSavedBackground() {
-    const savedBg = localStorage.getItem('cristyCustomBg');
-    if (savedBg) {
-      document.body.style.backgroundImage = `url('${savedBg}')`;
+    const bgType = localStorage.getItem('cristyBgType');
+    if (bgType === 'black') {
+      document.body.style.backgroundImage = 'none';
+      document.body.style.backgroundColor = '#000000';
+    } else if (bgType === 'image') {
+      const savedBg = localStorage.getItem('cristyCustomBg');
+      if (savedBg) {
+        document.body.style.backgroundImage = `url('${savedBg}')`;
+      }
     }
   }
 
-  // ----- LOGIC PARA SA PRESYO (PRICE LIST) -----
+  // ----- PRICE LIST LOGIC -----
   function getCustomPrices() {
     return JSON.parse(localStorage.getItem('cristyCustomPrices')) || [
       { id: 1, name: '📄 Xerox (Standard)', price: 2.00 },
@@ -407,7 +482,7 @@
     }
   }
 
-  // ----- LOGIC PARA SA SALES LOG & VOID/DELETE -----
+  // ----- SALES LOG LOGIC -----
   function getSales() {
     return JSON.parse(localStorage.getItem('cristyPrintingSales')) || [];
   }
@@ -423,7 +498,6 @@
     }
 
     const sales = getSales();
-    // Lalagyan natin ng natatanging ID ang bawat benta para sa madaling pagbura
     sales.push({ id: Date.now(), date, type, price });
     localStorage.setItem('cristyPrintingSales', JSON.stringify(sales));
 
@@ -431,17 +505,10 @@
   }
 
   function deleteSaleRecord(id) {
-    if (confirm("Sigurado ka bang gusto mong i-void / burahin ang benta na ito?")) {
+    if (confirm("Sigurado ka bang gusto mong i-void ang benta na ito?")) {
       let sales = getSales();
       sales = sales.filter(item => item.id !== id);
       localStorage.setItem('cristyPrintingSales', JSON.stringify(sales));
-      loadSales();
-    }
-  }
-
-  function clearAllSales() {
-    if (confirm("⚠️ BABALA: Sigurado ka bang gusto mong burahin ang LAHAT ng naitalang benta? Hindi na ito mababawi.")) {
-      localStorage.removeItem('cristyPrintingSales');
       loadSales();
     }
   }
@@ -475,7 +542,7 @@
     document.getElementById('totalAmount').innerText = `₱${total.toFixed(2)}`;
   }
 
-  // Initial Load
+  // INITIAL LOAD
   document.addEventListener('DOMContentLoaded', () => {
     loadSavedLogo();
     loadSavedBackground();
