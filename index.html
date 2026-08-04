@@ -6,13 +6,14 @@
   <title>Cristy Printing Shop - Manager</title>
   <style>
     :root {
-      --bg: #0f172a;
-      --card-bg: rgba(30, 41, 59, 0.90);
-      --accent-green: #10b981;
-      --accent-blue: #3b82f6;
-      --text: #f8fafc;
-      --text-sub: #cbd5e1;
-      --border: rgba(255, 255, 255, 0.15);
+      --bg: #ffffff;
+      --card-bg: rgba(241, 245, 249, 0.95);
+      --accent-green: #059669;
+      --accent-blue: #2563eb;
+      --text: #0f172a;
+      --text-sub: #475569;
+      --border: rgba(0, 0, 0, 0.12);
+      --input-bg: #ffffff;
     }
 
     body {
@@ -26,7 +27,7 @@
       margin: 0;
       padding: 15px;
       min-height: 100vh;
-      transition: background 0.3s ease-in-out;
+      transition: background-color 0.3s ease;
     }
 
     .container {
@@ -44,34 +45,35 @@
     .shop-title-area {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .shop-logo {
-      width: 45px;
-      height: 45px;
+      width: 65px;
+      height: 65px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid #ffffff;
+      border: 2px solid var(--accent-blue);
       display: none;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
 
     .shop-name {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: bold;
       text-transform: uppercase;
       margin: 0;
+      letter-spacing: 0.5px;
     }
 
     .settings-btn {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.05);
       border: 1px solid var(--border);
       color: var(--text);
       font-size: 20px;
       padding: 8px 12px;
       border-radius: 8px;
       cursor: pointer;
-      backdrop-filter: blur(5px);
     }
 
     .card {
@@ -80,11 +82,10 @@
       border-radius: 12px;
       border: 1px solid var(--border);
       margin-bottom: 15px;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     }
 
-    h2 { font-size: 16px; margin-top: 0; color: #60a5fa; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    h2 { font-size: 16px; margin-top: 0; color: var(--accent-blue); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
 
     .form-group { margin-bottom: 12px; }
 
@@ -101,7 +102,7 @@
       padding: 12px;
       border-radius: 8px;
       border: 1px solid var(--border);
-      background: rgba(15, 23, 42, 0.8);
+      background: var(--input-bg);
       color: var(--text);
       box-sizing: border-box;
       font-size: 15px;
@@ -163,21 +164,35 @@
       align-items: center;
       margin-bottom: 15px;
       border-left: 5px solid var(--accent-green);
-      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
 
     .total-title { color: var(--text-sub); font-size: 13px; font-weight: 600; }
     .total-amount { font-size: 22px; font-weight: bold; color: var(--accent-green); }
 
     table { width: 100%; border-collapse: collapse; text-align: left; }
-    th { background: rgba(51, 65, 85, 0.9); padding: 10px; font-size: 12px; color: var(--text-sub); }
+    th { background: rgba(0, 0, 0, 0.05); padding: 10px; font-size: 12px; color: var(--text-sub); }
     td { padding: 10px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
+
+    .see-more-container {
+      text-align: center;
+      padding: 12px;
+    }
+
+    .btn-seemore {
+      background: none;
+      border: none;
+      color: var(--accent-blue);
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 14px;
+    }
 
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(5px);
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
       display: none;
       justify-content: center;
       align-items: flex-end;
@@ -185,7 +200,8 @@
     }
 
     .modal-content {
-      background: #1e293b;
+      background: #ffffff;
+      color: #0f172a;
       width: 100%;
       max-width: 500px;
       max-height: 85vh;
@@ -193,21 +209,20 @@
       border-radius: 20px 20px 0 0;
       padding: 20px;
       box-sizing: border-box;
-      border-top: 1px solid var(--border);
-      box-shadow: 0 -5px 25px rgba(0,0,0,0.5);
+      box-shadow: 0 -5px 25px rgba(0,0,0,0.2);
     }
 
     .modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid #e2e8f0;
       padding-bottom: 10px;
       margin-bottom: 15px;
     }
 
     .modal-header h2 { border: none; margin: 0; padding: 0; }
-    .close-btn { background: none; border: none; color: var(--text-sub); font-size: 22px; cursor: pointer; }
+    .close-btn { background: none; border: none; color: #64748b; font-size: 22px; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -216,7 +231,7 @@
   
   <div class="nav-header">
     <div class="shop-title-area">
-      <img id="displayLogo" class="shop-logo" alt="Profile Logo">
+      <img id="displayLogo" class="shop-logo" alt="Shop Logo">
       <h1 class="shop-name">🖨️ Cristy Printing</h1>
     </div>
     <button class="settings-btn" onclick="openSettings()">⚙️</button>
@@ -243,7 +258,7 @@
   </div>
 
   <div class="total-card">
-    <span class="total-title">KABUUMANG BENTA</span>
+    <span class="total-title">KABUUANG BENTA</span>
     <span class="total-amount" id="totalAmount">₱0.00</span>
   </div>
 
@@ -259,56 +274,61 @@
       </thead>
       <tbody id="salesTableBody"></tbody>
     </table>
+    <div id="seeMoreArea" class="see-more-container" style="display: none;">
+      <button class="btn-seemore" onclick="toggleSeeMore()" id="seeMoreBtn">👇 Tingnan ang Lahat ng Transaksyon</button>
+    </div>
   </div>
 
 </div>
 
-<!-- SETTINGS MODAL PANEL -->
+<!-- SETTINGS MODAL -->
 <div class="modal-overlay" id="settingsModal">
   <div class="modal-content">
     
     <div class="modal-header">
-      <h2>⚙️ Settings & Centralized Sync</h2>
+      <h2>⚙️ Settings & Customization</h2>
       <button class="close-btn" onclick="closeSettings()">✕</button>
     </div>
+
+    <!-- THEME COLOR PICKER -->
+    <div class="form-group">
+      <label>🎨 Kulay ng Layout (Theme Background):</label>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <input type="color" id="themeColorPicker" value="#ffffff" onchange="changeThemeColor(this.value)" style="height: 42px; padding: 2px; cursor: pointer;">
+        <button class="btn-sec" style="margin: 0; width: auto;" onclick="resetThemeColor()">I-balik sa White</button>
+      </div>
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
+
+    <!-- SHOP LOGO UPLOADER -->
+    <div class="form-group">
+      <label>🖼️ Palitan ang Logo ng Shop:</label>
+      <input type="file" id="logoUploader" accept="image/*" onchange="changeLogo(event)">
+      <button class="btn-sec" style="background: #ef4444; margin-top: 6px;" onclick="removeLogo()">Tanggalin ang Logo</button>
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
 
     <!-- FIREBASE DB LINK -->
     <div class="form-group">
       <label>🔗 Firebase Centralized Database URL:</label>
       <input type="text" id="firebaseUrlInput" placeholder="https://your-app.firebaseio.com/">
       <button class="btn-sec" onclick="saveFirebaseUrl()">I-save ang Sync Link</button>
-      <small style="color: #94a3b8; font-size: 11px;">I-paste ang Firebase Realtime Database URL mo para mag-sync sa lahat ng device.</small>
     </div>
 
-    <hr style="border: 0; border-top: 1px solid var(--border); margin: 15px 0;">
+    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
 
-    <div class="form-group">
-      <label>👤 Profile / Shop Logo:</label>
-      <input type="file" id="logoUploader" accept="image/*" onchange="changeLogo(event)">
-      <button class="btn-sec" onclick="removeLogo()">Tanggalin ang Logo</button>
-    </div>
-
-    <hr style="border: 0; border-top: 1px solid var(--border); margin: 15px 0;">
-
-    <div class="form-group">
-      <label>🖼️ Custom Background Picture:</label>
-      <input type="file" id="bgUploader" accept="image/*" onchange="changeBackground(event)">
-      <div style="display: flex; gap: 8px; margin-top: 8px;">
-        <button class="btn-sec" style="background: #000000; border: 1px solid #333;" onclick="setBlackBg()">⬛ Solid Black</button>
-        <button class="btn-sec" onclick="removeBackground()">Default Dark Blue</button>
-      </div>
-    </div>
-
-    <hr style="border: 0; border-top: 1px solid var(--border); margin: 15px 0;">
-
+    <!-- PRICE LIST SETTINGS -->
     <div class="form-group">
       <label>⚙️ Pamamahala ng Presyo (Price List):</label>
       <input type="text" id="newServiceName" placeholder="Pangalan ng Service" style="margin-bottom: 8px;">
       <input type="number" id="newServicePrice" placeholder="Presyo (₱)" step="0.01" style="margin-bottom: 8px;">
       <button class="btn-save btn-add" onclick="savePriceItem()">+ Dagdag sa Price List</button>
+      <button class="btn-sec" style="background: #d97706; margin-top: 10px;" onclick="resetToDefaultPrices()">↺ Reset All Prices to Default</button>
     </div>
 
-    <h3 style="font-size: 13px; color: var(--text-sub); margin-top: 15px;">Listahan ng mga Presyo:</h3>
+    <h3 style="font-size: 13px; color: #475569; margin-top: 15px;">Listahan ng mga Presyo:</h3>
     <div id="priceListContainer"></div>
 
   </div>
@@ -316,10 +336,10 @@
 
 <script>
   document.getElementById('entryDate').valueAsDate = new Date();
+  let showAllTransactions = false;
+  let allSalesData = [];
 
-  // KUMPLETONG LISTAHAN NG LAHAT NG MGA PRESLIST MULA SA IN-UPLOAD MONG LARAWAN
   const defaultPrices = [
-    // XEROX SECTION
     { id: 1, name: '📄 Xerox - Text Only Black (Short/A4)', price: 3.00 },
     { id: 2, name: '📄 Xerox - Text Only Black (Long)', price: 4.00 },
     { id: 3, name: '📄 Xerox - Text Only Colored (Short/A4)', price: 5.00 },
@@ -332,8 +352,6 @@
     { id: 10, name: '🎨 Xerox - Image Colored Half Page (Long)', price: 10.00 },
     { id: 11, name: '🎨 Xerox - Image Colored Full Page (Short/A4)', price: 10.00 },
     { id: 12, name: '🎨 Xerox - Image Colored Full Page (Long)', price: 12.00 },
-
-    // PRINT SECTION
     { id: 13, name: '🖨️ Print - Text Only Black (Short/A4)', price: 4.00 },
     { id: 14, name: '🖨️ Print - Text Only Black (Long)', price: 6.00 },
     { id: 15, name: '🖨️ Print - Text Only Colored (Short/A4)', price: 6.00 },
@@ -346,38 +364,34 @@
     { id: 22, name: '🖨️ Print - Image Colored Half Page (Long)', price: 12.00 },
     { id: 23, name: '🖨️ Print - Image Colored Full Page (Short/A4)', price: 15.00 },
     { id: 24, name: '🖨️ Print - Image Colored Full Page (Long)', price: 16.00 },
-
-    // STICKER SECTION
     { id: 25, name: '🏷️ Sticker (Per Page)', price: 60.00 },
-
-    // LAMINATE SECTION
     { id: 26, name: '✨ Laminate - ID Size', price: 15.00 },
     { id: 27, name: '✨ Laminate - A5 Size', price: 25.00 },
     { id: 28, name: '✨ Laminate - A4 Size', price: 40.00 }
   ];
 
-  function getDbUrl() {
-    return localStorage.getItem('cristyFirebaseUrl') || '';
+  // THEME COLOR LOGIC
+  function changeThemeColor(color) {
+    document.body.style.backgroundColor = color;
+    localStorage.setItem('cristyThemeColor', color);
   }
 
-  function saveFirebaseUrl() {
-    let url = document.getElementById('firebaseUrlInput').value.trim();
-    if (url && !url.endsWith('/')) url += '/';
-    localStorage.setItem('cristyFirebaseUrl', url);
-    alert('Na-save na ang Firebase URL! Mag-i-sync na ito sa lahat ng device.');
-    loadSales();
+  function resetThemeColor() {
+    const defaultColor = '#ffffff';
+    document.body.style.backgroundColor = defaultColor;
+    document.getElementById('themeColorPicker').value = defaultColor;
+    localStorage.removeItem('cristyThemeColor');
   }
 
-  function openSettings() {
-    document.getElementById('firebaseUrlInput').value = getDbUrl();
-    document.getElementById('settingsModal').style.display = 'flex';
+  function loadSavedThemeColor() {
+    const savedColor = localStorage.getItem('cristyThemeColor');
+    if (savedColor) {
+      document.body.style.backgroundColor = savedColor;
+      document.getElementById('themeColorPicker').value = savedColor;
+    }
   }
 
-  function closeSettings() {
-    document.getElementById('settingsModal').style.display = 'none';
-  }
-
-  // LOGO & BG LOGIC
+  // LOGO LOGIC
   function changeLogo(e) {
     const file = e.target.files[0];
     if (file) {
@@ -405,44 +419,43 @@
     }
   }
 
-  function changeBackground(e) {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        document.body.style.backgroundImage = `url('${evt.target.result}')`;
-        localStorage.setItem('cristyCustomBg', evt.target.result);
-        localStorage.setItem('cristyBgType', 'image');
-      };
-      reader.readAsDataURL(file);
-    }
+  function getDbUrl() {
+    return localStorage.getItem('cristyFirebaseUrl') || '';
   }
 
-  function setBlackBg() {
-    document.body.style.backgroundImage = 'none';
-    document.body.style.backgroundColor = '#000000';
-    localStorage.setItem('cristyBgType', 'black');
+  function saveFirebaseUrl() {
+    let url = document.getElementById('firebaseUrlInput').value.trim();
+    if (url && !url.endsWith('/')) url += '/';
+    localStorage.setItem('cristyFirebaseUrl', url);
+    alert('Na-save na ang Firebase URL!');
+    loadSales();
   }
 
-  function removeBackground() {
-    document.body.style.backgroundImage = 'none';
-    document.body.style.backgroundColor = '#0f172a';
-    localStorage.removeItem('cristyBgType');
+  function openSettings() {
+    document.getElementById('firebaseUrlInput').value = getDbUrl();
+    document.getElementById('settingsModal').style.display = 'flex';
   }
 
-  function loadSavedBackground() {
-    const bgType = localStorage.getItem('cristyBgType');
-    if (bgType === 'black') {
-      document.body.style.backgroundColor = '#000000';
-    } else if (bgType === 'image') {
-      const savedBg = localStorage.getItem('cristyCustomBg');
-      if (savedBg) document.body.style.backgroundImage = `url('${savedBg}')`;
-    }
+  function closeSettings() {
+    document.getElementById('settingsModal').style.display = 'none';
   }
 
-  // PRICE MANAGEMENT
+  // PRICELIST MANAGEMENT
   function getCustomPrices() {
-    return JSON.parse(localStorage.getItem('cristyCustomPrices')) || defaultPrices;
+    const saved = localStorage.getItem('cristyCustomPrices');
+    if (!saved || JSON.parse(saved).length === 0) {
+      localStorage.setItem('cristyCustomPrices', JSON.stringify(defaultPrices));
+      return defaultPrices;
+    }
+    return JSON.parse(saved);
+  }
+
+  function resetToDefaultPrices() {
+    if (confirm("Gusto mo bang ibalik sa orihinal na talaan ng presyo?")) {
+      localStorage.setItem('cristyCustomPrices', JSON.stringify(defaultPrices));
+      loadPriceManager();
+      populateDropdown();
+    }
   }
 
   function savePriceItem() {
@@ -486,7 +499,11 @@
     const prices = getCustomPrices();
     dropdown.innerHTML = '';
     prices.forEach(p => {
-      dropdown.innerHTML += `<option value="${p.name}" data-price="${p.price}">${p.name}</option>`;
+      const opt = document.createElement('option');
+      opt.value = p.name;
+      opt.setAttribute('data-price', p.price);
+      opt.textContent = `${p.name} - ₱${p.price.toFixed(2)}`;
+      dropdown.appendChild(opt);
     });
     autoFillPrice();
   }
@@ -494,10 +511,12 @@
   function autoFillPrice() {
     const dropdown = document.getElementById('serviceDropdown');
     const selected = dropdown.options[dropdown.selectedIndex];
-    if (selected) document.getElementById('itemPrice').value = selected.getAttribute('data-price');
+    if (selected) {
+      document.getElementById('itemPrice').value = selected.getAttribute('data-price');
+    }
   }
 
-  // CENTRALIZED SALES LOGIC (FIREBASE REST API)
+  // BENTA LOGIC WITH LIMIT 7 & SEE MORE
   async function addSaleRecord() {
     const date = document.getElementById('entryDate').value;
     const type = document.getElementById('serviceDropdown').value;
@@ -538,10 +557,16 @@
     loadSales();
   }
 
+  function toggleSeeMore() {
+    showAllTransactions = !showAllTransactions;
+    const btn = document.getElementById('seeMoreBtn');
+    btn.textContent = showAllTransactions ? "👆 Itago ang Iba Pa" : "👇 Tingnan ang Lahat ng Transaksyon";
+    renderSalesTable();
+  }
+
   async function loadSales() {
     const dbUrl = getDbUrl();
-    const tbody = document.getElementById('salesTableBody');
-    tbody.innerHTML = '';
+    allSalesData = [];
     let total = 0;
 
     if (dbUrl) {
@@ -550,58 +575,70 @@
         const data = await res.json();
         if (data) {
           Object.keys(data).forEach(key => {
-            const item = data[key];
-            total += item.price;
-            tbody.innerHTML += `
-              <tr>
-                <td>${item.date}</td>
-                <td>${item.type}</td>
-                <td style="font-weight: bold; color: var(--accent-green);">₱${item.price.toFixed(2)}</td>
-                <td style="text-align: center;">
-                  <button class="btn-del" onclick="deleteSaleRecord('${key}')">Void</button>
-                </td>
-              </tr>
-            `;
+            allSalesData.push({ keyId: key, ...data[key] });
           });
         }
       } catch(e) {
         console.error("Sync error:", e);
       }
     } else {
-      const sales = JSON.parse(localStorage.getItem('cristyPrintingSales')) || [];
-      sales.forEach(item => {
-        total += item.price;
-        tbody.innerHTML += `
-          <tr>
-            <td>${item.date}</td>
-            <td>${item.type}</td>
-            <td style="font-weight: bold; color: var(--accent-green);">₱${item.price.toFixed(2)}</td>
-            <td style="text-align: center;">
-              <button class="btn-del" onclick="deleteSaleRecord(${item.id})">Void</button>
-            </td>
-          </tr>
-        `;
-      });
+      allSalesData = JSON.parse(localStorage.getItem('cristyPrintingSales')) || [];
     }
 
-    if (tbody.innerHTML === '') {
-      tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #cbd5e1; padding: 15px;">Wala pang naitatalang benta.</td></tr>`;
-    }
-
+    // Sort by latest timestamp
+    allSalesData.sort((a, b) => b.timestamp - a.timestamp);
+    
+    // Calculate total
+    allSalesData.forEach(item => total += item.price);
     document.getElementById('totalAmount').innerText = `₱${total.toFixed(2)}`;
+
+    renderSalesTable();
+  }
+
+  function renderSalesTable() {
+    const tbody = document.getElementById('salesTableBody');
+    const seeMoreArea = document.getElementById('seeMoreArea');
+    tbody.innerHTML = '';
+
+    if (allSalesData.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #64748b; padding: 15px;">Wala pang naitatalang benta.</td></tr>`;
+      seeMoreArea.style.display = 'none';
+      return;
+    }
+
+    // Determine items to display (Top 7 or All)
+    const displayList = showAllTransactions ? allSalesData : allSalesData.slice(0, 7);
+
+    displayList.forEach(item => {
+      const identifier = item.keyId !== undefined ? `'${item.keyId}'` : item.id;
+      tbody.innerHTML += `
+        <tr>
+          <td>${item.date}</td>
+          <td>${item.type}</td>
+          <td style="font-weight: bold; color: var(--accent-green);">₱${item.price.toFixed(2)}</td>
+          <td style="text-align: center;">
+            <button class="btn-del" onclick="deleteSaleRecord(${identifier})">Void</button>
+          </td>
+        </tr>
+      `;
+    });
+
+    if (allSalesData.length > 7) {
+      seeMoreArea.style.display = 'block';
+    } else {
+      seeMoreArea.style.display = 'none';
+    }
   }
 
   // INITIAL LOAD
-  document.addEventListener('DOMContentLoaded', () => {
+  window.onload = function() {
+    loadSavedThemeColor();
     loadSavedLogo();
-    loadSavedBackground();
     loadPriceManager();
     populateDropdown();
     loadSales();
-    
-    // Auto refresh sales every 5 seconds para mag-update sa ibang mobile/PC real-time
     setInterval(loadSales, 5000);
-  });
+  };
 </script>
 
 </body>
