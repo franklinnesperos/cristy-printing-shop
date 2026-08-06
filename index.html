@@ -658,6 +658,19 @@
   </div>
 </div>
 
+  <!-- PRINT SAMPLE PICTURE MODAL -->
+<div class="modal-overlay" id="printSampleModal" style="display: none;">
+  <div class="modal-content" style="text-align: center;">
+    <div class="modal-header">
+      <h2>🖼️ Print Sample</h2>
+      <button class="close-btn" onclick="closePrintSample()">✕</button>
+    </div>
+    <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 12px;">Ito ang sample na kalidad ng aming print:</p>
+    <img src="https://via.placeholder.com/300x200" alt="Print Sample" style="width: 100%; border-radius: 8px; border: 1px solid var(--border);">
+    <button onclick="closePrintSample()" style="margin-top: 15px; width: 100%; padding: 10px; background: var(--egov-blue); color: white; border: none; border-radius: 8px; font-weight: bold;">Isara</button>
+  </div>
+</div>
+  
 <!-- SETTINGS MODAL (CONTAINS SERVICES MANAGEMENT & TRANSACTIONS WITH PIN) -->
 <div class="modal-overlay" id="settingsModal">
   <div class="modal-content">
@@ -756,9 +769,17 @@
   }, 4000);
 
     function handleCarouselClick(serviceType) {
-    alert("Pinili mo ang serbisyong: " + serviceType);
-    window.scrollTo({ top: 300, behavior: 'smooth' });
-  }
+      if (serviceType === 'Print') {
+        document.getElementById('printSampleModal').style.display = 'flex';
+      } else {
+        alert("Pinili mo ang serbisyong: " + serviceType);
+        window.scrollTo({ top: 300, behavior: 'smooth' });
+      }
+    }
+
+    function closePrintSample() {
+      document.getElementById('printSampleModal').style.display = 'none';
+    }
 
 
   const defaultPrices = [
