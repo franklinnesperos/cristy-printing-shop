@@ -671,14 +671,73 @@
   </div>
 </div>
   
-<!-- SETTINGS MODAL (CONTAINS SERVICES MANAGEMENT & TRANSACTIONS WITH PIN) -->
-<div class="modal-overlay" id="settingsModal">
-  <div class="modal-content">
+<!-- SETTINGS MODAL (CLEAN CATEGORIZED STYLE) -->
+<div class="modal-overlay" id="settingsModal" style="display: none;">
+  <div class="modal-content" style="max-width: 450px; padding: 0; background: #f8f9fa; overflow: hidden;">
     
-    <div class="modal-header">
-      <h2>⚙️ Portal Settings (Admin Only)</h2>
-      <button class="close-btn" onclick="closeSettings()">✕</button>
+    <!-- Header -->
+    <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: #ffffff; border-bottom: 1px solid #e5e7eb;">
+      <button onclick="closeSettings()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #374151;">❮</button>
+      <h2 style="font-size: 16px; font-weight: 700; color: #111827; margin: 0;">Settings</h2>
+      <div style="width: 20px;"></div> <!-- Spacer para pantay -->
     </div>
+
+    <div style="padding: 16px; max-height: 80vh; overflow-y: auto;">
+      
+      <!-- SECTION 1: PRINT & SERVICES MANAGEMENT -->
+      <div style="font-size: 11px; font-weight: 700; color: #6b7280; margin-bottom: 8px; letter-spacing: 0.5px;">MANAGEMENT & SERVICES</div>
+      
+      <div style="background: #ffffff; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+        
+        <!-- Print Sample Photo Setup -->
+        <div onclick="openPrintPhotoManager()" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #f3f4f6; cursor: pointer;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 18px;">🖼️</span>
+            <span style="font-size: 14px; font-weight: 500; color: #1f2937;">Print Sample Photo</span>
+          </div>
+          <span style="color: #9ca3af; font-size: 16px;">›</span>
+        </div>
+
+        <!-- Services & Prices -->
+        <div onclick="openServicesManager()" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #f3f4f6; cursor: pointer;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 18px;">🛠️</span>
+            <span style="font-size: 14px; font-weight: 500; color: #1f2937;">Services & Prices</span>
+          </div>
+          <span style="color: #9ca3af; font-size: 16px;">›</span>
+        </div>
+
+        <!-- Transactions History -->
+        <div onclick="openHistoryWithPin()" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; cursor: pointer;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 18px;">📋</span>
+            <span style="font-size: 14px; font-weight: 500; color: #1f2937;">Transactions History</span>
+          </div>
+          <span style="color: #9ca3af; font-size: 16px;">›</span>
+        </div>
+
+      </div>
+
+      <!-- SECTION 2: SECURITY -->
+      <div style="font-size: 11px; font-weight: 700; color: #6b7280; margin-bottom: 8px; letter-spacing: 0.5px;">PRIVACY AND SECURITY</div>
+      
+      <div style="background: #ffffff; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+        
+        <!-- Change PIN -->
+        <div onclick="alert('Feature coming soon!')" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; cursor: pointer;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 18px;">🔒</span>
+            <span style="font-size: 14px; font-weight: 500; color: #1f2937;">Change PIN</span>
+          </div>
+          <span style="color: #9ca3af; font-size: 16px;">›</span>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
 
     <!-- ADMIN PIN MANAGEMENT -->
     <div class="setting-section-box">
