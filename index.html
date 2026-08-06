@@ -517,7 +517,7 @@
 <!-- Sub-bar -->
 <div class="sub-bar">
   <div>🌙 <span id="locationText">CITY OF CALOOCAN, METRO MANILA</span></div>
-  <div id="currentDateText">Wed - Aug 05, 2026</div>
+  <div id="currentDateText">Thu - Aug 6, 2026</div>
 </div>
 
 <div class="container">
@@ -606,7 +606,7 @@
   <!-- VIEW-ONLY PRICE LIST SA HOME (HINDI PWEDENG GALAWIN NG CUSTOMER) -->
   <div class="card">
     <h2>💵 Listahan ng mga Serbisyo at Presyo</h2>
-    <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 10px;">Gabay sa presyo. Para baguhin o magdagdag, pumunta sa <b>Settings (Admin PIN)</b>.</p>
+    <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 10px;">Gabay sa presyo. Para baguhin o magdagdag, pumunta sa <b>Settings</b>.</p>
     <div id="homeReadOnlyPriceList" style="max-height: 220px; overflow-y: auto; padding-right: 4px;"></div>
   </div>
 
@@ -665,7 +665,7 @@
   </div>
 </div>
 
-<!-- SETTINGS MODAL (PROTECTED BY PIN) -->
+<!-- SETTINGS MODAL (DIRECT ACCESS, NO HASSLE PIN BLOCK) -->
 <div class="modal-overlay" id="settingsModal">
   <div class="modal-content">
     
@@ -676,19 +676,19 @@
 
     <!-- ADMIN PIN MANAGEMENT -->
     <div class="setting-section-box">
-      <label>🔒 Palitan o Tingnan ang Admin PIN</label>
-      <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Medyo kailangan mo ito para sa susunod na bukas ng Settings/History.</p>
+      <label>🔒 Itakda ang iyong Admin PIN</label>
+      <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Ilagay ang bagong PIN para sa pagtingin ng History sa susunod.</p>
       <div style="display: flex; gap: 8px; margin-bottom: 6px;">
-        <input type="text" id="adminPinInput" placeholder="Ilagay ang bagong PIN" maxlength="6" style="letter-spacing: 2px;">
+        <input type="text" id="adminPinInput" placeholder="Halimbawa: 1234 o sariling PIN" maxlength="6" style="letter-spacing: 2px;">
         <button class="btn-sec" style="margin: 0; width: auto; background: var(--egov-blue); white-space: nowrap;" onclick="saveAdminPin()">I-save ang PIN</button>
       </div>
-      <button class="btn-sec" style="background: #0d9488; font-size: 11px;" onclick="alert('Ang kasalukuyan mong Admin PIN ay: ' + currentAdminPin)">👁️ Ipakita ang Kasalukuyang PIN</button>
+      <button class="btn-sec" style="background: #0d9488; font-size: 11px;" onclick="showCurrentPin()">👁️ Ipakita ang Kasalukuyang PIN</button>
     </div>
 
     <!-- PRICE MANAGER SA LOOB NG SETTINGS -->
     <div class="setting-section-box">
       <label>💵 Pamahalaan ang mga Serbisyo at Presyo</label>
-      <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Dito na pwedeng magdagdag, mag-edit ng presyo, o mag-delete.</p>
+      <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Dito pwedeng magdagdag, mag-edit ng presyo, o mag-delete nang ligtas.</p>
       
       <div style="background: #ffffff; padding: 10px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 10px;">
         <div style="font-size: 11px; font-weight: 700; color: var(--egov-blue); margin-bottom: 6px;">+ Magdagdag ng Bagong Serbisyo</div>
@@ -732,7 +732,6 @@
   document.getElementById('currentDateText').innerText = new Date().toLocaleDateString('en-US', optionsDate).replace(',', ' -');
 
   let allSalesData = [];
-  let currentAdminPin = localStorage.getItem('cristyAdminPin') || '1234';
 
   let currentSlideIndex = 0;
   const track = document.getElementById('carouselTrack');
@@ -796,25 +795,27 @@
     return firebase.database();
   }
 
+  function getAdminPin() {
+    return localStorage.getItem('cristyAdminPin') || '1234';
+  }
+
   function saveAdminPin() {
     const pin = document.getElementById('adminPinInput').value.trim();
     if (!pin) return alert("Maglagay ng PIN number!");
     localStorage.setItem('cristyAdminPin', pin);
-    currentAdminPin = pin;
-    alert("✅ Na-save ang bagong Admin PIN!");
+    alert("✅ Tagumpay na na-save ang bagong Admin PIN (" + pin + ")!");
     document.getElementById('adminPinInput').value = '';
   }
 
+  function showCurrentPin() {
+    alert("Ang kasalukuyan mong Admin PIN ay: " + getAdminPin());
+  }
+
   function openSettings() {
-    const enteredPin = prompt("🔒 Admin Security:\nIlagay ang PIN para mabuksan ang Settings:\n(Default PIN ay 1234)");
-    if (enteredPin === null) return;
-    if (enteredPin === currentAdminPin) {
-      document.getElementById('firebaseUrlInput').value = localStorage.getItem('cristyFirebaseUrl') || '';
-      loadSettingsPriceManager();
-      document.getElementById('settingsModal').style.display = 'flex';
-    } else {
-      alert("❌ Maling PIN! Subukan muli o tingnan ang default PIN.");
-    }
+    document.getElementById('firebaseUrlInput').value = localStorage.getItem('cristyFirebaseUrl') || '';
+    document.getElementById('adminPinInput').value = getAdminPin();
+    loadSettingsPriceManager();
+    document.getElementById('settingsModal').style.display = 'flex';
   }
 
   function closeSettings() {
@@ -822,9 +823,10 @@
   }
 
   function openHistoryWithPin() {
-    const enteredPin = prompt("🔒 Admin Security:\nIlagay ang PIN para tingnan ang History at Transaksyon:\n(Default PIN ay 1234)");
+    const savedPin = getAdminPin();
+    const enteredPin = prompt("🔒 Admin Security:\nIlagay ang iyong Admin PIN para tingnan ang History:\n(Kasalukuyang PIN: " + savedPin + ")");
     if (enteredPin === null) return;
-    if (enteredPin === currentAdminPin) {
+    if (enteredPin === savedPin) {
       document.getElementById('historyModal').style.display = 'flex';
       populateVoidDropdown();
       renderHistoryTable();
@@ -852,6 +854,7 @@
       loadHomeReadOnlyList();
       loadSettingsPriceManager();
       populateDropdown();
+      alert("✅ Na-reset na sa standard prices!");
     }
   }
 
@@ -1061,6 +1064,51 @@
     document.getElementById('totalAmount').innerText = `₱${total.toFixed(2)}`;
   }
 
+  function saveFirebaseUrl() {
+    const url = document.getElementById('firebaseUrlInput').value.trim();
+    localStorage.setItem('cristyFirebaseUrl', url);
+    alert("✅ Na-save ang Firebase URL!");
+    location.reload();
+  }
+
+  function handleWallpaperUpload(input) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.body.style.backgroundImage = `url('${e.target.result}')`;
+        localStorage.setItem('cristyWallpaper', e.target.result);
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  function removeBackground() {
+    document.body.style.backgroundImage = 'none';
+    localStorage.removeItem('cristyWallpaper');
+    alert("Wallpaper removed.");
+  }
+
+  function handleLogoUpload(input) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const logoElem = document.getElementById('shopLogo');
+        logoElem.src = e.target.result;
+        logoElem.style.display = 'block';
+        document.getElementById('headerAvatarContainer').innerHTML = `<img src="${e.target.result}" alt="Avatar">`;
+        localStorage.setItem('cristyShopLogo', e.target.result);
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  function removeLogo() {
+    document.getElementById('shopLogo').style.display = 'none';
+    document.getElementById('headerAvatarContainer').innerHTML = '👤';
+    localStorage.removeItem('cristyShopLogo');
+    alert("Logo removed.");
+  }
+
   window.onload = function() {
     const savedLogo = localStorage.getItem('cristyShopLogo');
     if (savedLogo) {
@@ -1068,6 +1116,11 @@
       logoElem.src = savedLogo;
       logoElem.style.display = 'block';
       document.getElementById('headerAvatarContainer').innerHTML = `<img src="${savedLogo}" alt="Avatar">`;
+    }
+
+    const savedBg = localStorage.getItem('cristyWallpaper');
+    if (savedBg) {
+      document.body.style.backgroundImage = `url('${savedBg}')`;
     }
 
     loadHomeReadOnlyList();
