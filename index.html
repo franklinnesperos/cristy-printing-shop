@@ -32,7 +32,7 @@
       margin: 0;
       padding: 0;
       min-height: 100vh;
-      padding-bottom: 70px;
+      padding-bottom: 80px;
     }
 
     /* eGovPH Header Style */
@@ -404,9 +404,6 @@
     th { background: #f8fafc; padding: 10px 14px; font-size: 10px; text-transform: uppercase; color: var(--text-sub); font-weight: 700; border-bottom: 1px solid var(--border); }
     td { padding: 11px 14px; border-bottom: 1px solid var(--border); font-size: 12px; vertical-align: middle; }
 
-    .see-more-container { text-align: center; padding: 10px; }
-    .btn-seemore { background: none; border: none; color: var(--egov-blue); font-weight: 700; cursor: pointer; font-size: 11px; }
-
     /* Bottom Navigation Bar */
     .egov-bottom-nav {
       position: fixed;
@@ -534,20 +531,17 @@
 
 <div class="container">
 
-  <!-- SWIPEABLE CAROUSEL BANNER (PRINT, XEROX, LAMINATE) -->
+  <!-- SWIPEABLE CAROUSEL BANNER -->
   <div class="carousel-container" id="swipeCarousel">
     <div class="carousel-track" id="carouselTrack">
-      <!-- Slide 1: PRINT -->
       <div class="carousel-slide">
         <h3>PRINT</h3>
         <p>Mataas na kalidad ng pag-print ng dokumento, larawan, at iba pa.</p>
       </div>
-      <!-- Slide 2: XEROX -->
       <div class="carousel-slide alt-slide">
         <h3>XEROX</h3>
         <p>Mabilis at malinaw na kopya para sa text at colored pages.</p>
       </div>
-      <!-- Slide 3: LAMINATE -->
       <div class="carousel-slide third-slide">
         <h3>LAMINATE</h3>
         <p>Protektahan ang iyong mga mahalagang ID, A4, o A5 documents.</p>
@@ -577,7 +571,7 @@
       <div style="font-size: 20px;">⚙️</div>
       <div>
         <div style="font-size: 13px; font-weight: 800; color: var(--egov-blue);">Portal Settings</div>
-        <div style="font-size: 10px; color: var(--text-sub); margin-top: 2px;">I-configure ang PIN, Presyo at Logo</div>
+        <div style="font-size: 10px; color: var(--text-sub); margin-top: 2px;">I-configure ang PIN at Logo</div>
       </div>
     </div>
   </div>
@@ -618,21 +612,19 @@
     <span class="total-amount" id="totalAmount">₱0.00</span>
   </div>
 
-  <!-- TRANSACTIONS TABLE -->
-  <div class="card table-card">
-    <table>
-      <thead>
-        <tr>
-          <th>Petsa</th>
-          <th>Service</th>
-          <th>Presyo</th>
-        </tr>
-      </thead>
-      <tbody id="salesTableBody"></tbody>
-    </table>
-    <div id="seeMoreArea" class="see-more-container" style="display: none;">
-      <button class="btn-seemore" onclick="toggleSeeMore()" id="seeMoreBtn">👇 Tingnan ang Lahat</button>
+  <!-- HOME SERVICE & PRICE LIST (EDITABLE DIREKTA SA HOME) -->
+  <div class="card">
+    <h2>💵 Listahan ng mga Serbisyo at Presyo</h2>
+    <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 12px;">Maaari mong i-edit ang presyo o pangalan dito, magdagdag, o mag-delete.</p>
+    
+    <div style="background: #f8fafc; padding: 10px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 12px;">
+      <div style="font-size: 11px; font-weight: 700; color: var(--egov-blue); margin-bottom: 6px;">+ Magdagdag ng Bagong Serbisyo</div>
+      <input type="text" id="homeNewName" placeholder="Pangalan ng Service" style="margin-bottom: 6px;">
+      <input type="number" id="homeNewPrice" placeholder="Presyo (₱)" step="0.01" style="margin-bottom: 6px;">
+      <button class="btn-save btn-add" style="padding: 9px; font-size: 12px;" onclick="homeAddPriceItem()">Idagdag sa Listahan</button>
     </div>
+
+    <div id="homePriceListContainer"></div>
   </div>
 
 </div>
@@ -648,16 +640,45 @@
     <span>Scan QR</span>
   </div>
   <div class="nav-item center-badge" onclick="openSettings()">
-    <div class="badge-circle">🪪</div>
+    <div class="badge-circle">⚙️</div>
     <span>Settings</span>
   </div>
-  <div class="nav-item" onclick="toggleSeeMore()">
+  <div class="nav-item" onclick="openHistoryWithPin()">
     <span class="icon">📋</span>
     <span>History</span>
   </div>
   <div class="nav-item" onclick="openSettings()">
-    <span class="icon">⚙️</span>
+    <span class="icon">👤</span>
     <span>Account</span>
+  </div>
+</div>
+
+<!-- HISTORY / TRANSACTIONS MODAL (PROTECTED BY PIN) -->
+<div class="modal-overlay" id="historyModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>📋 Listahan ng Transaksyon (Bura / Void)</h2>
+      <button class="close-btn" onclick="closeHistoryModal()">✕</button>
+    </div>
+    
+    <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 12px;">Pumili ng maling transaksyon na gustong i-void o tanggalin.</p>
+    <div class="form-group">
+      <select id="voidSelectDropdown" style="margin-bottom: 8px; background: #ffffff;"></select>
+      <button class="btn-del" style="width: 100%; padding: 11px; font-size: 12px;" onclick="promptAndVoidSale()">⚠️ I-void ang Napiling Transaksyon</button>
+    </div>
+
+    <div class="card table-card" style="box-shadow: none; border: 1px solid var(--border); margin-top: 14px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Petsa</th>
+            <th>Service</th>
+            <th>Presyo</th>
+          </tr>
+        </thead>
+        <tbody id="historyTableBody"></tbody>
+      </table>
+    </div>
   </div>
 </div>
 
@@ -671,37 +692,22 @@
     </div>
 
     <div class="setting-section-box">
-      <label>🔒 Admin Security PIN (Naka-sync)</label>
-      <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Gagamitin para sa pagbukas ng settings at pag-void.</p>
+      <label>🔒 Admin Security PIN</label>
+      <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Gagamitin para sa pagbukas ng History/Void at Settings.</p>
       <div style="display: flex; gap: 8px;">
         <input type="password" id="adminPinInput" placeholder="Bagong PIN" maxlength="6" style="letter-spacing: 2px;">
         <button class="btn-sec" style="margin: 0; width: auto; background: var(--egov-blue); white-space: nowrap;" onclick="saveAdminPin()">I-save</button>
       </div>
     </div>
 
-    <div class="setting-section-box" style="border-color: #fecaca; background: #fff1f2;">
-      <label style="color: #b91c1c;">🗑️ Void / Bura ng Transaksyon</label>
-      <p style="font-size: 10px; color: #7f1d1d; margin: 3px 0 8px 0;">Pumili ng maling transaksyon na tatanggalin.</p>
-      <select id="voidSelectDropdown" style="margin-bottom: 8px; background: #ffffff;"></select>
-      <button class="btn-del" style="width: 100%; padding: 11px; font-size: 12px;" onclick="promptAndVoidSale()">⚠️ I-void ang Napiling Benta</button>
-    </div>
-
     <div class="setting-section-box">
-      <label>🖼️ Custom Wallpaper (Synced)</label>
+      <label>🖼️ Custom Wallpaper</label>
       <input type="file" id="bgUploader" accept="image/*" onchange="handleWallpaperUpload(this)" style="margin-top: 6px;">
       <button class="btn-sec" style="background: #ef4444;" onclick="removeBackground()">Tanggalin ang Wallpaper</button>
     </div>
 
     <div class="setting-section-box">
-      <label>🎨 Kulay ng Background (Solid)</label>
-      <div style="display: flex; gap: 10px; align-items: center; margin-top: 6px;">
-        <input type="color" id="themeColorPicker" value="#f8fafc" onchange="changeThemeColor(this.value)" style="height: 40px; padding: 2px; cursor: pointer; flex: 1;">
-        <button class="btn-sec" style="margin: 0; width: auto;" onclick="resetThemeColor()">I-default</button>
-      </div>
-    </div>
-
-    <div class="setting-section-box">
-      <label>👤 Logo ng Shop (Synced)</label>
+      <label>👤 Logo ng Shop</label>
       <input type="file" id="logoUploader" accept="image/*" onchange="handleLogoUpload(this)" style="margin-top: 6px;">
       <button class="btn-sec" style="background: #ef4444;" onclick="removeLogo()">Tanggalin ang Logo</button>
     </div>
@@ -713,15 +719,8 @@
     </div>
 
     <div class="setting-section-box">
-      <label>⚙️ Pamamahala ng Presyo</label>
-      <input type="text" id="newServiceName" placeholder="Pangalan ng Service" style="margin-top: 6px; margin-bottom: 8px;">
-      <input type="number" id="newServicePrice" placeholder="Presyo (₱)" step="0.01" style="margin-bottom: 8px;">
-      <button class="btn-save btn-add" onclick="savePriceItem()">+ Dagdag na Serbisyo</button>
-      <button class="btn-sec" style="background: #d97706; margin-top: 8px;" onclick="resetToDefaultPrices()">↺ Reset sa Standard Prices</button>
+      <button class="btn-sec" style="background: #d97706;" onclick="resetToDefaultPrices()">↺ Reset sa Standard Prices</button>
     </div>
-
-    <h3 style="font-size: 11px; color: var(--text-sub); margin-top: 14px; margin-bottom: 8px;">Listahan ng Presyo:</h3>
-    <div id="priceListContainer"></div>
 
   </div>
 </div>
@@ -732,9 +731,8 @@
   const optionsDate = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
   document.getElementById('currentDateText').innerText = new Date().toLocaleDateString('en-US', optionsDate).replace(',', ' -');
 
-  let showAllTransactions = false;
   let allSalesData = [];
-  let currentAdminPin = '1234';
+  let currentAdminPin = localStorage.getItem('cristyAdminPin') || '1234';
 
   let currentSlideIndex = 0;
   const track = document.getElementById('carouselTrack');
@@ -757,24 +755,6 @@
     currentSlideIndex = (currentSlideIndex + 1) % totalSlides;
     updateCarousel();
   }, 4000);
-
-  let touchStartX = 0;
-  let touchEndX = 0;
-
-  track.addEventListener('touchstart', e => {
-    touchStartX = e.changedTouches[0].screenX;
-  });
-
-  track.addEventListener('touchend', e => {
-    touchEndX = e.changedTouches[0].screenX;
-    if (touchStartX - touchEndX > 50) {
-      currentSlideIndex = (currentSlideIndex + 1) % totalSlides;
-      updateCarousel();
-    } else if (touchEndX - touchStartX > 50) {
-      currentSlideIndex = (currentSlideIndex - 1 + totalSlides) % totalSlides;
-      updateCarousel();
-    }
-  });
 
   const defaultPrices = [
     { id: 1, name: '📄 Xerox - Text Only Black (Short/A4)', price: 3.00 },
@@ -818,36 +798,21 @@
 
   function saveAdminPin() {
     const pin = document.getElementById('adminPinInput').value.trim();
-    if (!pin) return alert("Maglagay ng bisa o PIN number!");
-    
-    const db = getFirebaseDB();
-    if (db) {
-      db.ref('settings/adminPin').set(pin, (error) => {
-        if (error) {
-          alert("Error sa pag-save: " + error.message);
-        } else {
-          alert("✅ Tagumpay na na-sync at na-save ang Admin PIN!");
-          document.getElementById('adminPinInput').value = '';
-        }
-      });
-    } else {
-      localStorage.setItem('cristyAdminPin', pin);
-      currentAdminPin = pin;
-      alert("✅ Na-save ang Admin PIN sa device na ito.");
-      document.getElementById('adminPinInput').value = '';
-    }
+    if (!pin) return alert("Maglagay ng PIN number!");
+    localStorage.setItem('cristyAdminPin', pin);
+    currentAdminPin = pin;
+    alert("✅ Na-save ang Admin PIN!");
+    document.getElementById('adminPinInput').value = '';
   }
 
   function openSettings() {
     const enteredPin = prompt("🔒 Admin Security:\nIlagay ang PIN para mabuksan ang Settings:");
     if (enteredPin === null) return;
-
     if (enteredPin === currentAdminPin) {
       document.getElementById('firebaseUrlInput').value = localStorage.getItem('cristyFirebaseUrl') || '';
       document.getElementById('settingsModal').style.display = 'flex';
-      populateVoidDropdown();
     } else {
-      alert("❌ Maling PIN! Hindi mabubuksan ang Settings.");
+      alert("❌ Maling PIN!");
     }
   }
 
@@ -855,108 +820,20 @@
     document.getElementById('settingsModal').style.display = 'none';
   }
 
-  function compressAndUploadImage(file, firebasePath, callback) {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = (event) => {
-      const img = new Image();
-      img.src = event.target.result;
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const MAX_WIDTH = 800;
-        const scaleFactor = MAX_WIDTH / img.width;
-        
-        if (img.width > MAX_WIDTH) {
-          canvas.width = MAX_WIDTH;
-          canvas.height = img.height * scaleFactor;
-        } else {
-          canvas.width = img.width;
-          canvas.height = img.height;
-        }
-
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
-
-        const db = getFirebaseDB();
-        if (db) {
-          db.ref(firebasePath).set(compressedBase64, (error) => {
-            if (error) {
-              alert('Upload failed: ' + error.message);
-            } else if (callback) {
-              callback(compressedBase64);
-            }
-          });
-        } else {
-          localStorage.setItem(firebasePath === 'settings/wallpaper' ? 'cristyCustomBg' : 'cristyShopLogo', compressedBase64);
-          if (callback) callback(compressedBase64);
-        }
-      };
-    };
-  }
-
-  function handleWallpaperUpload(input) {
-    const file = input.files[0];
-    if (file) {
-      compressAndUploadImage(file, 'settings/wallpaper', (url) => {
-        document.body.style.backgroundImage = `url('${url}')`;
-      });
+  function openHistoryWithPin() {
+    const enteredPin = prompt("🔒 Admin Security:\nIlagay ang PIN para tingnan ang History at Transaksyon:");
+    if (enteredPin === null) return;
+    if (enteredPin === currentAdminPin) {
+      document.getElementById('historyModal').style.display = 'flex';
+      populateVoidDropdown();
+      renderHistoryTable();
+    } else {
+      alert("❌ Maling PIN! Hindi mabubuksan ang History.");
     }
   }
 
-  async function removeBackground() {
-    document.body.style.backgroundImage = 'none';
-    localStorage.removeItem('cristyCustomBg');
-    document.getElementById('bgUploader').value = '';
-    const db = getFirebaseDB();
-    if (db) db.ref('settings/wallpaper').remove();
-  }
-
-  function changeThemeColor(color) {
-    removeBackground();
-    document.body.style.backgroundColor = color;
-    localStorage.setItem('cristyThemeColor', color);
-  }
-
-  function resetThemeColor() {
-    removeBackground();
-    document.body.style.backgroundColor = '#f8fafc';
-    document.getElementById('themeColorPicker').value = '#f8fafc';
-    localStorage.removeItem('cristyThemeColor');
-  }
-
-  function handleLogoUpload(input) {
-    const file = input.files[0];
-    if (file) {
-      compressAndUploadImage(file, 'settings/logo', (url) => {
-        const logoElem = document.getElementById('shopLogo');
-        logoElem.src = url;
-        logoElem.style.display = 'block';
-
-        const avatarContainer = document.getElementById('headerAvatarContainer');
-        avatarContainer.innerHTML = `<img src="${url}" alt="Avatar">`;
-      });
-    }
-  }
-
-  async function removeLogo() {
-    const logoElem = document.getElementById('shopLogo');
-    logoElem.style.display = 'none';
-    logoElem.src = '';
-    document.getElementById('headerAvatarContainer').innerHTML = '👤';
-    localStorage.removeItem('cristyShopLogo');
-    document.getElementById('logoUploader').value = '';
-    const db = getFirebaseDB();
-    if (db) db.ref('settings/logo').remove();
-  }
-
-  function saveFirebaseUrl() {
-    let url = document.getElementById('firebaseUrlInput').value.trim();
-    if (url && !url.endsWith('/')) url += '/';
-    localStorage.setItem('cristyFirebaseUrl', url);
-    alert('Na-save na ang Firebase URL!');
-    listenToFirebaseAll();
-    loadSales();
+  function closeHistoryModal() {
+    document.getElementById('historyModal').style.display = 'none';
   }
 
   function getCustomPrices() {
@@ -971,42 +848,57 @@
   function resetToDefaultPrices() {
     if (confirm("Gusto mo bang ibalik sa orihinal na talaan ng presyo?")) {
       localStorage.setItem('cristyCustomPrices', JSON.stringify(defaultPrices));
-      loadPriceManager();
+      loadHomePriceManager();
       populateDropdown();
     }
   }
 
-  function savePriceItem() {
-    const name = document.getElementById('newServiceName').value.trim();
-    const price = parseFloat(document.getElementById('newServicePrice').value);
+  function homeAddPriceItem() {
+    const name = document.getElementById('homeNewName').value.trim();
+    const price = parseFloat(document.getElementById('homeNewPrice').value);
     if (!name || isNaN(price)) return alert("Kumpletuhin ang pangalan at presyo!");
 
     let prices = getCustomPrices();
     prices.push({ id: Date.now(), name, price });
     localStorage.setItem('cristyCustomPrices', JSON.stringify(prices));
     
-    document.getElementById('newServiceName').value = '';
-    document.getElementById('newServicePrice').value = '';
-    loadPriceManager();
+    document.getElementById('homeNewName').value = '';
+    document.getElementById('homeNewPrice').value = '';
+    loadHomePriceManager();
     populateDropdown();
+    alert("✅ Tagumpay na naidagdag ang serbisyo!");
+  }
+
+  function updatePriceItemValue(id, newName, newPriceVal) {
+    let prices = getCustomPrices();
+    let item = prices.find(p => p.id === id);
+    if (item) {
+      item.name = newName;
+      item.price = parseFloat(newPriceVal) || 0;
+      localStorage.setItem('cristyCustomPrices', JSON.stringify(prices));
+      populateDropdown();
+    }
   }
 
   function deletePriceItem(id) {
-    let prices = getCustomPrices().filter(p => p.id !== id);
-    localStorage.setItem('cristyCustomPrices', JSON.stringify(prices));
-    loadPriceManager();
-    populateDropdown();
+    if (confirm("Sigurado ka bang burahin ang serbisyong ito?")) {
+      let prices = getCustomPrices().filter(p => p.id !== id);
+      localStorage.setItem('cristyCustomPrices', JSON.stringify(prices));
+      loadHomePriceManager();
+      populateDropdown();
+    }
   }
 
-  function loadPriceManager() {
-    const container = document.getElementById('priceListContainer');
+  function loadHomePriceManager() {
+    const container = document.getElementById('homePriceListContainer');
     const prices = getCustomPrices();
     container.innerHTML = '';
     prices.forEach(p => {
       container.innerHTML += `
-        <div class="price-item">
-          <div><strong>${p.name}</strong><br><span style="color:var(--egov-blue); font-weight:600;">₱${p.price.toFixed(2)}</span></div>
-          <button class="btn-del" onclick="deletePriceItem(${p.id})">Bura</button>
+        <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 8px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+          <input type="text" value="${p.name}" onchange="updatePriceItemValue(${p.id}, this.value, ${p.price})" style="flex: 2; font-size: 11px; padding: 7px;">
+          <input type="number" value="${p.price}" step="0.01" onchange="updatePriceItemValue(${p.id}, '${p.name}', this.value)" style="flex: 1; font-size: 11px; padding: 7px;">
+          <button class="btn-del" onclick="deletePriceItem(${p.id})" style="padding: 7px 9px;">Bura</button>
         </div>
       `;
     });
@@ -1069,18 +961,10 @@
   function promptAndVoidSale() {
     const dropdown = document.getElementById('voidSelectDropdown');
     const selectedKey = dropdown.value;
-
     if (!selectedKey) return alert("Walang napiling transaksyon na ili-void!");
 
-    const enteredPin = prompt("🔒 Ilagay ang Admin PIN para mai-void ang transaksyong ito:");
-    if (enteredPin === null) return;
-
-    if (enteredPin === currentAdminPin) {
-      if (confirm("Sigurado ka bang gusto mong i-void/burahin ang transaksyong ito?")) {
-        executeVoid(selectedKey);
-      }
-    } else {
-      alert("❌ Maling PIN! Hindi pwedeng i-void ang transaksyon.");
+    if (confirm("Sigurado ka bang gusto mong i-void/burahin ang transaksyong ito?")) {
+      executeVoid(selectedKey);
     }
   }
 
@@ -1096,17 +980,16 @@
     alert("🗑️ Tagumpay na na-void ang transaksyon.");
     loadSales();
     populateVoidDropdown();
+    renderHistoryTable();
   }
 
   function populateVoidDropdown() {
     const dropdown = document.getElementById('voidSelectDropdown');
     dropdown.innerHTML = '';
-
     if (allSalesData.length === 0) {
-      dropdown.innerHTML = `<option value="">Walang transaksyon na magagamit</option>`;
+      dropdown.innerHTML = `<option value="">Walang transaksyon</option>`;
       return;
     }
-
     allSalesData.forEach(item => {
       const opt = document.createElement('option');
       opt.value = item.keyId;
@@ -1115,11 +998,22 @@
     });
   }
 
-  function toggleSeeMore() {
-    showAllTransactions = !showAllTransactions;
-    const btn = document.getElementById('seeMoreBtn');
-    btn.textContent = showAllTransactions ? "👆 Itago ang Iba Pa" : "👇 Tingnan ang Lahat";
-    renderSalesTable();
+  function renderHistoryTable() {
+    const tbody = document.getElementById('historyTableBody');
+    tbody.innerHTML = '';
+    if (allSalesData.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--text-sub); padding: 20px;">Wala pang naitatalang benta.</td></tr>`;
+      return;
+    }
+    allSalesData.forEach(item => {
+      tbody.innerHTML += `
+        <tr>
+          <td style="color: var(--text-sub); font-size: 11px;">${item.date}</td>
+          <td>${item.type}</td>
+          <td style="font-weight: 700; color: var(--egov-blue);">₱${item.price.toFixed(2)}</td>
+        </tr>
+      `;
+    });
   }
 
   function loadSales() {
@@ -1146,95 +1040,20 @@
     let total = 0;
     allSalesData.forEach(item => total += item.price);
     document.getElementById('totalAmount').innerText = `₱${total.toFixed(2)}`;
-    renderSalesTable();
-    if (document.getElementById('settingsModal').style.display === 'flex') {
-      populateVoidDropdown();
-    }
-  }
-
-  function renderSalesTable() {
-    const tbody = document.getElementById('salesTableBody');
-    const seeMoreArea = document.getElementById('seeMoreArea');
-    tbody.innerHTML = '';
-
-    if (allSalesData.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--text-sub); padding: 20px;">Wala pang naitatalang benta.</td></tr>`;
-      seeMoreArea.style.display = 'none';
-      return;
-    }
-
-    const displayList = showAllTransactions ? allSalesData : allSalesData.slice(0, 7);
-
-    displayList.forEach(item => {
-      tbody.innerHTML += `
-        <tr>
-          <td style="color: var(--text-sub); font-size: 11px;">${item.date}</td>
-          <td>${item.type}</td>
-          <td style="font-weight: 700; color: var(--egov-blue);">₱${item.price.toFixed(2)}</td>
-        </tr>
-      `;
-    });
-
-    if (allSalesData.length > 7) {
-      seeMoreArea.style.display = 'block';
-    } else {
-      seeMoreArea.style.display = 'none';
-    }
-  }
-
-  function listenToFirebaseAll() {
-    const db = getFirebaseDB();
-    if (!db) return;
-
-    db.ref('settings/wallpaper').on('value', (snapshot) => {
-      const bg = snapshot.val();
-      if (bg) document.body.style.backgroundImage = `url('${bg}')`;
-    });
-
-    db.ref('settings/logo').on('value', (snapshot) => {
-      const logo = snapshot.val();
-      const logoElem = document.getElementById('shopLogo');
-      if (logo && logoElem) {
-        logoElem.src = logo;
-        logoElem.style.display = 'block';
-
-        const avatarContainer = document.getElementById('headerAvatarContainer');
-        avatarContainer.innerHTML = `<img src="${logo}" alt="Avatar">`;
-      }
-    });
-
-    db.ref('settings/adminPin').on('value', (snapshot) => {
-      const pin = snapshot.val();
-      if (pin) {
-        currentAdminPin = pin;
-      }
-    });
   }
 
   window.onload = function() {
-    const savedBg = localStorage.getItem('cristyCustomBg');
-    if (savedBg) document.body.style.backgroundImage = `url('${savedBg}')`;
-
     const savedLogo = localStorage.getItem('cristyShopLogo');
     if (savedLogo) {
       const logoElem = document.getElementById('shopLogo');
       logoElem.src = savedLogo;
       logoElem.style.display = 'block';
-
-      const avatarContainer = document.getElementById('headerAvatarContainer');
-      avatarContainer.innerHTML = `<img src="${savedLogo}" alt="Avatar">`;
+      document.getElementById('headerAvatarContainer').innerHTML = `<img src="${savedLogo}" alt="Avatar">`;
     }
 
-    const savedColor = localStorage.getItem('cristyThemeColor');
-    if (savedColor) {
-      document.body.style.backgroundColor = savedColor;
-      document.getElementById('themeColorPicker').value = savedColor;
-    }
-
-    loadPriceManager();
+    loadHomePriceManager();
     populateDropdown();
     loadSales();
-    listenToFirebaseAll();
   };
 </script>
 
