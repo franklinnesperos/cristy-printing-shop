@@ -37,7 +37,7 @@
 
     /* eGovPH Header Style */
     .egov-header {
-      background: #0038A8;
+      background: #ffffff;
       color: var(--text-main);
       padding: 14px 16px;
       border-bottom: 1px solid var(--border);
@@ -84,7 +84,7 @@
       font-size: 10px;
       color: var(--text-sub);
       font-weight: 600;
-    }
+    }9
 
     .profile-info .username {
       font-size: 13px;
@@ -562,7 +562,7 @@
       <div style="font-size: 20px;">⚙️</div>
       <div>
         <div style="font-size: 13px; font-weight: 800; color: var(--egov-blue);">Portal Settings</div>
-        <div style="font-size: 10px; color: var(--text-sub); margin-top: 2px;">I-configure ang PIN at Presyo</div>
+        <div style="font-size: 10px; color: var(--text-sub); margin-top: 2px;">Serbisyo, Presyo at PIN</div>
       </div>
     </div>
   </div>
@@ -601,13 +601,6 @@
       <div style="font-size: 9px; color: var(--text-sub); margin-top: 2px;">Realtime Synchronized</div>
     </div>
     <span class="total-amount" id="totalAmount">₱0.00</span>
-  </div>
-
-  <!-- VIEW-ONLY PRICE LIST SA HOME (HINDI PWEDENG GALAWIN NG CUSTOMER) -->
-  <div class="card">
-    <h2>💵 Listahan ng mga Serbisyo at Presyo</h2>
-    <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 10px;">Gabay sa presyo. Para baguhin o magdagdag, pumunta sa <b>Settings</b>.</p>
-    <div id="homeReadOnlyPriceList" style="max-height: 220px; overflow-y: auto; padding-right: 4px;"></div>
   </div>
 
 </div>
@@ -665,7 +658,7 @@
   </div>
 </div>
 
-<!-- SETTINGS MODAL (DIRECT ACCESS, NO HASSLE PIN BLOCK) -->
+<!-- SETTINGS MODAL (CONTAINS SERVICES MANAGEMENT & TRANSACTIONS WITH PIN) -->
 <div class="modal-overlay" id="settingsModal">
   <div class="modal-content">
     
@@ -677,27 +670,34 @@
     <!-- ADMIN PIN MANAGEMENT -->
     <div class="setting-section-box">
       <label>🔒 Itakda ang iyong Admin PIN</label>
-      <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Ilagay ang bagong PIN para sa pagtingin ng History sa susunod.</p>
+      <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Ilagay ang PIN para sa pagtingin ng History at pag-Void.</p>
       <div style="display: flex; gap: 8px; margin-bottom: 6px;">
-        <input type="text" id="adminPinInput" placeholder="Halimbawa: 1234 o sariling PIN" maxlength="6" style="letter-spacing: 2px;">
+        <input type="text" id="adminPinInput" placeholder="Halimbawa: 1234" maxlength="6" style="letter-spacing: 2px;">
         <button class="btn-sec" style="margin: 0; width: auto; background: var(--egov-blue); white-space: nowrap;" onclick="saveAdminPin()">I-save ang PIN</button>
       </div>
       <button class="btn-sec" style="background: #0d9488; font-size: 11px;" onclick="showCurrentPin()">👁️ Ipakita ang Kasalukuyang PIN</button>
     </div>
 
-    <!-- PRICE MANAGER SA LOOB NG SETTINGS -->
+    <!-- SERVICES MANAGEMENT UNDER SETTINGS -->
     <div class="setting-section-box">
-      <label>💵 Pamahalaan ang mga Serbisyo at Presyo</label>
-      <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Dito pwedeng magdagdag, mag-edit ng presyo, o mag-delete nang ligtas.</p>
+      <label>🛠️ SERVICES (Pamahalaan ang mga Serbisyo at Presyo)</label>
+      <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Magdagdag, mag-edit ng presyo, o mag-delete ng serbisyo.</p>
       
       <div style="background: #ffffff; padding: 10px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 10px;">
         <div style="font-size: 11px; font-weight: 700; color: var(--egov-blue); margin-bottom: 6px;">+ Magdagdag ng Bagong Serbisyo</div>
         <input type="text" id="settingsNewName" placeholder="Pangalan ng Service" style="margin-bottom: 6px;">
         <input type="number" id="settingsNewPrice" placeholder="Presyo (₱)" step="0.01" style="margin-bottom: 6px;">
-        <button class="btn-save btn-add" style="padding: 8px; font-size: 11px;" onclick="settingsAddPriceItem()">Idagdag</button>
+        <button class="btn-save btn-add" style="padding: 8px; font-size: 11px;" onclick="settingsAddPriceItem()">Idagdag sa Services</button>
       </div>
 
       <div id="settingsPriceListContainer" style="max-height: 180px; overflow-y: auto;"></div>
+    </div>
+
+    <!-- TRANSACTION / HISTORY UNDER SETTINGS (PROTECTED BY PIN) -->
+    <div class="setting-section-box">
+      <label>📋 TRANSACTIONS (History at Void)</label>
+      <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Tingnan ang mga naitalang benta at i-void kung kinakailangan.</p>
+      <button class="btn-sec" style="background: var(--egov-blue);" onclick="openHistoryWithPinFromSettings()">🔓 Buksan ang Transactions (May PIN)</button>
     </div>
 
     <div class="setting-section-box">
@@ -835,6 +835,11 @@
     }
   }
 
+  function openHistoryWithPinFromSettings() {
+    closeSettings();
+    openHistoryWithPin();
+  }
+
   function closeHistoryModal() {
     document.getElementById('historyModal').style.display = 'none';
   }
@@ -851,7 +856,6 @@
   function resetToDefaultPrices() {
     if (confirm("Gusto mo bang ibalik sa orihinal na talaan ng presyo?")) {
       localStorage.setItem('cristyCustomPrices', JSON.stringify(defaultPrices));
-      loadHomeReadOnlyList();
       loadSettingsPriceManager();
       populateDropdown();
       alert("✅ Na-reset na sa standard prices!");
@@ -870,7 +874,6 @@
     document.getElementById('settingsNewName').value = '';
     document.getElementById('settingsNewPrice').value = '';
     loadSettingsPriceManager();
-    loadHomeReadOnlyList();
     populateDropdown();
     alert("✅ Tagumpay na naidagdag ang serbisyo!");
   }
@@ -882,7 +885,6 @@
       item.name = newName;
       item.price = parseFloat(newPriceVal) || 0;
       localStorage.setItem('cristyCustomPrices', JSON.stringify(prices));
-      loadHomeReadOnlyList();
       populateDropdown();
     }
   }
@@ -892,23 +894,8 @@
       let prices = getCustomPrices().filter(p => p.id !== id);
       localStorage.setItem('cristyCustomPrices', JSON.stringify(prices));
       loadSettingsPriceManager();
-      loadHomeReadOnlyList();
       populateDropdown();
     }
-  }
-
-  function loadHomeReadOnlyList() {
-    const container = document.getElementById('homeReadOnlyPriceList');
-    const prices = getCustomPrices();
-    container.innerHTML = '';
-    prices.forEach(p => {
-      container.innerHTML += `
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 11px;">
-          <span style="color: var(--text-main); font-weight: 500;">${p.name}</span>
-          <span style="color: var(--egov-blue); font-weight: 700;">₱${p.price.toFixed(2)}</span>
-        </div>
-      `;
-    });
   }
 
   function loadSettingsPriceManager() {
@@ -1123,7 +1110,6 @@
       document.body.style.backgroundImage = `url('${savedBg}')`;
     }
 
-    loadHomeReadOnlyList();
     populateDropdown();
     loadSales();
   };
