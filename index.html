@@ -755,6 +755,12 @@
     updateCarousel();
   }, 4000);
 
+    function handleCarouselClick(serviceType) {
+    alert("Pinili mo ang serbisyong: " + serviceType);
+    window.scrollTo({ top: 300, behavior: 'smooth' });
+  }
+
+
   const defaultPrices = [
     { id: 1, name: '📄 Xerox - Text Only Black (Short/A4)', price: 3.00 },
     { id: 2, name: '📄 Xerox - Text Only Black (Long)', price: 4.00 },
