@@ -753,7 +753,7 @@
   </div>
 </div>
 
-<!-- CHANGE PIN STEP-BY-STEP MODAL -->
+<!-- CHANGE PIN / VERIFY PIN MODAL -->
 <div class="modal-overlay" id="changePinModal" style="display: none;">
   <div class="modal-content" style="max-width: 420px; padding: 24px; background: #ffffff; border-radius: 16px; position: relative;">
     
@@ -763,7 +763,7 @@
       <div style="width: 20px;"></div>
     </div>
 
-    <div style="display: flex; gap: 6px; margin-bottom: 24px;">
+    <div style="display: flex; gap: 6px; margin-bottom: 24px;" id="pinProgressBars">
       <div id="pBar1" style="flex: 1; height: 4px; background: #2563eb; border-radius: 2px;"></div>
       <div id="pBar2" style="flex: 1; height: 4px; background: #e5e7eb; border-radius: 2px;"></div>
       <div id="pBar3" style="flex: 1; height: 4px; background: #e5e7eb; border-radius: 2px;"></div>
@@ -786,7 +786,7 @@
       <button onclick="clearPinBoxes()" style="background: none; border: none; font-size: 13px; font-weight: 600; color: #374151; cursor: pointer;">Clear</button>
     </div>
 
-    <button onclick="handlePinNextStep()" style="width: 100%; padding: 14px; background: #2563eb; color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer;">Next</button>
+    <button onclick="handlePinNextStep()" style="width: 100%; padding: 14px; background: #2563eb; color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer;" id="pinSubmitBtn">Next</button>
 
   </div>
 </div>
@@ -889,16 +889,12 @@
   }
 
   function openHistoryWithPin() {
-    const savedPin = getAdminPin();
-    const enteredPin = prompt("🔒 Admin Security:\nIlagay ang iyong Admin PIN para tingnan ang History:");
-    if (enteredPin === null) return;
-    if (enteredPin === savedPin) {
-      document.getElementById('historyModal').style.display = 'flex';
-      populateVoidDropdown();
-      renderHistoryTable();
-    } else {
-      alert("❌ Maling PIN! Hindi mabubuksan ang History.");
-    }
+    mode = 'verify_history'; // Itakda ang mode para sa pagbukas ng history
+    currentPinStep = 1;
+    tempCurrentPin = '';
+    tempNewPin = '';
+    updatePinModalUI();
+    document.getElementById('changePinModal').style.display = 'flex';
   }
 
   function openHistoryWithPinFromSettings() {
@@ -1163,13 +1159,15 @@
     alert("Logo removed.");
   }
 
-  // --- Change PIN Modal Logic ---
+  // --- PIN Modal Logic (Supports both Change PIN and Verify History) ---
+  let mode = 'change_pin'; // 'change_pin' o 'verify_history'
   let currentPinStep = 1;
   let tempCurrentPin = '';
   let tempNewPin = '';
 
   function openChangePinModal() {
     closeSettings();
+    mode = 'change_pin';
     currentPinStep = 1;
     tempCurrentPin = '';
     tempNewPin = '';
@@ -1187,30 +1185,47 @@
     const title = document.getElementById('pinTitle');
     const desc = document.getElementById('pinDesc');
     const indicator = document.getElementById('pinStepIndicator');
+    const progressBars = document.getElementById('pinProgressBars');
+    const note = document.getElementById('pinNote');
     const b1 = document.getElementById('pBar1');
     const b2 = document.getElementById('pBar2');
     const b3 = document.getElementById('pBar3');
+    const submitBtn = document.getElementById('pinSubmitBtn');
 
-    if (indicator) indicator.innerText = `Step ${currentPinStep} of 3`;
+    if (mode === 'verify_history') {
+      if (indicator) indicator.innerText = "Admin Security";
+      if (progressBars) progressBars.style.display = 'none';
+      if (title) title.innerText = "ILAGAY ANG ADMIN PIN";
+      if (desc) desc.innerText = "Ilagay ang iyong Admin PIN para tingnan ang History";
+      if (note) note.innerText = "Kailangan ng PIN para sa kaligtasan ng transaksyon";
+      if (submitBtn) submitBtn.innerText = "I-verify";
+    } else {
+      if (progressBars) progressBars.style.display = 'flex';
+      if (indicator) indicator.innerText = `Step ${currentPinStep} of 3`;
+      if (submitBtn) submitBtn.innerText = "Next";
 
-    if (currentPinStep === 1) {
-      if (title) title.innerText = "Enter Current MPIN";
-      if (desc) desc.innerText = "Type in your current MPIN to continue";
-      if (b1) b1.style.background = "#2563eb"; 
-      if (b2) b2.style.background = "#e5e7eb"; 
-      if (b3) b3.style.background = "#e5e7eb";
-    } else if (currentPinStep === 2) {
-      if (title) title.innerText = "Enter New MPIN";
-      if (desc) desc.innerText = "Type in your new 6 digit MPIN";
-      if (b1) b1.style.background = "#2563eb"; 
-      if (b2) b2.style.background = "#2563eb"; 
-      if (b3) b3.style.background = "#e5e7eb";
-    } else if (currentPinStep === 3) {
-      if (title) title.innerText = "Confirm New MPIN";
-      if (desc) desc.innerText = "Re-type your new 6 digit MPIN to confirm";
-      if (b1) b1.style.background = "#2563eb"; 
-      if (b2) b2.style.background = "#2563eb"; 
-      if (b3) b3.style.background = "#e5e7eb";
+      if (currentPinStep === 1) {
+        if (title) title.innerText = "Enter Current MPIN";
+        if (desc) desc.innerText = "Type in your current MPIN to continue";
+        if (note) note.innerText = "You will use this 6 digit PIN to login next time";
+        if (b1) b1.style.background = "#2563eb"; 
+        if (b2) b2.style.background = "#e5e7eb"; 
+        if (b3) b3.style.background = "#e5e7eb";
+      } else if (currentPinStep === 2) {
+        if (title) title.innerText = "Enter New MPIN";
+        if (desc) desc.innerText = "Type in your new 6 digit MPIN";
+        if (note) note.innerText = "Keep your PIN secure";
+        if (b1) b1.style.background = "#2563eb"; 
+        if (b2) b2.style.background = "#2563eb"; 
+        if (b3) b3.style.background = "#e5e7eb";
+      } else if (currentPinStep === 3) {
+        if (title) title.innerText = "Confirm New MPIN";
+        if (desc) desc.innerText = "Re-type your new 6 digit MPIN to confirm";
+        if (note) note.innerText = "Re-enter to make sure it matches";
+        if (b1) b1.style.background = "#2563eb"; 
+        if (b2) b2.style.background = "#2563eb"; 
+        if (b3) b3.style.background = "#2563eb";
+      }
     }
   }
 
@@ -1247,6 +1262,20 @@
     const enteredPin = getEnteredPin();
     if (enteredPin.length < 6) {
       alert('Mangyaring kumpletuhin ang 6-digit PIN.');
+      return;
+    }
+
+    if (mode === 'verify_history') {
+      const savedPin = getAdminPin();
+      if (enteredPin !== savedPin) {
+        alert('❌ Maling PIN! Hindi mabubuksan ang History.');
+        clearPinBoxes();
+        return;
+      }
+      closeChangePinModal();
+      document.getElementById('historyModal').style.display = 'flex';
+      populateVoidDropdown();
+      renderHistoryTable();
       return;
     }
 
