@@ -652,6 +652,7 @@
   </div>
 </div>
 
+<!-- MAIN SETTINGS MODAL -->
 <div class="modal-overlay" id="settingsModal" style="display: none;">
   <div class="modal-content" style="max-width: 450px; padding: 0; background: #f8f9fa; overflow: hidden;">
     
@@ -683,10 +684,18 @@
           <span style="color: #9ca3af; font-size: 16px;">›</span>
         </div>
 
-        <div onclick="openHistoryWithPin()" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; cursor: pointer;">
+        <div onclick="openHistoryWithPinFromSettings()" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #f3f4f6; cursor: pointer;">
           <div style="display: flex; align-items: center; gap: 12px;">
             <span style="font-size: 18px;">📋</span>
             <span style="font-size: 14px; font-weight: 500; color: #1f2937;">Transactions History</span>
+          </div>
+          <span style="color: #9ca3af; font-size: 16px;">›</span>
+        </div>
+
+        <div onclick="openPersonalizationManager()" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; cursor: pointer;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 18px;">🎨</span>
+            <span style="font-size: 14px; font-weight: 500; color: #1f2937;">Personalized (Logo, Wallpaper, DB)</span>
           </div>
           <span style="color: #9ca3af; font-size: 16px;">›</span>
         </div>
@@ -707,48 +716,59 @@
 
       </div>
 
-      <div class="setting-section-box">
-        <label>🛠️ SERVICES (Pamahalaan ang mga Serbisyo at Presyo)</label>
-        <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Magdagdag, mag-edit ng presyo, o mag-delete ng serbisyo.</p>
-        
-        <div style="background: #ffffff; padding: 10px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 10px;">
-          <div style="font-size: 11px; font-weight: 700; color: var(--egov-blue); margin-bottom: 6px;">+ Magdagdag ng Bagong Serbisyo</div>
-          <input type="text" id="settingsNewName" placeholder="Pangalan ng Service" style="margin-bottom: 6px;">
-          <input type="number" id="settingsNewPrice" placeholder="Presyo (₱)" step="0.01" style="margin-bottom: 6px;">
-          <button class="btn-save btn-add" style="padding: 8px; font-size: 11px;" onclick="settingsAddPriceItem()">Idagdag sa Services</button>
-        </div>
+    </div>
+  </div>
+</div>
 
-        <div id="settingsPriceListContainer" style="max-height: 180px; overflow-y: auto;"></div>
+<!-- SUB-MODAL: SERVICES & PRICES MANAGER -->
+<div class="modal-overlay" id="servicesManagerModal" style="display: none;">
+  <div class="modal-content" style="max-width: 450px;">
+    <div class="modal-header">
+      <h2>🛠️ Services & Prices</h2>
+      <button class="close-btn" onclick="closeServicesManager()">✕</button>
+    </div>
+    
+    <div class="setting-section-box">
+      <label>+ Magdagdag ng Bagong Serbisyo</label>
+      <div style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Magdagdag, mag-edit ng presyo, o mag-delete ng serbisyo.</div>
+      
+      <div style="background: #ffffff; padding: 10px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 10px;">
+        <input type="text" id="settingsNewName" placeholder="Pangalan ng Service" style="margin-bottom: 6px;">
+        <input type="number" id="settingsNewPrice" placeholder="Presyo (₱)" step="0.01" style="margin-bottom: 6px;">
+        <button class="btn-save btn-add" style="padding: 8px; font-size: 11px;" onclick="settingsAddPriceItem()">Idagdag sa Services</button>
       </div>
 
-      <div class="setting-section-box">
-        <label>📋 TRANSACTIONS (History at Void)</label>
-        <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Tingnan ang mga naitalang benta at i-void kung kinakailangan.</p>
-        <button class="btn-sec" style="background: var(--egov-blue);" onclick="openHistoryWithPinFromSettings()">🔓 Buksan ang Transactions (May PIN)</button>
-      </div>
+      <div id="settingsPriceListContainer" style="max-height: 250px; overflow-y: auto;"></div>
+    </div>
+    
+    <button class="btn-sec" style="background: #d97706; margin-top: 10px;" onclick="resetToDefaultPrices()">↺ Reset sa Standard Prices</button>
+  </div>
+</div>
 
-      <div class="setting-section-box">
-        <label>🖼️ Custom Wallpaper</label>
-        <input type="file" id="bgUploader" accept="image/*" onchange="handleWallpaperUpload(this)" style="margin-top: 6px;">
-        <button class="btn-sec" style="background: #ef4444;" onclick="removeBackground()">Tanggalin ang Wallpaper</button>
-      </div>
+<!-- SUB-MODAL: PERSONALIZATION MANAGER (Logo, Wallpaper, Database) -->
+<div class="modal-overlay" id="personalizationModal" style="display: none;">
+  <div class="modal-content" style="max-width: 450px;">
+    <div class="modal-header">
+      <h2>🎨 Personalization & System</h2>
+      <button class="close-btn" onclick="closePersonalizationManager()">✕</button>
+    </div>
 
-      <div class="setting-section-box">
-        <label>👤 Logo ng Shop</label>
-        <input type="file" id="logoUploader" accept="image/*" onchange="handleLogoUpload(this)" style="margin-top: 6px;">
-        <button class="btn-sec" style="background: #ef4444;" onclick="removeLogo()">Tanggalin ang Logo</button>
-      </div>
+    <div class="setting-section-box">
+      <label>🖼️ Custom Wallpaper</label>
+      <input type="file" id="bgUploader" accept="image/*" onchange="handleWallpaperUpload(this)" style="margin-top: 6px;">
+      <button class="btn-sec" style="background: #ef4444; margin-top: 6px;" onclick="removeBackground()">Tanggalin ang Wallpaper</button>
+    </div>
 
-      <div class="setting-section-box">
-        <label>🔗 Firebase Database URL</label>
-        <input type="text" id="firebaseUrlInput" placeholder="https://..." style="margin-top: 6px; margin-bottom: 8px;">
-        <button class="btn-sec" style="background: var(--egov-blue);" onclick="saveFirebaseUrl()">I-save ang Link</button>
-      </div>
+    <div class="setting-section-box">
+      <label>👤 Logo ng Shop</label>
+      <input type="file" id="logoUploader" accept="image/*" onchange="handleLogoUpload(this)" style="margin-top: 6px;">
+      <button class="btn-sec" style="background: #ef4444; margin-top: 6px;" onclick="removeLogo()">Tanggalin ang Logo</button>
+    </div>
 
-      <div class="setting-section-box">
-        <button class="btn-sec" style="background: #d97706;" onclick="resetToDefaultPrices()">↺ Reset sa Standard Prices</button>
-      </div>
-
+    <div class="setting-section-box">
+      <label>🔗 Firebase Database URL</label>
+      <input type="text" id="firebaseUrlInput" placeholder="https://..." style="margin-top: 6px; margin-bottom: 8px;">
+      <button class="btn-sec" style="background: var(--egov-blue);" onclick="saveFirebaseUrl()">I-save ang Link</button>
     </div>
   </div>
 </div>
@@ -879,8 +899,6 @@
   }
 
   function openSettings() {
-    document.getElementById('firebaseUrlInput').value = localStorage.getItem('cristyFirebaseUrl') || '';
-    loadSettingsPriceManager();
     document.getElementById('settingsModal').style.display = 'flex';
   }
 
@@ -888,8 +906,33 @@
     document.getElementById('settingsModal').style.display = 'none';
   }
 
+  function openPrintPhotoManager() {
+    closeSettings();
+    document.getElementById('printSampleModal').style.display = 'flex';
+  }
+
+  function openServicesManager() {
+    closeSettings();
+    loadSettingsPriceManager();
+    document.getElementById('servicesManagerModal').style.display = 'flex';
+  }
+
+  function closeServicesManager() {
+    document.getElementById('servicesManagerModal').style.display = 'none';
+  }
+
+  function openPersonalizationManager() {
+    closeSettings();
+    document.getElementById('firebaseUrlInput').value = localStorage.getItem('cristyFirebaseUrl') || '';
+    document.getElementById('personalizationModal').style.display = 'flex';
+  }
+
+  function closePersonalizationManager() {
+    document.getElementById('personalizationModal').style.display = 'none';
+  }
+
   function openHistoryWithPin() {
-    mode = 'verify_history'; // Itakda ang mode para sa pagbukas ng history
+    mode = 'verify_history';
     currentPinStep = 1;
     tempCurrentPin = '';
     tempNewPin = '';
@@ -1159,8 +1202,8 @@
     alert("Logo removed.");
   }
 
-  // --- PIN Modal Logic (Supports both Change PIN and Verify History) ---
-  let mode = 'change_pin'; // 'change_pin' o 'verify_history'
+  // --- PIN Modal Logic ---
+  let mode = 'change_pin'; 
   let currentPinStep = 1;
   let tempCurrentPin = '';
   let tempNewPin = '';
