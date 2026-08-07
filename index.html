@@ -708,16 +708,6 @@
       </div>
 
       <div class="setting-section-box">
-        <label>🔒 Itakda ang iyong Admin PIN</label>
-        <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Ilagay ang PIN para sa pagtingin ng History at pag-Void.</p>
-        <div style="display: flex; gap: 8px; margin-bottom: 6px;">
-          <input type="text" id="adminPinInput" placeholder="Halimbawa: 1234" maxlength="6" style="letter-spacing: 2px;">
-          <button class="btn-sec" style="margin: 0; width: auto; background: var(--egov-blue); white-space: nowrap;" onclick="saveAdminPin()">I-save ang PIN</button>
-        </div>
-        <button class="btn-sec" style="background: #0d9488; font-size: 11px;" onclick="showCurrentPin()">👁️ Ipakita ang Kasalukuyang PIN</button>
-      </div>
-
-      <div class="setting-section-box">
         <label>🛠️ SERVICES (Pamahalaan ang mga Serbisyo at Presyo)</label>
         <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Magdagdag, mag-edit ng presyo, o mag-delete ng serbisyo.</p>
         
@@ -763,7 +753,7 @@
   </div>
 </div>
 
-<!-- CHANGE PIN STEP-BY-STEP MODAL (FIXED INPUT TYPES) -->
+<!-- CHANGE PIN STEP-BY-STEP MODAL -->
 <div class="modal-overlay" id="changePinModal" style="display: none;">
   <div class="modal-content" style="max-width: 420px; padding: 24px; background: #ffffff; border-radius: 16px; position: relative;">
     
@@ -782,7 +772,6 @@
     <h2 id="pinTitle" style="font-size: 20px; font-weight: 700; color: #111827; margin: 0 0 6px 0;">Enter Current MPIN</h2>
     <p id="pinDesc" style="font-size: 13px; color: #6b7280; margin: 0 0 24px 0;">Type in your current MPIN to continue</p>
 
-    <!-- PIN Boxes Naayos para maging text/number para hindi mag-error sa pagbasa -->
     <div style="display: flex; justify-content: space-between; gap: 8px; margin-bottom: 24px;">
       <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="pin-box" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 1.5px solid #d1d5db; border-radius: 8px; outline: none;" oninput="moveToNext(this, 0)" onkeydown="moveToPrev(event, 0)">
       <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="pin-box" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 1.5px solid #d1d5db; border-radius: 8px; outline: none;" oninput="moveToNext(this, 1)" onkeydown="moveToPrev(event, 1)">
@@ -886,25 +875,11 @@
   }
 
   function getAdminPin() {
-    return localStorage.getItem('cristyAdminPin') || localStorage.getItem('adminPin') || '1234';
-  }
-
-  function saveAdminPin() {
-    const pin = document.getElementById('adminPinInput').value.trim();
-    if (!pin) return alert("Maglagay ng PIN number!");
-    localStorage.setItem('cristyAdminPin', pin);
-    localStorage.setItem('adminPin', pin);
-    alert("✅ Tagumpay na na-save ang bagong Admin PIN (" + pin + ")!");
-    document.getElementById('adminPinInput').value = '';
-  }
-
-  function showCurrentPin() {
-    alert("Ang kasalukuyan mong Admin PIN ay: " + getAdminPin());
+    return localStorage.getItem('cristyAdminPin') || localStorage.getItem('adminPin') || '031389';
   }
 
   function openSettings() {
     document.getElementById('firebaseUrlInput').value = localStorage.getItem('cristyFirebaseUrl') || '';
-    document.getElementById('adminPinInput').value = getAdminPin();
     loadSettingsPriceManager();
     document.getElementById('settingsModal').style.display = 'flex';
   }
@@ -915,7 +890,7 @@
 
   function openHistoryWithPin() {
     const savedPin = getAdminPin();
-    const enteredPin = prompt("🔒 Admin Security:\nIlagay ang iyong Admin PIN para tingnan ang History:\n(Kasalukuyang PIN: " + savedPin + ")");
+    const enteredPin = prompt("🔒 Admin Security:\nIlagay ang iyong Admin PIN para tingnan ang History:");
     if (enteredPin === null) return;
     if (enteredPin === savedPin) {
       document.getElementById('historyModal').style.display = 'flex';
@@ -1119,7 +1094,7 @@
   function loadSales() {
     const db = getFirebaseDB();
     if (db) {
-      db.ref('sales').off(); // Inayos din dito ang Firebase listener para walang leak
+      db.ref('sales').off();
       db.ref('sales').on('value', (snapshot) => {
         const data = snapshot.val();
         allSalesData = [];
