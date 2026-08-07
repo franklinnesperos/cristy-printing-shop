@@ -166,6 +166,10 @@
       background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
     }
 
+    .carousel-slide.fourth-slide {
+      background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+    }
+
     .carousel-slide h3 {
       margin: 0 0 5px 0;
       font-size: 18px;
@@ -507,7 +511,7 @@
 
 <div class="sub-bar">
   <div>🌙 <span id="locationText">CITY OF CALOOCAN, METRO MANILA</span></div>
-  <div id="currentDateText">Thu - Aug 6, 2026</div>
+  <div id="currentDateText">Fri - Aug 7, 2026</div>
 </div>
 
 <div class="container">
@@ -526,11 +530,16 @@
         <h3>LAMINATE</h3>
         <p>Protektahan ang iyong mga mahalagang ID, A4, o A5 documents. 🖱️ (I-click)</p>
       </div>
+      <div class="carousel-slide fourth-slide" onclick="handleCarouselClick('Laminate ID')" style="cursor: pointer;">
+        <h3>LAMINATE ID</h3>
+        <p>Espesyal na laminasyon para sa mga ID at maliit na kard. 🖱️ (I-click)</p>
+      </div>
     </div>
     <div class="carousel-dots" id="carouselDots">
       <span class="dot active" onclick="currentSlide(0)"></span>
       <span class="dot" onclick="currentSlide(1)"></span>
       <span class="dot" onclick="currentSlide(2)"></span>
+      <span class="dot" onclick="currentSlide(3)"></span>
     </div>
   </div>
 
@@ -762,7 +771,7 @@
   </div>
 </div>
 
-<!-- SUB-MODAL: PERSONALIZATION MANAGER (Logo, Wallpaper, Database, Print/Xerox Photos) -->
+<!-- SUB-MODAL: PERSONALIZATION MANAGER (Logo, Wallpaper, Database, Print/Xerox/Laminate ID Photos) -->
 <div class="modal-overlay" id="personalizationModal" style="display: none;">
   <div class="modal-content" style="max-width: 450px;">
     <div class="modal-header">
@@ -780,6 +789,12 @@
       <label>🖼️ Xerox Price Photo / Poster</label>
       <input type="file" id="xeroxPhotoUploader" accept="image/*" onchange="handleXeroxPhotoUpload(this)" style="margin-top: 6px;">
       <button class="btn-sec" style="background: #ef4444; margin-top: 6px;" onclick="removeXeroxPhoto()">Tanggalin ang Xerox Photo</button>
+    </div>
+
+    <div class="setting-section-box">
+      <label>🖼️ Laminate ID Price Photo / Poster</label>
+      <input type="file" id="laminateIdPhotoUploader" accept="image/*" onchange="handleLaminateIdPhotoUpload(this)" style="margin-top: 6px;">
+      <button class="btn-sec" style="background: #ef4444; margin-top: 6px;" onclick="removeLaminateIdPhoto()">Tanggalin ang Laminate ID Photo</button>
     </div>
 
     <div class="setting-section-box">
@@ -851,7 +866,7 @@
   let currentSlideIndex = 0;
   const track = document.getElementById('carouselTrack');
   const dots = document.querySelectorAll('.dot');
-  const totalSlides = 3;
+  const totalSlides = 4;
 
   function updateCarousel() {
     track.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
@@ -904,6 +919,20 @@
         imgElem.style.display = 'none';
         noPhotoText.style.display = 'block';
         noPhotoText.innerText = "Wala pang naia-upload na Xerox photo sa Settings.";
+      }
+      modal.style.display = 'flex';
+    } else if (typeLower === 'laminate id') {
+      titleElem.innerText = "🖼️ Laminate ID Price List";
+      descElem.innerText = "Ito ang opisyal na presyo at sample ng Laminate ID:";
+      const savedLaminateIdPhoto = localStorage.getItem('cristyLaminateIdPhoto');
+      if (savedLaminateIdPhoto) {
+        imgElem.src = savedLaminateIdPhoto;
+        imgElem.style.display = 'block';
+        noPhotoText.style.display = 'none';
+      } else {
+        imgElem.style.display = 'none';
+        noPhotoText.style.display = 'block';
+        noPhotoText.innerText = "Wala pang naia-upload na Laminate ID photo sa Settings.";
       }
       modal.style.display = 'flex';
     } else {
@@ -1317,6 +1346,22 @@
   function removeXeroxPhoto() {
     localStorage.removeItem('cristyXeroxPhoto');
     alert("Xerox photo removed.");
+  }
+
+  function handleLaminateIdPhotoUpload(input) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        localStorage.setItem('cristyLaminateIdPhoto', e.target.result);
+        alert("✅ Na-save ang Laminate ID Price Photo!");
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  function removeLaminateIdPhoto() {
+    localStorage.removeItem('cristyLaminateIdPhoto');
+    alert("Laminate ID photo removed.");
   }
 
   function handleWallpaperUpload(input) {
