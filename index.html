@@ -8,6 +8,8 @@
   <!-- Firebase App & Realtime Database CDN -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <!-- HTML5 QR Code Scanner CDN -->
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
   <style>
     :root {
@@ -594,7 +596,7 @@
     <span class="icon">🏠</span>
     <span>Home</span>
   </div>
-  <div class="nav-item" onclick="alert('Feature coming soon!')">
+  <div class="nav-item" onclick="openQrScannerModal()">
     <span class="icon">📷</span>
     <span>Scan QR</span>
   </div>
@@ -609,6 +611,23 @@
   <div class="nav-item" onclick="openSettings()">
     <span class="icon">👤</span>
     <span>Account</span>
+  </div>
+</div>
+
+<!-- QR SCANNER MODAL -->
+<div class="modal-overlay" id="qrScannerModal" style="display: none;">
+  <div class="modal-content" style="max-width: 420px; text-align: center;">
+    <div class="modal-header">
+      <h2>📷 Scan QR Code</h2>
+      <button class="close-btn" onclick="closeQrScannerModal()">✕</button>
+    </div>
+    <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Itapat ang QR code sa kamera para ma-scan.</p>
+    
+    <div id="reader" style="width: 100%; border-radius: 12px; overflow: hidden; background: #000;"></div>
+    
+    <div id="qrResultBox" style="margin-top: 15px; padding: 10px; background: #f1f5f9; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--egov-blue); display: none;"></div>
+    
+    <button class="btn-sec" style="background: #ef4444; margin-top: 15px;" onclick="closeQrScannerModal()">Isara ang Scanner</button>
   </div>
 </div>
 
@@ -852,6 +871,76 @@
 
   function closePrintSample() {
     document.getElementById('printSampleModal').style.display = 'none';
+  }
+
+  // --- QR Scanner & Beep Logic ---
+  let html5QrCode = null;
+
+  function playSuccessBeep() {
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(880, audioCtx.currentTime); // High pitch beep
+      gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+      
+      osc.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.15); // 150ms duration
+    } catch(e) {
+      console.log("Audio not supported or blocked");
+    }
+  }
+
+  function openQrScannerModal() {
+    document.getElementById('qrScannerModal').style.display = 'flex';
+    document.getElementById('qrResultBox').style.display = 'none';
+    
+    setTimeout(() => {
+      if (!html5QrCode) {
+        html5QrCode = new Html5Qrcode("reader");
+      }
+      html5QrCode.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: { width: 250, height: 250 } },
+        (decodedText, decodedResult) => {
+          // Success callback
+          playSuccessBeep();
+          
+          const resBox = document.getElementById('qrResultBox');
+          resBox.style.display = 'block';
+          resBox.innerText = `✅ Na-scan: ${decodedText}`;
+          
+          // Stop scanner after successful scan
+          html5QrCode.stop().then(() => {
+            html5QrCode = null;
+          }).catch(err => console.log(err));
+        },
+        (errorMessage) => {
+          // Scanning in progress...
+        }
+      ).catch(err => {
+        alert("Hindi mabuksan ang kamera. Siguraduhing pinayagan ang camera permission.");
+      });
+    }, 300);
+  }
+
+  function closeQrScannerModal() {
+    if (html5QrCode) {
+      html5QrCode.stop().then(() => {
+        html5QrCode = null;
+        document.getElementById('qrScannerModal').style.display = 'none';
+      }).catch(err => {
+        html5QrCode = null;
+        document.getElementById('qrScannerModal').style.display = 'none';
+      });
+    } else {
+      document.getElementById('qrScannerModal').style.display = 'none';
+    }
   }
 
   const defaultPrices = [
