@@ -659,15 +659,21 @@
   </div>
 </div>
 
-<div class="modal-overlay" id="printSampleModal" style="display: none;">
+<!-- DYNAMIC SERVICE PRICE PHOTO MODAL -->
+<div class="modal-overlay" id="servicePriceModal" style="display: none;">
   <div class="modal-content" style="text-align: center;">
     <div class="modal-header">
-      <h2>🖼️ Print Sample</h2>
-      <button class="close-btn" onclick="closePrintSample()">✕</button>
+      <h2 id="serviceModalTitle">🖼️ Price List</h2>
+      <button class="close-btn" onclick="closeServicePriceModal()">✕</button>
     </div>
-    <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 12px;">Ito ang sample na kalidad ng aming print:</p>
-    <img src="https://via.placeholder.com/300x200" alt="Print Sample" style="width: 100%; border-radius: 8px; border: 1px solid var(--border);">
-    <button onclick="closePrintSample()" style="margin-top: 15px; width: 100%; padding: 10px; background: var(--egov-blue); color: white; border: none; border-radius: 8px; font-weight: bold;">Isara</button>
+    <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 12px;" id="serviceModalDesc">Ito ang opisyal na presyo ng serbisyo:</p>
+    
+    <div id="servicePhotoContainer" style="width: 100%; min-height: 200px; display: flex; align-items: center; justify-content: center; background: #f1f5f9; border-radius: 8px; border: 1px solid var(--border); overflow: hidden;">
+      <span style="font-size: 12px; color: var(--text-sub);" id="noPhotoText">Wala pang naia-upload na larawan sa Settings.</span>
+      <img id="serviceModalImg" src="" alt="Service Price List" style="width: 100%; display: none; border-radius: 8px;">
+    </div>
+    
+    <button onclick="closeServicePriceModal()" style="margin-top: 15px; width: 100%; padding: 10px; background: var(--egov-blue); color: white; border: none; border-radius: 8px; font-weight: bold;">Isara</button>
   </div>
 </div>
 
@@ -687,14 +693,6 @@
       
       <div style="background: #ffffff; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
         
-        <div onclick="openPrintPhotoManager()" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #f3f4f6; cursor: pointer;">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <span style="font-size: 18px;">🖼️</span>
-            <span style="font-size: 14px; font-weight: 500; color: #1f2937;">Print Sample Photo</span>
-          </div>
-          <span style="color: #9ca3af; font-size: 16px;">›</span>
-        </div>
-
         <div onclick="openServicesManager()" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #f3f4f6; cursor: pointer;">
           <div style="display: flex; align-items: center; gap: 12px;">
             <span style="font-size: 18px;">🛠️</span>
@@ -764,12 +762,24 @@
   </div>
 </div>
 
-<!-- SUB-MODAL: PERSONALIZATION MANAGER (Logo, Wallpaper, Database) -->
+<!-- SUB-MODAL: PERSONALIZATION MANAGER (Logo, Wallpaper, Database, Print/Xerox Photos) -->
 <div class="modal-overlay" id="personalizationModal" style="display: none;">
   <div class="modal-content" style="max-width: 450px;">
     <div class="modal-header">
       <h2>🎨 Personalization & System</h2>
       <button class="close-btn" onclick="closePersonalizationManager()">✕</button>
+    </div>
+
+    <div class="setting-section-box">
+      <label>🖼️ Print Price Photo / Poster</label>
+      <input type="file" id="printPhotoUploader" accept="image/*" onchange="handlePrintPhotoUpload(this)" style="margin-top: 6px;">
+      <button class="btn-sec" style="background: #ef4444; margin-top: 6px;" onclick="removePrintPhoto()">Tanggalin ang Print Photo</button>
+    </div>
+
+    <div class="setting-section-box">
+      <label>🖼️ Xerox Price Photo / Poster</label>
+      <input type="file" id="xeroxPhotoUploader" accept="image/*" onchange="handleXeroxPhotoUpload(this)" style="margin-top: 6px;">
+      <button class="btn-sec" style="background: #ef4444; margin-top: 6px;" onclick="removeXeroxPhoto()">Tanggalin ang Xerox Photo</button>
     </div>
 
     <div class="setting-section-box">
@@ -861,16 +871,49 @@
   }, 4000);
   
   function handleCarouselClick(serviceType) {
-    if (serviceType.trim().toLowerCase() === 'print') {
-      document.getElementById('printSampleModal').style.display = 'flex';
+    const typeLower = serviceType.trim().toLowerCase();
+    const modal = document.getElementById('servicePriceModal');
+    const titleElem = document.getElementById('serviceModalTitle');
+    const descElem = document.getElementById('serviceModalDesc');
+    const imgElem = document.getElementById('serviceModalImg');
+    const noPhotoText = document.getElementById('noPhotoText');
+
+    if (typeLower === 'print') {
+      titleElem.innerText = "🖼️ Print Price List";
+      descElem.innerText = "Ito ang opisyal na presyo at sample ng Print:";
+      const savedPrintPhoto = localStorage.getItem('cristyPrintPhoto');
+      if (savedPrintPhoto) {
+        imgElem.src = savedPrintPhoto;
+        imgElem.style.display = 'block';
+        noPhotoText.style.display = 'none';
+      } else {
+        imgElem.style.display = 'none';
+        noPhotoText.style.display = 'block';
+        noPhotoText.innerText = "Wala pang naia-upload na Print photo sa Settings.";
+      }
+      modal.style.display = 'flex';
+    } else if (typeLower === 'xerox') {
+      titleElem.innerText = "🖼️ Xerox Price List";
+      descElem.innerText = "Ito ang opisyal na presyo at sample ng Xerox:";
+      const savedXeroxPhoto = localStorage.getItem('cristyXeroxPhoto');
+      if (savedXeroxPhoto) {
+        imgElem.src = savedXeroxPhoto;
+        imgElem.style.display = 'block';
+        noPhotoText.style.display = 'none';
+      } else {
+        imgElem.style.display = 'none';
+        noPhotoText.style.display = 'block';
+        noPhotoText.innerText = "Wala pang naia-upload na Xerox photo sa Settings.";
+      }
+      modal.style.display = 'flex';
     } else {
       alert("Pinili mo ang serbisyong: " + serviceType);
       window.scrollTo({ top: 300, behavior: 'smooth' });
     }
   }
 
-  function closePrintSample() {
-    document.getElementById('printSampleModal').style.display = 'none';
+  function closeServicePriceModal() {
+    document.getElementById('servicePriceModal').style.display = 'none';
   }
 
   // --- QR Scanner & Beep Logic ---
@@ -908,21 +951,17 @@
         { facingMode: "environment" },
         { fps: 10, qrbox: { width: 250, height: 250 } },
         (decodedText, decodedResult) => {
-          // Success callback
           playSuccessBeep();
           
           const resBox = document.getElementById('qrResultBox');
           resBox.style.display = 'block';
           resBox.innerText = `✅ Na-scan: ${decodedText}`;
           
-          // Stop scanner after successful scan
           html5QrCode.stop().then(() => {
             html5QrCode = null;
           }).catch(err => console.log(err));
         },
-        (errorMessage) => {
-          // Scanning in progress...
-        }
+        (errorMessage) => {}
       ).catch(err => {
         alert("Hindi mabuksan ang kamera. Siguraduhing pinayagan ang camera permission.");
       });
@@ -993,11 +1032,6 @@
 
   function closeSettings() {
     document.getElementById('settingsModal').style.display = 'none';
-  }
-
-  function openPrintPhotoManager() {
-    closeSettings();
-    document.getElementById('printSampleModal').style.display = 'flex';
   }
 
   function openServicesManager() {
@@ -1251,6 +1285,38 @@
     localStorage.setItem('cristyFirebaseUrl', url);
     alert("✅ Na-save ang Firebase URL!");
     location.reload();
+  }
+
+  function handlePrintPhotoUpload(input) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        localStorage.setItem('cristyPrintPhoto', e.target.result);
+        alert("✅ Na-save ang Print Price Photo!");
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  function removePrintPhoto() {
+    localStorage.removeItem('cristyPrintPhoto');
+    alert("Print photo removed.");
+  }
+
+  function handleXeroxPhotoUpload(input) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        localStorage.setItem('cristyXeroxPhoto', e.target.result);
+        alert("✅ Na-save ang Xerox Price Photo!");
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  function removeXeroxPhoto() {
+    localStorage.removeItem('cristyXeroxPhoto');
+    alert("Xerox photo removed.");
   }
 
   function handleWallpaperUpload(input) {
