@@ -35,7 +35,6 @@
       padding-bottom: 80px;
     }
 
-    /* eGovPH Header Style */
     .egov-header {
       background: #ffffff;
       color: var(--text-main);
@@ -110,7 +109,6 @@
       object-fit: cover;
     }
 
-    /* Location & Date Sub-bar */
     .sub-bar {
       max-width: 480px;
       margin: auto;
@@ -129,7 +127,6 @@
       padding: 0 14px 20px 14px;
     }
 
-    /* Swipeable Banner Carousel */
     .carousel-container {
       position: relative;
       width: 100%;
@@ -204,7 +201,6 @@
       background: white;
     }
 
-    /* Grid Layout for Weather and Quick Links */
     .dashboard-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -212,7 +208,6 @@
       margin-bottom: 14px;
     }
 
-    /* Weather Card Style */
     .weather-card {
       background: linear-gradient(135deg, #f0f9ff 100%, #e0f2fe 0%);
       border: 1px solid #bae6fd;
@@ -257,7 +252,6 @@
       margin-top: 2px;
     }
 
-    /* Action Widget Card */
     .action-mini-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -275,7 +269,6 @@
       transform: scale(0.98);
     }
 
-    /* Card Style */
     .card {
       background: var(--card-bg);
       padding: 18px;
@@ -374,7 +367,6 @@
       width: 100%;
     }
 
-    /* Summary Banner */
     .total-card {
       background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%);
       padding: 16px 18px;
@@ -395,7 +387,6 @@
     th { background: #f8fafc; padding: 10px 14px; font-size: 10px; text-transform: uppercase; color: var(--text-sub); font-weight: 700; border-bottom: 1px solid var(--border); }
     td { padding: 11px 14px; border-bottom: 1px solid var(--border); font-size: 12px; vertical-align: middle; }
 
-    /* Bottom Navigation Bar */
     .egov-bottom-nav {
       position: fixed;
       bottom: 0;
@@ -440,7 +431,6 @@
       font-size: 18px;
     }
 
-    /* Modal Overlay */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -494,7 +484,6 @@
 </head>
 <body>
 
-<!-- Header (Cristy Printing Shop) -->
 <div class="egov-header">
   <div class="nav-header">
     <div class="shop-title-area">
@@ -514,7 +503,6 @@
   </div>
 </div>
 
-<!-- Sub-bar -->
 <div class="sub-bar">
   <div>🌙 <span id="locationText">CITY OF CALOOCAN, METRO MANILA</span></div>
   <div id="currentDateText">Thu - Aug 6, 2026</div>
@@ -522,7 +510,6 @@
 
 <div class="container">
 
-  <!-- SWIPEABLE CAROUSEL BANNER -->
   <div class="carousel-container" id="swipeCarousel">
     <div class="carousel-track" id="carouselTrack">
       <div class="carousel-slide" onclick="handleCarouselClick('Print')" style="cursor: pointer;">
@@ -545,7 +532,6 @@
     </div>
   </div>
 
-  <!-- WEATHER & SETTINGS QUICK WIDGET -->
   <div class="dashboard-grid">
     <div class="weather-card">
       <div class="weather-header">
@@ -567,7 +553,6 @@
     </div>
   </div>
 
-  <!-- SALES ENCODER CARD -->
   <div class="card">
     <h2>📊 Mag-encode ng Benta</h2>
     <div class="form-group">
@@ -594,7 +579,6 @@
     <button class="btn-save" onclick="addSaleRecord()">+ Record Benta</button>
   </div>
 
-  <!-- TOTAL SUMMARY -->
   <div class="total-card">
     <div>
       <span class="total-title">Kabuuang Kita / Benta</span>
@@ -605,7 +589,6 @@
 
 </div>
 
-<!-- BOTTOM NAVIGATION BAR -->
 <div class="egov-bottom-nav">
   <div class="nav-item active" onclick="location.reload()">
     <span class="icon">🏠</span>
@@ -629,7 +612,6 @@
   </div>
 </div>
 
-<!-- HISTORY / TRANSACTIONS MODAL (PROTECTED BY PIN) -->
 <div class="modal-overlay" id="historyModal">
   <div class="modal-content">
     <div class="modal-header">
@@ -658,7 +640,6 @@
   </div>
 </div>
 
-<!-- PRINT SAMPLE PICTURE MODAL -->
 <div class="modal-overlay" id="printSampleModal" style="display: none;">
   <div class="modal-content" style="text-align: center;">
     <div class="modal-header">
@@ -671,11 +652,9 @@
   </div>
 </div>
 
-<!-- SETTINGS MODAL -->
 <div class="modal-overlay" id="settingsModal" style="display: none;">
   <div class="modal-content" style="max-width: 450px; padding: 0; background: #f8f9fa; overflow: hidden;">
     
-    <!-- Header -->
     <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: #ffffff; border-bottom: 1px solid #e5e7eb;">
       <button onclick="closeSettings()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #374151;">❮</button>
       <h2 style="font-size: 16px; font-weight: 700; color: #111827; margin: 0;">Settings</h2>
@@ -684,7 +663,6 @@
 
     <div style="padding: 16px; max-height: 80vh; overflow-y: auto;">
       
-      <!-- SECTION 1 -->
       <div style="font-size: 11px; font-weight: 700; color: #6b7280; margin-bottom: 8px; letter-spacing: 0.5px;">MANAGEMENT & SERVICES</div>
       
       <div style="background: #ffffff; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
@@ -715,7 +693,6 @@
 
       </div>
 
-      <!-- SECTION 2: SECURITY -->
       <div style="font-size: 11px; font-weight: 700; color: #6b7280; margin-bottom: 8px; letter-spacing: 0.5px;">PRIVACY AND SECURITY</div>
       
       <div style="background: #ffffff; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
@@ -730,7 +707,6 @@
 
       </div>
 
-      <!-- ADMIN PIN MANAGEMENT -->
       <div class="setting-section-box">
         <label>🔒 Itakda ang iyong Admin PIN</label>
         <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Ilagay ang PIN para sa pagtingin ng History at pag-Void.</p>
@@ -741,7 +717,6 @@
         <button class="btn-sec" style="background: #0d9488; font-size: 11px;" onclick="showCurrentPin()">👁️ Ipakita ang Kasalukuyang PIN</button>
       </div>
 
-      <!-- SERVICES MANAGEMENT UNDER SETTINGS -->
       <div class="setting-section-box">
         <label>🛠️ SERVICES (Pamahalaan ang mga Serbisyo at Presyo)</label>
         <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Magdagdag, mag-edit ng presyo, o mag-delete ng serbisyo.</p>
@@ -756,7 +731,6 @@
         <div id="settingsPriceListContainer" style="max-height: 180px; overflow-y: auto;"></div>
       </div>
 
-      <!-- TRANSACTION / HISTORY UNDER SETTINGS (PROTECTED BY PIN) -->
       <div class="setting-section-box">
         <label>📋 TRANSACTIONS (History at Void)</label>
         <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Tingnan ang mga naitalang benta at i-void kung kinakailangan.</p>
@@ -789,45 +763,40 @@
   </div>
 </div>
 
-<!-- CHANGE PIN STEP-BY-STEP MODAL -->
+<!-- CHANGE PIN STEP-BY-STEP MODAL (FIXED INPUT TYPES) -->
 <div class="modal-overlay" id="changePinModal" style="display: none;">
   <div class="modal-content" style="max-width: 420px; padding: 24px; background: #ffffff; border-radius: 16px; position: relative;">
     
-    <!-- Top Bar / Back Button -->
     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
       <button onclick="closeChangePinModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #111827;">❮</button>
       <span style="font-size: 14px; font-weight: 600; color: #6b7280;" id="pinStepIndicator">Step 1 of 3</span>
       <div style="width: 20px;"></div>
     </div>
 
-    <!-- Progress Bars -->
     <div style="display: flex; gap: 6px; margin-bottom: 24px;">
       <div id="pBar1" style="flex: 1; height: 4px; background: #2563eb; border-radius: 2px;"></div>
       <div id="pBar2" style="flex: 1; height: 4px; background: #e5e7eb; border-radius: 2px;"></div>
       <div id="pBar3" style="flex: 1; height: 4px; background: #e5e7eb; border-radius: 2px;"></div>
     </div>
 
-    <!-- Title & Description -->
     <h2 id="pinTitle" style="font-size: 20px; font-weight: 700; color: #111827; margin: 0 0 6px 0;">Enter Current MPIN</h2>
     <p id="pinDesc" style="font-size: 13px; color: #6b7280; margin: 0 0 24px 0;">Type in your current MPIN to continue</p>
 
-    <!-- PIN Input Container (6 Boxes) -->
+    <!-- PIN Boxes Naayos para maging text/number para hindi mag-error sa pagbasa -->
     <div style="display: flex; justify-content: space-between; gap: 8px; margin-bottom: 24px;">
-      <input type="password" maxlength="1" class="pin-box" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 1.5px solid #d1d5db; border-radius: 8px; outline: none;" oninput="moveToNext(this, 0)" onkeydown="moveToPrev(event, 0)">
-      <input type="password" maxlength="1" class="pin-box" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 1.5px solid #d1d5db; border-radius: 8px; outline: none;" oninput="moveToNext(this, 1)" onkeydown="moveToPrev(event, 1)">
-      <input type="password" maxlength="1" class="pin-box" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 1.5px solid #d1d5db; border-radius: 8px; outline: none;" oninput="moveToNext(this, 2)" onkeydown="moveToPrev(event, 2)">
-      <input type="password" maxlength="1" class="pin-box" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 1.5px solid #d1d5db; border-radius: 8px; outline: none;" oninput="moveToNext(this, 3)" onkeydown="moveToPrev(event, 3)">
-      <input type="password" maxlength="1" class="pin-box" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 1.5px solid #d1d5db; border-radius: 8px; outline: none;" oninput="moveToNext(this, 4)" onkeydown="moveToPrev(event, 4)">
-      <input type="password" maxlength="1" class="pin-box" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 1.5px solid #d1d5db; border-radius: 8px; outline: none;" oninput="moveToNext(this, 5)" onkeydown="moveToPrev(event, 5)">
+      <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="pin-box" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 1.5px solid #d1d5db; border-radius: 8px; outline: none;" oninput="moveToNext(this, 0)" onkeydown="moveToPrev(event, 0)">
+      <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="pin-box" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 1.5px solid #d1d5db; border-radius: 8px; outline: none;" oninput="moveToNext(this, 1)" onkeydown="moveToPrev(event, 1)">
+      <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="pin-box" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 1.5px solid #d1d5db; border-radius: 8px; outline: none;" oninput="moveToNext(this, 2)" onkeydown="moveToPrev(event, 2)">
+      <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="pin-box" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 1.5px solid #d1d5db; border-radius: 8px; outline: none;" oninput="moveToNext(this, 3)" onkeydown="moveToPrev(event, 3)">
+      <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="pin-box" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 1.5px solid #d1d5db; border-radius: 8px; outline: none;" oninput="moveToNext(this, 4)" onkeydown="moveToPrev(event, 4)">
+      <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="pin-box" style="width: 45px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 1.5px solid #d1d5db; border-radius: 8px; outline: none;" oninput="moveToNext(this, 5)" onkeydown="moveToPrev(event, 5)">
     </div>
 
-    <!-- Footer Note / Clear -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
       <span style="font-size: 12px; color: #6b7280;" id="pinNote">You will use this 6 digit PIN to login next time</span>
       <button onclick="clearPinBoxes()" style="background: none; border: none; font-size: 13px; font-weight: 600; color: #374151; cursor: pointer;">Clear</button>
     </div>
 
-    <!-- Next Button -->
     <button onclick="handlePinNextStep()" style="width: 100%; padding: 14px; background: #2563eb; color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer;">Next</button>
 
   </div>
@@ -1027,8 +996,8 @@
     prices.forEach(p => {
       container.innerHTML += `
         <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 8px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
-          <input type="text" value="${p.name}" onchange="updatePriceItemValue(${p.id}, this.value, ${p.price})" style="flex: 2; font-size: 11px; padding: 6px;">
-          <input type="number" value="${p.price}" step="0.01" onchange="updatePriceItemValue(${p.id}, '${p.name}', this.value)" style="flex: 1; font-size: 11px; padding: 6px;">
+          <input type="text" value="${p.name}" oninput="updatePriceItemValue(${p.id}, this.value, ${p.price})" style="flex: 2; font-size: 11px; padding: 6px;">
+          <input type="number" value="${p.price}" step="0.01" oninput="updatePriceItemValue(${p.id}, '${p.name}', this.value)" style="flex: 1; font-size: 11px; padding: 6px;">
           <button class="btn-del" onclick="deletePriceItem(${p.id})" style="padding: 6px 8px;">Bura</button>
         </div>
       `;
@@ -1150,6 +1119,7 @@
   function loadSales() {
     const db = getFirebaseDB();
     if (db) {
+      db.ref('sales').off(); // Inayos din dito ang Firebase listener para walang leak
       db.ref('sales').on('value', (snapshot) => {
         const data = snapshot.val();
         allSalesData = [];
@@ -1265,7 +1235,7 @@
       if (desc) desc.innerText = "Re-type your new 6 digit MPIN to confirm";
       if (b1) b1.style.background = "#2563eb"; 
       if (b2) b2.style.background = "#2563eb"; 
-      if (b3) b3.style.background = "#2563eb";
+      if (b3) b3.style.background = "#e5e7eb";
     }
   }
 
