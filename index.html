@@ -84,7 +84,7 @@
       font-size: 10px;
       color: var(--text-sub);
       font-weight: 600;
-    }9
+    }
 
     .profile-info .username {
       font-size: 13px;
@@ -522,7 +522,7 @@
 
 <div class="container">
 
-    <!-- SWIPEABLE CAROUSEL BANNER -->
+  <!-- SWIPEABLE CAROUSEL BANNER -->
   <div class="carousel-container" id="swipeCarousel">
     <div class="carousel-track" id="carouselTrack">
       <div class="carousel-slide" onclick="handleCarouselClick('Print')" style="cursor: pointer;">
@@ -658,7 +658,7 @@
   </div>
 </div>
 
-  <!-- PRINT SAMPLE PICTURE MODAL -->
+<!-- PRINT SAMPLE PICTURE MODAL -->
 <div class="modal-overlay" id="printSampleModal" style="display: none;">
   <div class="modal-content" style="text-align: center;">
     <div class="modal-header">
@@ -670,7 +670,125 @@
     <button onclick="closePrintSample()" style="margin-top: 15px; width: 100%; padding: 10px; background: var(--egov-blue); color: white; border: none; border-radius: 8px; font-weight: bold;">Isara</button>
   </div>
 </div>
-  
+
+<!-- SETTINGS MODAL -->
+<div class="modal-overlay" id="settingsModal" style="display: none;">
+  <div class="modal-content" style="max-width: 450px; padding: 0; background: #f8f9fa; overflow: hidden;">
+    
+    <!-- Header -->
+    <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: #ffffff; border-bottom: 1px solid #e5e7eb;">
+      <button onclick="closeSettings()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #374151;">❮</button>
+      <h2 style="font-size: 16px; font-weight: 700; color: #111827; margin: 0;">Settings</h2>
+      <div style="width: 20px;"></div>
+    </div>
+
+    <div style="padding: 16px; max-height: 80vh; overflow-y: auto;">
+      
+      <!-- SECTION 1 -->
+      <div style="font-size: 11px; font-weight: 700; color: #6b7280; margin-bottom: 8px; letter-spacing: 0.5px;">MANAGEMENT & SERVICES</div>
+      
+      <div style="background: #ffffff; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+        
+        <div onclick="openPrintPhotoManager()" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #f3f4f6; cursor: pointer;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 18px;">🖼️</span>
+            <span style="font-size: 14px; font-weight: 500; color: #1f2937;">Print Sample Photo</span>
+          </div>
+          <span style="color: #9ca3af; font-size: 16px;">›</span>
+        </div>
+
+        <div onclick="openServicesManager()" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #f3f4f6; cursor: pointer;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 18px;">🛠️</span>
+            <span style="font-size: 14px; font-weight: 500; color: #1f2937;">Services & Prices</span>
+          </div>
+          <span style="color: #9ca3af; font-size: 16px;">›</span>
+        </div>
+
+        <div onclick="openHistoryWithPin()" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; cursor: pointer;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 18px;">📋</span>
+            <span style="font-size: 14px; font-weight: 500; color: #1f2937;">Transactions History</span>
+          </div>
+          <span style="color: #9ca3af; font-size: 16px;">›</span>
+        </div>
+
+      </div>
+
+      <!-- SECTION 2: SECURITY -->
+      <div style="font-size: 11px; font-weight: 700; color: #6b7280; margin-bottom: 8px; letter-spacing: 0.5px;">PRIVACY AND SECURITY</div>
+      
+      <div style="background: #ffffff; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+        
+        <div onclick="openChangePinModal()" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; cursor: pointer;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 18px;">🔒</span>
+            <span style="font-size: 14px; font-weight: 500; color: #1f2937;">Change PIN</span>
+          </div>
+          <span style="color: #9ca3af; font-size: 16px;">›</span>
+        </div>
+
+      </div>
+
+      <!-- ADMIN PIN MANAGEMENT -->
+      <div class="setting-section-box">
+        <label>🔒 Itakda ang iyong Admin PIN</label>
+        <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Ilagay ang PIN para sa pagtingin ng History at pag-Void.</p>
+        <div style="display: flex; gap: 8px; margin-bottom: 6px;">
+          <input type="text" id="adminPinInput" placeholder="Halimbawa: 1234" maxlength="6" style="letter-spacing: 2px;">
+          <button class="btn-sec" style="margin: 0; width: auto; background: var(--egov-blue); white-space: nowrap;" onclick="saveAdminPin()">I-save ang PIN</button>
+        </div>
+        <button class="btn-sec" style="background: #0d9488; font-size: 11px;" onclick="showCurrentPin()">👁️ Ipakita ang Kasalukuyang PIN</button>
+      </div>
+
+      <!-- SERVICES MANAGEMENT UNDER SETTINGS -->
+      <div class="setting-section-box">
+        <label>🛠️ SERVICES (Pamahalaan ang mga Serbisyo at Presyo)</label>
+        <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Magdagdag, mag-edit ng presyo, o mag-delete ng serbisyo.</p>
+        
+        <div style="background: #ffffff; padding: 10px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 10px;">
+          <div style="font-size: 11px; font-weight: 700; color: var(--egov-blue); margin-bottom: 6px;">+ Magdagdag ng Bagong Serbisyo</div>
+          <input type="text" id="settingsNewName" placeholder="Pangalan ng Service" style="margin-bottom: 6px;">
+          <input type="number" id="settingsNewPrice" placeholder="Presyo (₱)" step="0.01" style="margin-bottom: 6px;">
+          <button class="btn-save btn-add" style="padding: 8px; font-size: 11px;" onclick="settingsAddPriceItem()">Idagdag sa Services</button>
+        </div>
+
+        <div id="settingsPriceListContainer" style="max-height: 180px; overflow-y: auto;"></div>
+      </div>
+
+      <!-- TRANSACTION / HISTORY UNDER SETTINGS (PROTECTED BY PIN) -->
+      <div class="setting-section-box">
+        <label>📋 TRANSACTIONS (History at Void)</label>
+        <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Tingnan ang mga naitalang benta at i-void kung kinakailangan.</p>
+        <button class="btn-sec" style="background: var(--egov-blue);" onclick="openHistoryWithPinFromSettings()">🔓 Buksan ang Transactions (May PIN)</button>
+      </div>
+
+      <div class="setting-section-box">
+        <label>🖼️ Custom Wallpaper</label>
+        <input type="file" id="bgUploader" accept="image/*" onchange="handleWallpaperUpload(this)" style="margin-top: 6px;">
+        <button class="btn-sec" style="background: #ef4444;" onclick="removeBackground()">Tanggalin ang Wallpaper</button>
+      </div>
+
+      <div class="setting-section-box">
+        <label>👤 Logo ng Shop</label>
+        <input type="file" id="logoUploader" accept="image/*" onchange="handleLogoUpload(this)" style="margin-top: 6px;">
+        <button class="btn-sec" style="background: #ef4444;" onclick="removeLogo()">Tanggalin ang Logo</button>
+      </div>
+
+      <div class="setting-section-box">
+        <label>🔗 Firebase Database URL</label>
+        <input type="text" id="firebaseUrlInput" placeholder="https://..." style="margin-top: 6px; margin-bottom: 8px;">
+        <button class="btn-sec" style="background: var(--egov-blue);" onclick="saveFirebaseUrl()">I-save ang Link</button>
+      </div>
+
+      <div class="setting-section-box">
+        <button class="btn-sec" style="background: #d97706;" onclick="resetToDefaultPrices()">↺ Reset sa Standard Prices</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <!-- CHANGE PIN STEP-BY-STEP MODAL -->
 <div class="modal-overlay" id="changePinModal" style="display: none;">
   <div class="modal-content" style="max-width: 420px; padding: 24px; background: #ffffff; border-radius: 16px; position: relative;">
@@ -715,160 +833,6 @@
   </div>
 </div>
 
-  <!-- SETTINGS MODAL -->
-<div class="modal-overlay" id="settingsModal" style="display: none;">
-  <div class="modal-content" style="max-width: 450px; padding: 0; background: #f8f9fa; overflow: hidden;">
-    
-    <!-- Header -->
-    <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: #ffffff; border-bottom: 1px solid #e5e7eb;">
-      <button onclick="closeSettings()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #374151;">❮</button>
-      <h2 style="font-size: 16px; font-weight: 700; color: #111827; margin: 0;">Settings</h2>
-      <div style="width: 20px;"></div>
-    </div>
-
-    <div style="padding: 16px; max-height: 80vh; overflow-y: auto;">
-      
-      <!-- SECTION 1 -->
-      <div style="font-size: 11px; font-weight: 700; color: #6b7280; margin-bottom: 8px; letter-spacing: 0.5px;">MANAGEMENT & SERVICES</div>
-      
-      <div style="background: #ffffff; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-        
-        <div onclick="openPrintPhotoManager()" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #f3f4f6; cursor: pointer;">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <span style="font-size: 18px;">🖼️</span>
-            <span style="font-size: 14px; font-weight: 500; color: #1f2937;">Print Sample Photo</span>
-          </div>
-          <span style="color: #9ca3af; font-size: 16px;">›</span>
-        </div>
-
-        <div onclick="openServicesManager()" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #f3f4f6; cursor: pointer;">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <span style="font-size: 18px;">🛠️</span>
-            <span style="font-size: 14px; font-weight: 500; color: #1f2937;">Services & Prices</span>
-          </div>
-          <span style="color: #9ca3af; font-size: 16px;">›</span>
-        </div>
-
-        <div onclick="openHistoryWithPin()" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; cursor: pointer;">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <span style="font-size: 18px;">📋</span>
-            <span style="font-size: 14px; font-weight: 500; color: #1f2937;">Transactions History</span>
-          </div>
-          <span style="color: #9ca3af; font-size: 16px;">›</span>
-        </div>
-
-      </div>
-
-      <!-- SECTION 2 -->
-      <div style="font-size: 11px; font-weight: 700; color: #6b7280; margin-bottom: 8px; letter-spacing: 0.5px;">PRIVACY AND SECURITY</div>
-      
-      <div style="background: #ffffff; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-        
-        <div onclick="alert('Feature coming soon!')" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; cursor: pointer;">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <span style="font-size: 18px;">🔒</span>
-            <span style="font-size: 14px; font-weight: 500; color: #1f2937;">Change PIN</span>
-          </div>
-          <span style="color: #9ca3af; font-size: 16px;">›</span>
-        </div>
-
-      </div>
-
-    </div>
-  </div>
-</div>
-
-
-        <!-- Transactions History -->
-        <div onclick="openHistoryWithPin()" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; cursor: pointer;">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <span style="font-size: 18px;">📋</span>
-            <span style="font-size: 14px; font-weight: 500; color: #1f2937;">Transactions History</span>
-          </div>
-          <span style="color: #9ca3af; font-size: 16px;">›</span>
-        </div>
-
-      </div>
-
-      <!-- SECTION 2: SECURITY -->
-      <div style="font-size: 11px; font-weight: 700; color: #6b7280; margin-bottom: 8px; letter-spacing: 0.5px;">PRIVACY AND SECURITY</div>
-      
-      <div style="background: #ffffff; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-        
-                <!-- Change PIN -->
-        <div onclick="openChangePinModal()" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; cursor: pointer;">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <span style="font-size: 18px;">🔒</span>
-            <span style="font-size: 14px; font-weight: 500; color: #1f2937;">Change PIN</span>
-          </div>
-          <span style="color: #9ca3af; font-size: 16px;">›</span>
-        </div>
-
-      </div>
-
-    </div>
-  </div>
-</div>
-
-
-    <!-- ADMIN PIN MANAGEMENT -->
-    <div class="setting-section-box">
-      <label>🔒 Itakda ang iyong Admin PIN</label>
-      <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Ilagay ang PIN para sa pagtingin ng History at pag-Void.</p>
-      <div style="display: flex; gap: 8px; margin-bottom: 6px;">
-        <input type="text" id="adminPinInput" placeholder="Halimbawa: 1234" maxlength="6" style="letter-spacing: 2px;">
-        <button class="btn-sec" style="margin: 0; width: auto; background: var(--egov-blue); white-space: nowrap;" onclick="saveAdminPin()">I-save ang PIN</button>
-      </div>
-      <button class="btn-sec" style="background: #0d9488; font-size: 11px;" onclick="showCurrentPin()">👁️ Ipakita ang Kasalukuyang PIN</button>
-    </div>
-
-    <!-- SERVICES MANAGEMENT UNDER SETTINGS -->
-    <div class="setting-section-box">
-      <label>🛠️ SERVICES (Pamahalaan ang mga Serbisyo at Presyo)</label>
-      <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Magdagdag, mag-edit ng presyo, o mag-delete ng serbisyo.</p>
-      
-      <div style="background: #ffffff; padding: 10px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 10px;">
-        <div style="font-size: 11px; font-weight: 700; color: var(--egov-blue); margin-bottom: 6px;">+ Magdagdag ng Bagong Serbisyo</div>
-        <input type="text" id="settingsNewName" placeholder="Pangalan ng Service" style="margin-bottom: 6px;">
-        <input type="number" id="settingsNewPrice" placeholder="Presyo (₱)" step="0.01" style="margin-bottom: 6px;">
-        <button class="btn-save btn-add" style="padding: 8px; font-size: 11px;" onclick="settingsAddPriceItem()">Idagdag sa Services</button>
-      </div>
-
-      <div id="settingsPriceListContainer" style="max-height: 180px; overflow-y: auto;"></div>
-    </div>
-
-    <!-- TRANSACTION / HISTORY UNDER SETTINGS (PROTECTED BY PIN) -->
-    <div class="setting-section-box">
-      <label>📋 TRANSACTIONS (History at Void)</label>
-      <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Tingnan ang mga naitalang benta at i-void kung kinakailangan.</p>
-      <button class="btn-sec" style="background: var(--egov-blue);" onclick="openHistoryWithPinFromSettings()">🔓 Buksan ang Transactions (May PIN)</button>
-    </div>
-
-    <div class="setting-section-box">
-      <label>🖼️ Custom Wallpaper</label>
-      <input type="file" id="bgUploader" accept="image/*" onchange="handleWallpaperUpload(this)" style="margin-top: 6px;">
-      <button class="btn-sec" style="background: #ef4444;" onclick="removeBackground()">Tanggalin ang Wallpaper</button>
-    </div>
-
-    <div class="setting-section-box">
-      <label>👤 Logo ng Shop</label>
-      <input type="file" id="logoUploader" accept="image/*" onchange="handleLogoUpload(this)" style="margin-top: 6px;">
-      <button class="btn-sec" style="background: #ef4444;" onclick="removeLogo()">Tanggalin ang Logo</button>
-    </div>
-
-    <div class="setting-section-box">
-      <label>🔗 Firebase Database URL</label>
-      <input type="text" id="firebaseUrlInput" placeholder="https://..." style="margin-top: 6px; margin-bottom: 8px;">
-      <button class="btn-sec" style="background: var(--egov-blue);" onclick="saveFirebaseUrl()">I-save ang Link</button>
-    </div>
-
-    <div class="setting-section-box">
-      <button class="btn-sec" style="background: #d97706;" onclick="resetToDefaultPrices()">↺ Reset sa Standard Prices</button>
-    </div>
-
-  </div>
-</div>
-
 <script>
   document.getElementById('entryDate').valueAsDate = new Date();
   
@@ -900,19 +864,17 @@
   }, 4000);
   
   function handleCarouselClick(serviceType) {
-      if (serviceType.trim().toLowerCase() === 'print') {
-        document.getElementById('printSampleModal').style.display = 'flex';
-      } else {
-        alert("Pinili mo ang serbisyong: " + serviceType);
-        window.scrollTo({ top: 300, behavior: 'smooth' });
-      }
+    if (serviceType.trim().toLowerCase() === 'print') {
+      document.getElementById('printSampleModal').style.display = 'flex';
+    } else {
+      alert("Pinili mo ang serbisyong: " + serviceType);
+      window.scrollTo({ top: 300, behavior: 'smooth' });
     }
-   
+  }
 
-    function closePrintSample() {
-      document.getElementById('printSampleModal').style.display = 'none';
-    }
-
+  function closePrintSample() {
+    document.getElementById('printSampleModal').style.display = 'none';
+  }
 
   const defaultPrices = [
     { id: 1, name: '📄 Xerox - Text Only Black (Short/A4)', price: 3.00 },
@@ -955,13 +917,14 @@
   }
 
   function getAdminPin() {
-    return localStorage.getItem('cristyAdminPin') || '1234';
+    return localStorage.getItem('cristyAdminPin') || localStorage.getItem('adminPin') || '1234';
   }
 
   function saveAdminPin() {
     const pin = document.getElementById('adminPinInput').value.trim();
     if (!pin) return alert("Maglagay ng PIN number!");
     localStorage.setItem('cristyAdminPin', pin);
+    localStorage.setItem('adminPin', pin);
     alert("✅ Tagumpay na na-save ang bagong Admin PIN (" + pin + ")!");
     document.getElementById('adminPinInput').value = '';
   }
@@ -1255,6 +1218,122 @@
     alert("Logo removed.");
   }
 
+  // --- Change PIN Modal Logic ---
+  let currentPinStep = 1;
+  let tempCurrentPin = '';
+  let tempNewPin = '';
+
+  function openChangePinModal() {
+    closeSettings();
+    currentPinStep = 1;
+    tempCurrentPin = '';
+    tempNewPin = '';
+    updatePinModalUI();
+    document.getElementById('changePinModal').style.display = 'flex';
+  }
+
+  function closeChangePinModal() {
+    document.getElementById('changePinModal').style.display = 'none';
+    clearPinBoxes();
+  }
+
+  function updatePinModalUI() {
+    clearPinBoxes();
+    const title = document.getElementById('pinTitle');
+    const desc = document.getElementById('pinDesc');
+    const indicator = document.getElementById('pinStepIndicator');
+    const b1 = document.getElementById('pBar1');
+    const b2 = document.getElementById('pBar2');
+    const b3 = document.getElementById('pBar3');
+
+    if (indicator) indicator.innerText = `Step ${currentPinStep} of 3`;
+
+    if (currentPinStep === 1) {
+      if (title) title.innerText = "Enter Current MPIN";
+      if (desc) desc.innerText = "Type in your current MPIN to continue";
+      if (b1) b1.style.background = "#2563eb"; 
+      if (b2) b2.style.background = "#e5e7eb"; 
+      if (b3) b3.style.background = "#e5e7eb";
+    } else if (currentPinStep === 2) {
+      if (title) title.innerText = "Enter New MPIN";
+      if (desc) desc.innerText = "Type in your new 6 digit MPIN";
+      if (b1) b1.style.background = "#2563eb"; 
+      if (b2) b2.style.background = "#2563eb"; 
+      if (b3) b3.style.background = "#e5e7eb";
+    } else if (currentPinStep === 3) {
+      if (title) title.innerText = "Confirm New MPIN";
+      if (desc) desc.innerText = "Re-type your new 6 digit MPIN to confirm";
+      if (b1) b1.style.background = "#2563eb"; 
+      if (b2) b2.style.background = "#2563eb"; 
+      if (b3) b3.style.background = "#2563eb";
+    }
+  }
+
+  function moveToNext(current, index) {
+    if (current.value.length === 1 && index < 5) {
+      const boxes = document.querySelectorAll('.pin-box');
+      if (boxes[index + 1]) boxes[index + 1].focus();
+    }
+  }
+
+  function moveToPrev(event, index) {
+    if (event.key === 'Backspace' && index > 0) {
+      const boxes = document.querySelectorAll('.pin-box');
+      if (boxes[index] && boxes[index].value === '') {
+        boxes[index - 1].focus();
+      }
+    }
+  }
+
+  function clearPinBoxes() {
+    const boxes = document.querySelectorAll('.pin-box');
+    boxes.forEach(box => box.value = '');
+    if (boxes[0]) boxes[0].focus();
+  }
+
+  function getEnteredPin() {
+    const boxes = document.querySelectorAll('.pin-box');
+    let pin = '';
+    boxes.forEach(box => pin += box.value);
+    return pin;
+  }
+
+  function handlePinNextStep() {
+    const enteredPin = getEnteredPin();
+    if (enteredPin.length < 6) {
+      alert('Mangyaring kumpletuhin ang 6-digit PIN.');
+      return;
+    }
+
+    if (currentPinStep === 1) {
+      const savedPin = getAdminPin();
+      if (enteredPin !== savedPin) {
+        alert('Mali ang iyong kasalukuyang PIN!');
+        clearPinBoxes();
+        return;
+      }
+      tempCurrentPin = enteredPin;
+      currentPinStep = 2;
+      updatePinModalUI();
+
+    } else if (currentPinStep === 2) {
+      tempNewPin = enteredPin;
+      currentPinStep = 3;
+      updatePinModalUI();
+
+    } else if (currentPinStep === 3) {
+      if (enteredPin !== tempNewPin) {
+        alert('Hindi magkatugma ang bagong PIN at ang pagkumpirma!');
+        clearPinBoxes();
+        return;
+      }
+      localStorage.setItem('cristyAdminPin', enteredPin);
+      localStorage.setItem('adminPin', enteredPin);
+      alert('Matagumpay na nabago ang iyong MPIN!');
+      closeChangePinModal();
+    }
+  }
+
   window.onload = function() {
     const savedLogo = localStorage.getItem('cristyShopLogo');
     if (savedLogo) {
@@ -1271,154 +1350,8 @@
 
     populateDropdown();
     loadSales();
-     let currentPinStep = 1;
-    let tempCurrentPin = '';
-    let tempNewPin = '';
-
-    function openChangePinModal() {
-      currentPinStep = 1;
-      tempCurrentPin = '';
-      tempNewPin = '';
-      updatePinModalUI();
-      document.getElementById('changePinModal').style.display = 'flex';
-    }
-
-    function closeChangePinModal() {
-      document.getElementById('changePinModal').style.display = 'none';
-      clearPinBoxes();
-    }
-
-    function updatePinModalUI() {
-      clearPinBoxes();
-      const title = document.getElementById('pinTitle');
-      const desc = document.getElementById('pinDesc');
-      const indicator = document.getElementById('pinStepIndicator');
-      const b1 = document.getElementById('pBar1');
-      const b2 = document.getElementById('pBar2');
-      const b3 = document.getElementById('pBar3');
-
-      indicator.innerText = `Step ${currentPinStep} of 3`;
-
-      if (currentPinStep === 1) {
-        title.innerText = "Enter Current MPIN";
-        desc.innerText = "Type in your current MPIN to continue";
-        b1.style.background = "#2563eb"; b2.style.background = "#e5e7eb"; b3.style.background = "#e5e7eb";
-      } else if (currentPinStep === 2) {
-        title.innerText = "Enter New MPIN";
-        desc.innerText = "Type in your new 6 digit MPIN";
-        b1.style.background = "#2563eb"; b2.style.background = "#2563eb"; b3.style.background = "#e5e7eb";
-      } else if (currentPinStep === 3) {
-        title.innerText = "Confirm New MPIN";
-        desc.innerText = "Re-type your new 6 digit MPIN to confirm";
-        b1.style.background = "#2563eb"; b2.style.background = "#2563eb"; b3.style.background = "#2563eb";
-      }
-    }
-
-    function moveToNext(current, index) {
-      if (current.value.length === 1 && index < 5) {
-        const boxes = document.querySelectorAll('.pin-box');
-        boxes[index + 1].focus();
-      }
-    }
-
-    function moveToPrev(event, index) {
-      if (event.key === 'Backspace' && index > 0) {
-        const boxes = document.querySelectorAll('.pin-box');
-        if (boxes[index].value === '') {
-          boxes[index - 1].focus();
-        }
-      }
-    }
-
-    function clearPinBoxes() {
-      const boxes = document.querySelectorAll('.pin-box');
-      boxes.forEach(box => box.value = '');
-      boxes[0].focus();
-    }
-
-    function getEnteredPin() {
-      const boxes = document.querySelectorAll('.pin-box');
-      let pin = '';
-      boxes.forEach(box => pin += box.value);
-      return pin;
-    }
-
-    function handlePinNextStep() {
-      const enteredPin = getEnteredPin();
-      if (enteredPin.length < 6) {
-        alert('Mangyaring kumpletuhin ang 6-digit PIN.');
-        return;
-      }
-
-      if (currentPinStep === 1) {
-        // I-check sa nakaimbak na PIN (kung wala pa, default muna na '123456')
-        const savedPin = localStorage.getItem('adminPin') || '123456';
-        if (enteredPin !== savedPin) {
-          alert('Mali ang iyong kasalukuyang PIN!');
-          clearPinBoxes();
-          return;
-        }
-        tempCurrentPin = enteredPin;
-        currentPinStep = 2;
-        updatePinModalUI();
-
-      } else if (currentPinStep === 2) {
-        tempNewPin = enteredPin;
-        currentPinStep = 3;
-        updatePinModalUI();
-
-      } else if (currentPinStep === 3) {
-        if (enteredPin !== tempNewPin) {
-          alert('Hindi magkatugma ang bagong PIN at ang pagkumpirma!');
-          clearPinBoxes();
-          return;
-        }
-        // I-save na ang bagong PIN
-        localStorage.setItem('adminPin', enteredPin);
-        alert('Matagumpay na nabago ang iyong MPIN!');
-        closeChangePinModal();
-      }
-    }
- };
+  };
 </script>
-<!-- Change PIN Modal -->
-<div id="changePinModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 20px;">
-  <div style="background: #ffffff; width: 100%; max-width: 380px; border-radius: 16px; padding: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); box-sizing: border-box;">
-    
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-      <h3 id="pinTitle" style="font-size: 16px; font-weight: 700; margin: 0; color: #1f2937;">Enter Current MPIN</h3>
-      <span onclick="closeChangePinModal()" style="font-size: 20px; cursor: pointer; color: #6b7280; font-weight: bold;">&times;</span>
-    </div>
-
-    <p id="pinDesc" style="font-size: 13px; color: #4b5563; margin-top: 0; margin-bottom: 20px;">Type in your current MPIN to continue</p>
-
-    <!-- Step indicators -->
-    <div style="display: flex; gap: 6px; margin-bottom: 20px;">
-      <div id="pBar1" style="flex: 1; height: 4px; background: #2563eb; border-radius: 2px;"></div>
-      <div id="pBar2" style="flex: 1; height: 4px; background: #e5e7eb; border-radius: 2px;"></div>
-      <div id="pBar3" style="flex: 1; height: 4px; background: #e5e7eb; border-radius: 2px;"></div>
-    </div>
-
-    <div id="pinStepIndicator" style="font-size: 11px; font-weight: 600; color: #2563eb; margin-bottom: 8px; text-transform: uppercase;">Step 1 of 3</div>
-
-    <!-- 6 Digit Inputs -->
-    <div style="display: flex; justify-content: space-between; gap: 8px; margin-bottom: 24px;">
-      <input type="password" maxlength="1" class="pin-box" oninput="moveToNext(this, 0)" onkeydown="moveToPrev(event, 0)" style="width: 45px; height: 45px; text-align: center; font-size: 20px; font-weight: bold; border: 1px solid #d1d5db; border-radius: 8px; outline: none;">
-      <input type="password" maxlength="1" class="pin-box" oninput="moveToNext(this, 1)" onkeydown="moveToPrev(event, 1)" style="width: 45px; height: 45px; text-align: center; font-size: 20px; font-weight: bold; border: 1px solid #d1d5db; border-radius: 8px; outline: none;">
-      <input type="password" maxlength="1" class="pin-box" oninput="moveToNext(this, 2)" onkeydown="moveToPrev(event, 2)" style="width: 45px; height: 45px; text-align: center; font-size: 20px; font-weight: bold; border: 1px solid #d1d5db; border-radius: 8px; outline: none;">
-      <input type="password" maxlength="1" class="pin-box" oninput="moveToNext(this, 3)" onkeydown="moveToPrev(event, 3)" style="width: 45px; height: 45px; text-align: center; font-size: 20px; font-weight: bold; border: 1px solid #d1d5db; border-radius: 8px; outline: none;">
-      <input type="password" maxlength="1" class="pin-box" oninput="moveToNext(this, 4)" onkeydown="moveToPrev(event, 4)" style="width: 45px; height: 45px; text-align: center; font-size: 20px; font-weight: bold; border: 1px solid #d1d5db; border-radius: 8px; outline: none;">
-      <input type="password" maxlength="1" class="pin-box" oninput="moveToNext(this, 5)" onkeydown="moveToPrev(event, 5)" style="width: 45px; height: 45px; text-align: center; font-size: 20px; font-weight: bold; border: 1px solid #d1d5db; border-radius: 8px; outline: none;">
-    </div>
-
-    <!-- Action Buttons -->
-    <div style="display: flex; gap: 10px;">
-      <button onclick="closeChangePinModal()" style="flex: 1; padding: 10px; background: #f3f4f6; color: #374151; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Cancel</button>
-      <button onclick="handlePinNextStep()" style="flex: 1; padding: 10px; background: #2563eb; color: #ffffff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Next / Confirm</button>
-    </div>
-
-  </div>
-</div>
 
 </body>
 </html>
