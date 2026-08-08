@@ -934,62 +934,6 @@
     updateCarousel();
   }, 4000);
   
-  function handleCarouselClick(serviceType) {
-    const typeLower = serviceType.trim().toLowerCase();
-    const modal = document.getElementById('servicePriceModal');
-    const titleElem = document.getElementById('serviceModalTitle');
-    const descElem = document.getElementById('serviceModalDesc');
-    const imgElem = document.getElementById('serviceModalImg');
-    const noPhotoText = document.getElementById('noPhotoText');
-
-    if (typeLower === 'print') {
-      titleElem.innerText = "🖼️ Print Price List";
-      descElem.innerText = "Ito ang opisyal na presyo at sample ng Print:";
-      const savedPrintPhoto = localStorage.getItem('cristyPrintPhoto');
-      if (savedPrintPhoto) {
-        imgElem.src = savedPrintPhoto;
-        imgElem.style.display = 'block';
-        noPhotoText.style.display = 'none';
-      } else {
-        imgElem.style.display = 'none';
-        noPhotoText.style.display = 'block';
-        noPhotoText.innerText = "Wala pang naia-upload na Print photo sa Settings.";
-      }
-      modal.style.display = 'flex';
-    } else if (typeLower === 'xerox') {
-      titleElem.innerText = "🖼️ Xerox Price List";
-      descElem.innerText = "Ito ang opisyal na presyo at sample ng Xerox:";
-      const savedXeroxPhoto = localStorage.getItem('cristyXeroxPhoto');
-      if (savedXeroxPhoto) {
-        imgElem.src = savedXeroxPhoto;
-        imgElem.style.display = 'block';
-        noPhotoText.style.display = 'none';
-      } else {
-        imgElem.style.display = 'none';
-        noPhotoText.style.display = 'block';
-        noPhotoText.innerText = "Wala pang naia-upload na Xerox photo sa Settings.";
-      }
-      modal.style.display = 'flex';
-    } else if (typeLower === 'laminate id') {
-      titleElem.innerText = "🖼️ Laminate ID Price List";
-      descElem.innerText = "Ito ang opisyal na presyo at sample ng Laminate ID:";
-      const savedLaminateIdPhoto = localStorage.getItem('cristyLaminateIdPhoto');
-      if (savedLaminateIdPhoto) {
-        imgElem.src = savedLaminateIdPhoto;
-        imgElem.style.display = 'block';
-        noPhotoText.style.display = 'none';
-      } else {
-        imgElem.style.display = 'none';
-        noPhotoText.style.display = 'block';
-        noPhotoText.innerText = "Wala pang naia-upload na Laminate ID photo sa Settings.";
-      }
-      modal.style.display = 'flex';
-    } else {
-      alert("Pinili mo ang serbisyong: " + serviceType);
-      window.scrollTo({ top: 300, behavior: 'smooth' });
-    }
-  }
-
   function closeServicePriceModal() {
     document.getElementById('servicePriceModal').style.display = 'none';
   }
