@@ -541,23 +541,28 @@
   <div id="currentDateText">Fri - Aug 7, 2026</div>
 </div>
 
-   <!-- HTML ng Pop-up at Upload Form -->
-  <div class="modal-overlay" id="myModal" style="display: none;">
-    <div class="modal-content">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-        <h3 style="margin: 0;">Upload para sa Print</h3>
-        <button type="button" onclick="closeModal()" style="background: #f1f5f9; border: none; padding: 5px 10px; border-radius: 4px; font-weight: bold;">X</button>
-      </div>
-      
-      <form action="upload.php" method="POST" enctype="multipart/form-data">
-        <label for="printPhoto" style="display: block; margin-bottom: 8px;">Piliin ang Litrato:</label>
-        <input type="file" id="printPhoto" name="printPhoto" accept="image/*" style="width: 100%; margin-bottom: 15px;"><br>
-        
-        <button type="submit" style="background: var(--egov-blue, #0038A8); color: white; border: none; padding: 10px 15px; border-radius: 6px; width: 100%; font-weight: bold;">I-upload na</button>
-      </form>
+ <!-- HTML ng Pop-up at Upload Form -->
+<div class="modal-overlay" id="myModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 999;">
+  <div class="modal-content" style="background: #fff; padding: 20px; border-radius: 8px; width: 90%; max-width: 400px; text-align: center; position: relative;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+      <h3 id="modalTitle" style="margin: 0;">Mag-upload ng Larawan</h3>
+      <button type="button" onclick="closeModal()" style="background: transparent; border: none; font-size: 18px; cursor: pointer;">&times;</button>
+    </div>
+    
+    <!-- Preview ng Larawan -->
+    <img id="modalImagePreview" src="" alt="Preview" style="width: 100%; max-height: 200px; object-fit: contain; display: none; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">
+    
+    <!-- File Input para sa pagpili ng photo -->
+    <input type="file" id="shopPhotoInput" accept="image/*" style="width: 100%; margin-bottom: 15px;">
+    
+    <!-- Mga Button para I-save o Isara -->
+    <div style="display: flex; gap: 10px; justify-content: center;">
+      <button type="button" onclick="saveShopPhoto()" style="background: var(--egov-blue, #0038AB); color: #fff; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">I-save</button>
+      <button type="button" onclick="closeModal()" style="background: #ccc; color: #333; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">Isara</button>
     </div>
   </div>
-   
+</div>
+    
 <div class="container">
 
   <div class="carousel-container" id="swipeCarousel">
@@ -1611,7 +1616,68 @@
 
     populateDropdown();
     loadSales();
+
+  // Ilagay dito ang mga bagong functions para sa Print, Xerox, at Laminate upload:
+  let activeServiceType = 'print';
+
+  function handleCarouselClick(serviceType) {
+    activeServiceType = serviceType.trim().toLowerCase();
+    document.getElementById('modalTitle').innerText = 'I-upload ang ' + serviceType + ' Photo';
     
+    let storageKey = 'cristyPrintPhoto';
+    if (activeServiceType.includes('xerox')) storageKey = 'cristyXeroxPhoto';
+    if (activeServiceType.includes('laminate')) storageKey = 'cristyLaminateIdPhoto';
+    
+    const savedPhoto = localStorage.getItem(storageKey);
+    const imgPreview = document.getElementById('modalImagePreview');
+    const fileInput = document.getElementById('shopPhotoInput');
+    
+    fileInput.value = '';
+    
+    if (savedPhoto) {
+      imgPreview.src = savedPhoto;
+      imgPreview.style.display = 'block';
+    } else {
+      imgPreview.style.display = 'none';
+      imgPreview.src = '';
+    }
+    
+    openModal();
+  }
+
+  function saveShopPhoto() {
+    const fileInput = document.getElementById('shopPhotoInput');
+    if (fileInput.files && fileInput.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const base64Image = e.target.result;
+        
+        let storageKey = 'cristyPrintPhoto';
+        if (activeServiceType.includes('xerox')) storageKey = 'cristyXeroxPhoto';
+        if (activeServiceType.includes('laminate')) storageKey = 'cristyLaminateIdPhoto';
+        
+        localStorage.setItem(storageKey, base64Image);
+        alert('Matagumpay na nai-save ang larawan!');
+        closeModal();
+        
+        const imgPreview = document.getElementById('modalImagePreview');
+        imgPreview.src = base64Image;
+        imgPreview.style.display = 'block';
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    } else {
+      alert('Mangyaring pumili muna ng litrato bago i-save.');
+    }
+  }
+
+  function openModal() {
+    document.getElementById('myModal').style.display = 'flex';
+  }
+
+  function closeModal() {
+    document.getElementById('myModal').style.display = 'none';
+  }
+
     function openModal() {
       document.getElementById('myModal').style.display = 'flex';
     }
