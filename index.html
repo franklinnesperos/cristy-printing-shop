@@ -4,7 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cristy Printing Shop - eGov Style</title>
-  
+    
+  <!-- Eruda para sa Mobile Console -->
+  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+  <script>eruda.init();</script>
+
   <!-- Firebase App & Realtime Database CDN -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
@@ -486,6 +490,29 @@
       border: 1px solid var(--border);
       margin-bottom: 12px;
     }
+    
+    .modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
   </style>
 </head>
 <body>
@@ -514,6 +541,23 @@
   <div id="currentDateText">Fri - Aug 7, 2026</div>
 </div>
 
+   <!-- HTML ng Pop-up at Upload Form -->
+  <div class="modal-overlay" id="myModal" style="display: none;">
+    <div class="modal-content">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h3 style="margin: 0;">Upload para sa Print</h3>
+        <button type="button" onclick="closeModal()" style="background: #f1f5f9; border: none; padding: 5px 10px; border-radius: 4px; font-weight: bold;">X</button>
+      </div>
+      
+      <form action="upload.php" method="POST" enctype="multipart/form-data">
+        <label for="printPhoto" style="display: block; margin-bottom: 8px;">Piliin ang Litrato:</label>
+        <input type="file" id="printPhoto" name="printPhoto" accept="image/*" style="width: 100%; margin-bottom: 15px;"><br>
+        
+        <button type="submit" style="background: var(--egov-blue, #0038A8); color: white; border: none; padding: 10px 15px; border-radius: 6px; width: 100%; font-weight: bold;">I-upload na</button>
+      </form>
+    </div>
+  </div>
+   
 <div class="container">
 
   <div class="carousel-container" id="swipeCarousel">
@@ -1567,7 +1611,15 @@
 
     populateDropdown();
     loadSales();
-  };
+    
+    function openModal() {
+      document.getElementById('myModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('myModal').style.display = 'none';
+    }
+};
 </script>
 
 </body>
